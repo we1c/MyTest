@@ -1,0 +1,330 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+    <script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="/js/jquery.sortable.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="/js/lightbox.js"> </script>
+    <link href="/css/lightbox.css" rel="stylesheet">
+     <style>
+        .del { position:absolute;right:1px;top:1px;cursor:pointer;z-index:9999; height:25px;width:25px;}  
+        .bigpic { position:relative; height:100px; width:100px;float:left; margin:10px 10px 10px 0;}
+    </style>
+<div class="col-md-10">
+    <h4>编辑-商品</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+      
+    <form method="POST" action="/checktwo/edit" enctype="multipart/form-data" id="form">
+        <input type="hidden" name="id" value="<?=$this->Info['id']; ?>"/>
+        
+      <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品名称</label>
+		<div class="col-sm-10">
+			<div class="btn-group">
+			  <label class="checkbox">
+			     <input type="text" name="name" class="form-control" id="goodsName" value="<?=$this->Info['name']?>">
+			  </label>    
+			 </div>
+		</div>
+	 </div>
+
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">进货价</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			     <label class="checkbox">
+                      <input type="text" name="mprice" class="form-control" value="<?=round($this->Info['purchPrice']);?>" >
+			     </label>    
+		     </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品货号</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			     <label class="checkbox">
+                      <input type="text" name="goodsNo" class="form-control" value="<?=$this->Info['goodsNo']?>">
+			     </label>    
+		     </div>
+		</div>
+	 </div>
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">类目</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			    <select name="category1" id="category1" class="category1 form-control" style="width:150px; display:inline">
+    			    <option value="">请选择一级类目</option>
+    				<?php foreach ($this->category1 as $v): ?>
+    					<option value="<?=$v['id'] ?>" <?php if(($v['id']) == $this->Info['category1']) echo "selected='selected'";?>><?=$v['name'] ?></option>
+    				<?php endforeach; ?>
+    			</select>
+    			<select name="category2" id="category2" class="category2 form-control" style="width:150px; display:inline">
+    				<option value="">请选择二级类目</option>
+    				<?php if($this->category2): ?>
+    				<?php foreach ($this->category2 as $v): ?>
+    				    <option value="<?=$v['id'] ?>" <?php if(($v['id']) == $this->Info['category2']) echo "selected='selected'";?> ><?=$v['name'] ?></option>
+    				<?php endforeach; ?>
+    				<?php endif; ?>
+    			</select>
+    			<select name="category3" id="category3" class="category3 form-control" style="width:150px; display:inline">
+    				<option value="">请选择三级类目</option>
+    				<?php if($this->category3): ?>
+    				<?php foreach ($this->category3 as $v): ?>
+    				    <option value="<?=$v['id'] ?>" <?php if(($v['id']) == $this->Info['category3']) echo "selected='selected'";?> ><?=$v['name'] ?></option>
+    				<?php endforeach; ?>
+    				<?php endif; ?>
+    			</select>
+			 </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">参数</label>
+        <div class="col-sm-10 parData">
+            <?php if($this->Info['attribute']): ?>
+                <?php foreach ($this->Info['attribute'] as $v): ?>
+                    <div class="btn-block">
+                        <div class="btn-group">
+                                                                         参数名 ：
+                        <?php if ( $v['key']['id'] ): ?>
+                        <select name="key[]" class="form-control" style="display:inline;width:160px">
+                        <option value="<?=$v['key']['name']?>-<?=$v['key']['id']?>"><?=$v['key']['name']?></option>
+                        </select>
+                        <?php else : ?>
+                        <input type="text" class="form-control" style="display:inline;width:160px" name="key[]" value="<?=$v['key']['name']?>">
+                        <?php endif; ?>
+                        </div>
+                        
+                        <div class="btn-group">
+                                                                         参数值 ：
+                        <?php if ( $v['value']['id'] ): ?>
+                            <select name="value[]" class="form-control" style="display:inline;width:160px">
+                            <option value="">请选择参数值</option>
+                            <?php foreach ( $v['value']['param'] as $key=>$val ): ?>
+                                <option value="<?=$val['name']?>-<?=$val['id']?>" <?php if( $v['value']['id'] == $val['id'] ) echo "selected='selected'" ?>><?=$val['name']?></option>
+                            <?php endforeach; ?>
+                            </select>
+                        <?php else : ?>
+                            <input type="text" class="form-control" style="display:inline;width:160px" name="value[]" value="<?=$v['value']['name']?>">
+                        <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <div class="btn-block">
+                <div class="btn-group">
+                    <button class="btn btn-info addPar" type="button">添加参数</button>
+                </div>
+            </div>
+		</div>
+	 </div>
+	 
+	  <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品描述</label>
+		<div class="col-sm-10">
+            <script id="intro_editor" type="text/plain" name="intro" style="width:500px;height:200px;"><?=htmlspecialchars_decode($this->Info['intro'])?></script>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">图片</label>
+		<div class="col-sm-10" id="upimg">
+		      <img src="/upload/images/uploadButton.png" id="uploadfile" style="width:100px;">
+              <input type="file" style="display: none" id="file" name="file[]" multiple="multiple">
+		      
+			  <ul class="gbin1-list exer_sortlist sorttxt">
+		         <?php foreach ($this->Info['goodsImg'] as $v): ?>
+    		         <li style="display:inline" class="bigpic">
+        			     <a href="<?=$v['imgurl'] ?>" data-lightbox="example-set" class="tile__list">
+        			         <img src="<?=$v['imgurl'] ?>" style="width:100px;height:100px" class="goodsimgs">
+        			     </a>
+        			     <img class="del" src="/img/delete.png">
+        			     <input type="hidden" name="imgs[]" value="<?=$v['hash'] ?>">
+        			 </li>
+			     <?php endforeach; ?>
+			 </ul>
+			 <div id="content"></div>
+		</div>
+	 </div>
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">详情</label>
+		<div class="col-sm-10">
+		      <script id="editor" type="text/plain" name="content" style="width:500px;height:200px;"><?=htmlspecialchars_decode($this->Info['content'])?></script>
+		</div>
+	 </div>
+        <input type="hidden" name="submittype" id="smttype"/>
+ 		<div class="form-group">
+        	<button type="button" class="btn btn-primary" id="submitBtn2">保存进平台</button>
+        	<button type="button" class="btn btn-primary" id="submitBtn1">保存稍后处理</button>
+        	<button type="button" class="btn btn-primary" id="submitBtn3">保存并驳回</button>
+        	<button type="button" class="btn btn-primary" id="submitBtn4">无文案进平台</button>
+        </div>
+    </form>
+</div>
+	<script>
+    $(function(){
+    	var inputElement = document.getElementById("file");
+        inputElement.addEventListener("change", handleFiles, false);
+        function handleFiles(){
+            var fileList = this.files;
+            var dd = document.getElementById('content');
+            for( var i = 0 ; i < fileList.length ; i++ ){
+                var url =window.URL.createObjectURL(fileList.item(i));
+                dd.innerHTML += "<span style='margin:5px'><img src='"+url+"' width='100px' height='100px'/></span>";
+            }
+        }
+    	$(document).on('click','.addPar',function() {
+        	var html = '<div class="btn-block"><div class="btn-group">';
+            html += '参数名 ：&nbsp;<input class="form-control" style="display:inline;width:160px" type="text" name="key[]">';
+            html += '</div>';
+        	html += '<div class="btn-group">';
+            html += '&nbsp;参数值 ：&nbsp;<input class="form-control" style="display:inline;width:160px" type="text" name="value[]">';
+            html += '</div></div>';
+            $(this).parent().parent().before(html);
+        });
+        
+    	$(document).on('click','.del',function(){
+            if ( confirm('确认删除该图片吗？') ) {
+                $(this).parent().remove();
+            }
+    	})
+
+        $('.gbin1-list').sortable();
+        
+    	$('#uploadfile').click(function() {
+  		  $('#file').trigger('click');
+        })
+
+   	 //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor',{
+        	toolbars: [
+        	           ['fullscreen', 'source', 'undo', 'redo'],
+        	           ['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc','simpleupload','justifyleft','justifyright','justifycenter','justifyjustify']
+        	       ]
+            });
+    	var intro_ue = UE.getEditor('intro_editor',{
+        	toolbars: [
+                       ['fullscreen', 'source', 'undo', 'redo'],
+                       ['selectall', 'cleardoc', 'removeformat']
+                    ]
+            });
+        
+    })
+    
+    $(document).on("change", '#category1',function() {
+    	var pid = $(this).val();
+    	var category2 = $('#category2');
+    	var category3 = $('#category3');
+    	category2.html('<option value="">请选择二级类目</option>');
+    	category3.html('<option value="">请选择三级类目</option>');
+    	$.post('/checktwo/category',{'pid':pid},function(result) {
+    		var html = '';
+    		if(result.success == 1) {
+    			html += '<option value="">请选择二级类目</option>';
+    			for(var i=0;i<result.data.length;i++){
+    				html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+    			}
+    		} else if( result.success == 0 ){
+    			html += '<option value="">请选择二级类目</option>';
+    		} else if( result.success == 2 ){
+                alert(result.notice);
+            }
+    		category2.html(html);
+    	},'json')
+    });
+    $(document).on("change", '#category2',function() {
+    	var pid = $(this).val();
+    	var category3 = $('#category3');
+    	category3.html('<option value="">请选择三级类目</option>');
+    	$.post('/checktwo/category',{'pid':pid},function(result) {
+    		var html = '';
+    		if(result.success == 1) {
+    			html += '<option value="">请选择三级类目</option>';
+    			for(var i=0;i<result.data.length;i++){
+    				html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+    			}
+    		} else if( result.success == 0 ){
+    			html += '<option value="">请选择三级类目</option>';
+    		}else if( result.success == 2 ){
+                alert(result.notice);
+            }
+    		category3.html(html);
+    	},'json')
+    });
+    $(document).on("change", '#category3',function() {
+    	var $this = $(this);
+    	var pid = $this.val();
+    	$.post('/checktwo/getPara',{'pid':pid},function(result) {
+    		var html = '';
+    		if(result.success == 1) {
+    			for(var i=0;i<result.data.length;i++){
+    				html += '<div class="btn-block">';
+                    html += '<div class="btn-group">';
+                    html += '参数名 ：&nbsp;<select name="key[]" class="form-control" style="display:inline;width:160px">';
+                    html += '<option value="'+result.data[i].name+'-'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                    html += '</select></div>';                
+                    html += '<div class="btn-group">';
+                    html += '&nbsp;参数值 ：&nbsp;<select name="value[]" class="form-control" style="display:inline;width:160px">';
+                    html += '<option value="">请选择参数值</option>';
+                    for( var j = 0; j < result.data[i].child.length; j++) {
+                    	html += '<option value="'+result.data[i].child[j].name+'-'+result.data[i].child[j].id+'">'+result.data[i].child[j].name+'</option>';
+                    }
+                    html += '</select></div></div>';
+    			}
+               
+                $('.addPar').parent().parent().before(html);
+    		} else if( result.success == 0 ){
+    			alert('该类目下没有参数，请重新选择');
+    		} else if( result.success == 2 ){
+                alert( result.notice );
+            }
+    	},'json')
+    });
+	</script>
+<script type="text/javascript">
+    $('#submitBtn1').click(function() {
+        var $goodsName = $('#goodsName').val();
+        if ( $.trim($goodsName) == '' ) {
+            alert('请填写商品名称');
+            return false;
+        }
+        $('#smttype').val('1');
+        $('#form').submit();
+    })
+    $('#submitBtn2').click(function() {
+        var $goodsName = $('#goodsName').val();
+        if ( $.trim($goodsName) == '' ) {
+            alert('请填写商品名称');
+            return false;
+        }
+        $('#smttype').val('2');
+        $('#form').submit();
+    })
+    $('#submitBtn3').click(function() {
+        var $goodsName = $('#goodsName').val();
+        if ( $.trim($goodsName) == '' ) {
+            alert('请填写商品名称');
+            return false;
+        }
+        $('#smttype').val('3');
+        $('#form').submit();
+    })
+    $('#submitBtn4').click(function() {
+        var $goodsName = $('#goodsName').val();
+        if ( $.trim($goodsName) == '' ) {
+            alert('请填写商品名称');
+            return false;
+        }
+        $('#smttype').val('4');
+        $('#form').submit();
+    })
+</script>
+<style>
+.form-group {margin-bottom: 20px}
+</style>

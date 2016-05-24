@@ -1,0 +1,2 @@
+INSERT INTO `city` (`id`, `name`, `first_letter`, `description`, `parent_id`, `sort_num`, `create_time`, `author`) VALUES ('370614', '高新区', NULL, '山东|烟台|高新区', '3706', '13', '0000-00-00 00:00:00', '0');
+ALTER TABLE account_shop ADD real_total DECIMAL(10,2) DEFAULT '0' COMMENT '申请单实付金额'

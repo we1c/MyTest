@@ -1,0 +1,154 @@
+﻿/*@charset "utf-8";*/
+
+
+/* CSS Document */
+
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+ul,
+li {
+	list-style: none;
+}
+
+img {
+	display: block;
+}
+
+a {
+	text-decoration: none;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.clear {
+	clear: both;
+}
+
+body {
+	background: url(../images/bg.png) left center repeat;
+	overflow-x: hidden;
+}
+
+.banner {
+	background: url(../images/banner.jpg) center center no-repeat;
+	height: 600px;
+	background-size: cover;
+}
+
+.wechat {
+	width: 550px;
+	margin: 40px auto 40px;
+}
+
+.wechatLeft {
+	float: left;
+}
+
+.wechatRight {
+	float: right;
+	margin-right: 30px;
+}
+
+.chatLink {
+	height: 50px;
+	width: 400px;
+	text-align: center;
+	line-height: 50px;
+	font-size: 34px;
+	font-weight: 900;
+	display: block;
+	color: #444444;
+	padding-top: 20px;
+}
+
+.tel {
+	height: 30px;
+	width: 400px;
+	text-align: center;
+	line-height: 30px;
+	font-size: 16px;
+	color: #444444;
+	font-family: "微软雅黑";
+}
+
+.produl {
+	width: 950px;
+	margin: 0 auto;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.produl li {
+	margin: 0 20px 0 25px;
+	float: left;
+}
+
+.produl li span {
+	display: block;
+	text-align: center;
+	font-family: "Microsoft Yahei";
+	font-size: 18px;
+	line-height: 50px;
+	font-weight: bold;
+}
+
+.bottom-link p { 
+	font-size: 16px;
+	text-indent: 40px;
+}
+
+.bottom-link a {
+	color: gray;
+}
+
+/*media*/
+
+@media (max-width: 1380px) {
+	.banner {
+		height: 460px;
+	}
+}
+
+@media (max-width: 950px) {
+	.banner {
+		height: 400px;
+	}
+	.produl {
+		width: 800px;
+	}
+	.produl li {
+		margin: 0 25px;
+	}
+}
+
+@media (max-width: 768px) {
+	.banner {
+		height: 350px;
+	}
+	.produl {
+		width: 640px;
+	}
+	.produl li {
+		margin: 0 65px;
+	}
+	.wechatLeft {
+		width: 100%;
+		margin: 0 auto;
+	}
+	.chatLink {
+		width: 100%;
+	}
+	.tel {
+		width: 100%;
+	}
+	.wechatRight {
+		margin: 0;
+		width: 100%;
+	}
+	.wechatRight img {
+		margin: 0 auto;
+	}
+}

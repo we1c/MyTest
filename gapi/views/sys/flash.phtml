@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<meta http-equiv="refresh" content="<?=$this->second?>; url=<?=$this->url?>">
+<title>商品列表</title>
+<script type="text/javascript">
+function swapStyleSheet(sheet){
+	document.getElementById('pagestyle').setAttribute('href', sheet);
+}
+</script>
+
+</head>
+<body>
+
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<!--Demo purposes only, can be deleted!-->
+    <div class="stylesheet-changer">
+        <div class="styles">
+            <a class="variation-changer" onclick="swapStyleSheet('/css/menus-variation.css')"></a>
+            <a class="blue-changer" onclick="swapStyleSheet('/css/menus-blue.css')"></a>
+            <a class="green-changer" onclick="swapStyleSheet('/css/menus-green.css')"></a>
+            <a class="orange-changer" onclick="swapStyleSheet('/css/menus-orange.css')"></a>
+            <a class="magenta-changer" onclick="swapStyleSheet('/css/menus-magenta.css')"></a>
+            <a class="red-changer" onclick="swapStyleSheet('/css/menus-red.css')"></a>
+            <a class="white-changer" onclick="swapStyleSheet('/css/menus-white.css')"></a>
+            <div class="clear"></div>
+            <p>Tap the icons to change the menu style!</p>
+        </div>
+    </div>
+<!--Demo purposes only, can be deleted!-->
+
+<div class="clear"></div>
+
+<div class="all-elements">
+
+    <div class="content-header">
+        <a href="#" class="deploy-sidebar"></a>
+        <img class="logo" src="/images/misc/logo.png" width="92" alt="img">
+        <a href="Search.html" class="deploy-contact"></a>
+        <div class="clear"></div>
+    </div>
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+    <div id="content" class="page-content">
+        <div class="content-header">
+            <a href="#" class="deploy-sidebar"></a>
+            <img class="logo" src="/images/misc/logo.png" width="92" alt="img">
+            <a href="#" class="deploy-contact"></a>
+            <div class="clear"></div>
+        </div>
+        
+        <div class="content">
+			<div class="container">
+				<p><?=$this->message?></p>
+                <p>页面正在转向，如果没有转向请<a href="<?=$this->url?>">点击此处</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="window-overlay">
+	<div class="window-overlaybg"></div>
+	<div class="window tagsboxdiv">
+	<form class="downform">
+		<div class="upGoodsel">
+			<a href="#" class="checkbox radio-twoCus radioCustom sellhide radio-twoCus-checked "><input type="radio" name="down" value="2" /><span>暂不出售</span></a>
+			<a href="#" class="checkbox radio-twoCus radioCustom sellhide"><input type="radio" name="down" value="3"/><span>损坏</span></a>
+			<a href="#" class="checkbox radio-twoCus radioCustom sellpricebtn"><input type="radio" name="down" value="4"/><span>已出售</span></a>
+			<div class="sellpricehide"><span>出售价格</span><input type="text" name="price" /></div>
+		</div>
+		
+		<div class="tagsbtnbox">
+		    <input type="hidden" name="goodsId" id="goodsId">
+			<span class="tagserbtn button button-turqoise " id="downform">确定</span>
+			<span class="tagserbtn button button-dark tagresetbtn">取消</span>
+		</div>
+	</form>
+	</div>
+</div>
+<!--添加标签弹层-->
+
+</body>
+</html>

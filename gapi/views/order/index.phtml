@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>全部订单</title>
+<link href="/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/js/function.js"></script>
+</head>
+<body class="graybody">
+<div class="allorderNav tabs">
+	<span class="fl">全部订单</span>
+	<span class="fl active">待发货</span>
+	<span class="fl">待收货</span>
+<!-- 	<span class="fl">已取消</span> -->
+</div>
+<div class="tabsbox">
+	<div class="tx">
+	<?php foreach ( $this->alllist as $v ): ?>
+		<div class="orderbox allorder overf">
+			<div class="allorderTop overf overf">
+                <?php if ( $v['payStatus'] == 1 ): ?>
+				    <span class="fr orderstatusIco orderstIco05"></span>
+				<?php elseif ( $v['payStatus'] == 2 ): ?>
+				    <span class="fr orderstatusIco orderstIco01"></span>
+				<?php elseif ( $v['payStatus'] == 3 ): ?>
+				    <span class="fr orderstatusIco orderstIco03"></span>
+				<?php elseif ( $v['payStatus'] == 4 ): ?>
+				    <span class="fr orderstatusIco orderstIco02"></span>
+				<?php endif; ?>
+				<div class="eachorderNum">
+					<p>订单号：<?=$v['orderCode'] ?></p>
+				</div>
+			</div>
+			<div class="eachorderdiv overf">
+				<dl class="overf">
+				    <?php if ( $v['payStatus'] == 1 ): ?>
+					   <a href="/order/cancel?id=<?=$v['id'] ?>"><img src="<?=$v['goodsImg'] ?>" /></a>
+					<?php elseif ( $v['payStatus'] == 2 ): ?>
+					   <a href="/order/stepthree?id=<?=$v['id'] ?>"><img src="<?=$v['goodsImg'] ?>" /></a>
+					<?php elseif ( $v['payStatus'] == 3 ): ?>
+					   <a href="/order/steptwo?id=<?=$v['id'] ?>"><img src="<?=$v['goodsImg'] ?>" /></a>
+					<?php elseif ( $v['payStatus'] == 4 ): ?>
+					   <a href="/order/stepone?id=<?=$v['id'] ?>"><img src="<?=$v['goodsImg'] ?>" /></a>
+					<?php endif; ?>
+					<dt><?=$v['goodsName'] ?></dt>
+					<dd><span class="fl orderpricetxt">￥<?=$v['orderPrice'] ?></span><span class="fr ordernum">×1</span></dd>
+				</dl>
+			</div>
+			<div class="allorderNote pdtb10 pdrl15 overf">
+				<span class="fl">微信支付</span>
+				<div class="fr allorderNotediv">
+					<p>订单金额：<span class="alorderprifont">￥<span><?=round($v['orderPrice']) ?></span>.00</span></p>
+				</div>
+			</div>
+<!-- 			<div class="allorderbot pdrl15 fr overf"> -->
+<!--     				<a href="#"><span class="alorderlookbtn fl alorderbtn">查看物流</span></a> -->
+<!--     				<a href="#"><span class="alordertuibtn fl alorderbtn">申请退货</span></a> -->
+<!-- 			</div> -->
+			<div class="orderbottombg"></div>
+		</div>
+	<?php endforeach; ?>	
+	</div>
+	<div class="tx on">
+	<?php foreach ( $this->nodeliverlist as $v ): ?>
+		<div class="orderbox allorder overf">
+			<div class="allorderTop overf overf">
+				<span class="fr orderstatusIco orderstIco02"></span>
+				<div class="eachorderNum">
+					<p>订单号：<?=$v['orderCode'] ?></p>
+				</div>
+			</div>
+			<div class="eachorderdiv overf">
+				<dl class="overf">
+					<a href="/order/stepone?id=<?=$v['id'] ?>"><img src="<?=$v['goodsImg'] ?>" /></a>
+					<dt><?=$v['goodsName'] ?></dt>
+					<dd><span class="fl orderpricetxt">￥<?=$v['orderPrice']?></span><span class="fr ordernum">×1</span></dd>
+				</dl>
+			</div>
+			<div class="allorderNote pdtb10 pdrl15 overf">
+				<span class="fl">微信支付</span>
+				<div class="fr allorderNotediv">
+					<p>订单金额：<span class="alorderprifont">￥<span><?=round($v['orderPrice']) ?></span>.00</span></p>
+				</div>
+			</div>
+<!-- 			<div class="allorderbot pdrl15 fr overf"> -->
+<!-- 				<a href="#"><span class="alordertuibtn fl alorderbtn">催单</span></a> -->
+<!-- 				<span class="alorderwaitbtn fl alorderbtn">待收货</span> -->
+<!-- 			</div> -->
+			<div class="orderbottombg"></div>
+		</div>
+	<?php endforeach; ?>	
+	</div>
+	<div class="tx">
+	<?php foreach ( $this->notakelist as $v ): ?>
+		<div class="orderbox allorder overf">
+			<div class="allorderTop overf overf">
+				<span class="fr orderstatusIco orderstIco03"></span>
+				<div class="eachorderNum">
+					<p>订单号：<?=$v['orderCode'] ?></p>
+				</div>
+			</div>
+			<div class="eachorderdiv overf">
+				<dl class="overf">
+					<a href="/order/steptwo?id=<?=$v['id'] ?>"><img src="<?=$v['goodsImg'] ?>" /></a>
+					<dt><?=$v['goodsName'] ?></dt>
+					<dd><span class="fl orderpricetxt">￥<?=$v['orderPrice'] ?></span><span class="fr ordernum">×1</span></dd>
+				</dl>
+			</div>
+			<div class="allorderNote pdtb10 pdrl15 overf">
+				<span class="fl">微信支付</span>
+				<div class="fr allorderNotediv">
+					<p>订单金额：<span class="alorderprifont">￥<span><?=round($v['orderPrice']) ?></span>.00</span></p>
+				</div>
+			</div>
+<!-- 			<div class="allorderbot pdrl15 fr overf"> -->
+<!-- 				<a href="#"><span class="alordertuibtn fl alorderbtn">查看物流</span></a> -->
+<!-- 				<span class="alorderwaitbtn fl alorderbtn">已发货</span> -->
+<!-- 			</div> -->
+			<div class="orderbottombg"></div>
+		</div>
+	<?php endforeach; ?>
+	</div>
+	<!-- <div class="tx">
+	
+		<div class="orderbox allorder overf">
+			<div class="allorderTop overf overf">
+				<span class="fr orderstatusIco orderstIco05"></span>
+				<div class="eachorderNum">
+					<p>订单号：</p>
+				</div>
+			</div>
+			<div class="eachorderdiv overf">
+				<dl class="overf">
+					<a href="/order/del"><img src="" /></a>
+					<dt></dt>
+					<dd><span class="fl orderpricetxt">￥</span><span class="fr ordernum">×1</span></dd>
+				</dl>
+			</div>
+			<div class="allorderNote pdtb10 pdrl15 overf">
+				<span class="fl">微信支付</span>
+				<div class="fr allorderNotediv">
+					<p>订单金额：<span class="alorderprifont">￥<span></span>.00</span></p>
+				</div>
+			</div>
+			<div class="allorderbot pdrl15 fr overf">
+				<span class="alordertuibtn fl alorderbtn deleteOrder">删除订单</span>
+				<a href="#"><span class="alordertuibtn fl alorderbtn">重新购买</span></a>
+			</div>
+			<div class="orderbottombg"></div>
+		</div>
+	
+	</div>
+	 -->
+</div>
+
+</body>
+
+<script>
+//analytics
+(function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-71370659-1', 'auto');
+ga('send', 'pageview');
+</script>
+</html>

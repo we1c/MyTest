@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>精选孤品</title>
+<link href="/styles/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/styles/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/scripts/jquery-1.9.1.js"></script>
+
+<style type="text/css">
+
+body{
+	height: 100%;
+	background: #e4e4e4;
+}
+
+#wrapper {
+	position:absolute; z-index:1;
+	top:0; bottom:0; left:0;
+	width:100%;
+	overflow:auto;
+}
+
+#scroller {
+	position:relative;
+/*	-webkit-touch-callout:none;*/
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+
+	float:left;
+	width:100%;
+	padding:0 0 0 2px;
+}
+
+
+/**下拉样式 Pull down styles**/
+#pullUp {
+	background:#e4e4e4;
+	height:40px;
+	line-height:40px;
+	padding:5px 10px;
+	border-bottom:1px solid #ccc;
+	font-weight:bold;
+	font-size:14px;
+	color:#888;
+}
+#pullUp .pullUpIcon  {
+	display:block; float:left;
+	width:40px; height:40px;
+	background:url(/images/pull-icon@2x.png) 0 0 no-repeat;
+	-webkit-background-size:40px 80px; background-size:40px 80px;
+	-webkit-transition-property:-webkit-transform;
+	-webkit-transition-duration:250ms;	
+}
+
+#pullUp .pullUpIcon  {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullUp.flip .pullUpIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullUp.loading .pullUpIcon {
+	background-position:0 100%;
+	-webkit-transform:rotate(0deg) translateZ(0);
+	-webkit-transition-duration:0ms;
+
+	-webkit-animation-name:loading;
+	-webkit-animation-duration:2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+}
+
+@-webkit-keyframes loading {
+	from { -webkit-transform:rotate(0deg) translateZ(0); }
+	to { -webkit-transform:rotate(360deg) translateZ(0); }
+}
+	/*------------- S 以下css主要是仿IOS滚动条样式(可选样式)  -------------*/		
+.myScrollbarH {
+	position:absolute;
+	z-index:100;
+	height:7px;
+	bottom:1px;
+	left:2px;
+	right:7px
+}
+
+.myScrollbarH > div {
+	height:100%;
+}
+
+.myScrollbarV {
+	position:absolute;
+	z-index:100;
+	width:7px;bottom:7px;top:2px;right:1px
+}
+
+.myScrollbarV > div {
+	width:100%;
+}
+
+.myScrollbarH > div,
+.myScrollbarV > div {
+	position:absolute;
+	z-index:100;
+
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	box-sizing:border-box;
+	
+	border-width:3px;
+	-webkit-border-image:url(/images/scrollbar.png) 6 6 6 6;
+	-moz-border-image:url(/images/scrollbar.png) 6 6 6 6;
+	-o-border-image:url(/images/scrollbar.png) 6 6 6 6;
+	border-image:url(/images/scrollbar.png) 6 6 6 6;
+}
+/*------------- E 以上css主要是仿IOS滚动条样式  -------------*/
+</style>
+</head>
+<body>
+	<?php if ( count( $this->list ) > 0  ): ?>
+		<div style='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+			<img src="<?=$this->list[0]['thumb']?>" width='700'>
+		</div>
+	<?php endif; ?>
+	<div id="wrapper" style="height: 100%;">
+		<div class="part">
+			<div class="title">
+				<!--<h3>总计商品<em>152</em>件</h3>-->
+				<div class="clearfix"></div>
+			</div>
+			<div id="scroller" class="indexlist classify">
+				<ul id="thelist" class="thelist">
+				<?php foreach ($this->list as $row): ?>
+
+					<?php if ( intval( $row['price'] ) > 0  ): ?>
+						<li>
+							<dl>
+								<dt><a href="/goods/index?gid=<?=$row['id']?>&channel=<?=$this->jid?>"><img src="<?=$row['thumb']?>"/></dt>
+								<dd>
+									<p><?=$row['name']?></p>
+									<p>￥<?=$row['price']?> </p>
+								</dd>
+							</dl>
+						</li>
+					<?php endif; ?>
+
+
+				<?php endforeach; ?>
+				<div class="clearfix"></div>
+				</ul>
+				
+				<div id="pullUp">
+					<span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="/scripts/iscroll.js" ></script>
+<script>
+	
+	function checkLilist(list){
+	var list = list;
+	var heightLeft = 0;
+	var heightRight = 0;
+	var left,right;
+	for(var i=0;i<list.length;i++){
+		if(i%2==0){
+			left = list.eq(i);
+			heightLeft = list.eq(i).height();
+		}else{
+			heightRight = list.eq(i).height();
+			right = list.eq(i);
+			if(heightLeft > heightRight){
+				right.find('p:last').css('margin-top',heightLeft-heightRight+'px');
+			}else if(heightLeft<heightRight){
+				left.find('p:last').css('margin-top',heightRight-heightLeft+'px');
+			}
+		}
+	}
+}
+
+checkLilist($('#thelist').children('li'));
+	
+
+	var myScroll,
+	pullUpEl, pullUpOffset,
+	generatedCount = 0;
+
+	//加载更多函数
+	var page = 1;
+	function pullUpAction () {
+		setTimeout(function () {	
+			var $el, $li, i;
+			$el = $('#thelist');
+			//for 循环添加li  
+			page = page + 1;
+			$.ajax({   
+			     url:'/share/getlist/jid/<?=$this->jid?>?page=' + page+'&thumb=800',   
+			     type:'post', 
+			     dataType: "json",  
+			     async : false, //默认为true 异步   
+			     error:function(){   
+			        alert('暂无更过产品,敬请关注！\n谢谢！');   
+			     },
+			     success:function(data){
+
+			     	var res = eval( data );
+
+			     	$.each(res.data, function() {
+			     		if ( this.price > 0 )
+			     		{
+							$li = $("<li class='add_img_"+page+"'>");
+							$li.html('<dl><dt><a href="/goods/index?gid='+this.id+'&channel=<?=$this->jid?>"><img src="'+this.thumb+'"/></a></dt><dd><p>'+this.name+'</p><p>￥'+this.price+'</p></dd></dl>');
+							$el.append($li);
+						}
+    				})  
+			     }
+			 });
+			checkLilist($('#thelist').children('.add_img_'+page));
+			myScroll.refresh();		
+		}, 500);	
+	}
+
+	/*
+		     	$.each(row['data'], function() {
+        				alert(this.id);
+    				})
+	*/
+	
+	/**
+	 * 初始化iScroll控件
+	 */
+	function loaded() {
+	pullUpEl = document.getElementById('pullUp');	
+	pullUpOffset = pullUpEl.offsetHeight;
+	
+	myScroll = new iScroll('wrapper', {
+		scrollbarClass: 'myScrollbar', 
+		useTransition: false, 
+		onRefresh: function () {
+			if (pullUpEl.className.match('loading')) {
+				pullUpEl.className = '';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+			}
+		},
+		onScrollMove: function () {
+			if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+				pullUpEl.className = 'flip';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+				this.maxScrollY = this.maxScrollY;
+			} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+				pullUpEl.className = '';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+				this.maxScrollY = pullUpOffset;
+			}
+		},
+		onScrollEnd: function () {
+			if (pullUpEl.className.match('flip')) {
+				pullUpEl.className = 'loading';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';				
+				pullUpAction();	// Execute custom function (ajax call?)
+			}
+		}
+	});
+	
+	setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+}
+	
+	//初始化绑定iScroll控件 
+	document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	document.addEventListener('DOMContentLoaded', loaded, false); 
+</script>
+</html>

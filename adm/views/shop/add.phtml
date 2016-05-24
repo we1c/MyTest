@@ -1,0 +1,34 @@
+<div class="wrapper">
+    <div id="main" class="scrollbar container-fluid">
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">店铺管理</a>
+                    >
+                    <a href="">添加店铺</a>
+                </div>
+            </div>
+        </div>
+        <form method="POST" action="/shop/add" id="form">
+        <?php include(dirname(__FILE__) . '/form.phtml')?>
+        <div class="row mt10 mb50 neworder-btn">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-9">
+                <button type="button" class="btn btn-primary" id="submitBtn">确认</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+$('#submitBtn').click(function() {
+    var $name = $('#name').val();
+    if ( $.trim($name) == '') {
+        alert('请填写店铺名称');
+        return false;
+    }
+    $('#form').submit();
+})
+</script>

@@ -1,0 +1,285 @@
+
+	<div class="wrapper">
+		<div id="main" class="scrollbar container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">财务审核</a>
+						>
+						<a href="">审核单详情</a>
+					</div>
+				</div>
+			</div>
+			<div class="row mt10">
+				<div class="col-lg-2">
+					<div class="leftinfo">
+						<ul>
+							<li class="active"><div>基础信息</div></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-9 neworder-info">
+					<h4 class="tit">申请单信息</h4>
+					<hr />
+					<div class="row childpad">
+					    <label class="col-lg-1 col-md-2 control-label">单据编号</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?=$this->data['id']?>" disabled="" />
+					    </div>
+					    <label class="col-md-2 col-lg-1 control-label">结算类型</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?php if($this->data['type']==1) echo '供货商结算';elseif($this->data['type']==2) echo '退货结算';?>" disabled="" />
+					    </div>
+					</div>
+					<div class="row childpad">
+					    <label class="col-lg-1 col-md-2 control-label">供应商名称</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?=$this->data['shopName']?>" disabled="" />
+					    </div>
+					    <label class="col-md-2 col-lg-1 control-label">分组类别</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?php if($this->data['category']==1) echo '只有一个';elseif($this->data['category']==2) echo '绣花张'; elseif($this->data['category']==3) echo '悦榕阁'?>" disabled="" />
+					    </div>
+					</div>
+					<div class="row childpad">
+					    <label class="col-md-2 col-lg-1 control-label">提交时间</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?php echo date('Y-m-d',$this->data['createTime']); ?>" disabled="" />
+					    </div>
+					    <label class="col-md-2 col-lg-1 control-label">预付时间</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?=$this->data['expectTime']?>" disabled="" />
+					    </div>
+					</div>
+					<div class="row childpad">
+					    <label class="col-lg-1 col-md-2 control-label">申请人</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?=$this->data['devName']?>" disabled="" />
+					    </div>
+					    <label class="col-lg-1 col-md-2 control-label">备注</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?=$this->data['note']?>" disabled="" />
+					    </div>
+					</div>
+				</div>
+			</div>
+			<form id="form" action="/audit/change" method="POST">
+			<input name="id" type="hidden" value="<?=$this->id?>">
+			<div class="row mt10">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-9 neworder-info">
+					<h4 class="tit">订单信息</h4>
+					<hr />
+					<div class="row table-responsive">
+						<table id="table" class="table table-bordered">
+							<thead>
+								<tr>
+									<td>日期</td>
+									<td>订单编号</td>
+									<td>商品名称</td>
+									<td>SKU编码</td>
+									<td>数量</td>
+									<td>进货价格</td>
+									<td>运费结算</td>
+									<td>包装结算</td>
+									<td>证书结算</td>
+									<td>其他费用</td>
+									<td>应付金额</td>
+									<td>状态</td>
+									<td>操作</td>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ($this->list as $row ): ?>
+								<tr>
+									<td><?=$row['payTime']?></td>
+									<td><?=$row['orderCode']?></td>
+									<td><?=$row['name']?></td>
+									<td><?=$row['code']?></td>
+									<td><?=$row['number']?></td>
+									<td><?=$row['purchPrice']?></td>
+									<td><?=$row['real_freight']?></td>
+									<td><?=$row['real_pack']?></td>
+									<td><?=$row['real_certificate']?></td>
+									<td><?=$row['real_other']?></td>
+									<td><?=($row['number']*$row['purchPrice'])+$row['real_certificate']+$row['real_pack']+$row['real_mount']+$row['real_other']+$row['real_freight']?></td>
+									<td>
+									<?php if ( $row['account_status'] == 1 ) { echo "等待确认"; }
+									elseif ( $row['account_status'] == 2 ) { echo "确认完成"; }
+									elseif ( $row['account_status'] == 3 ) { echo "驳回申请"; }?>
+									</td>
+									<td>
+										<p>
+											<span class="btn btn-green"><?php if ( $row['account_status'] == 2 ) { echo "取消"; }elseif( $row['account_status'] == 1 OR  $row['account_status'] == 3 )  { echo "通过"; }?></span>
+											<span class="btn btn-org">异常</span>
+										</p>
+										<input type="hidden" name="relation['<?=$row['id']?>']" />
+									</td>
+								</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt10">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-9 neworder-info">
+					<h4 class="tit">结算信息</h4>
+					<hr />
+					<div class="row childpad">
+					    <label class="col-lg-1 col-md-2 control-label">应付小计</label>
+					    <div class="col-sm-4">
+					      	<input type="text" class="form-control" value="<?=$this->data['total']?>" disabled="" />
+					    </div>
+					    <label class="col-md-2 col-lg-1 control-label">实付金额</label>
+					    <div class="col-sm-4">
+					      	<input type="text" name="real_total" class="form-control" value="<?=$this->data['total']?>" />
+					    </div>
+					</div>
+					<div class="row childpad">
+					    <label class="col-lg-1 col-md-2 control-label">审核备注</label>
+					    <div class="col-md-10 col-lg-9">
+					      	<textarea id="audit_note" type="text" name="audit_note" class="form-control" ><?=$this->data['audit_note']?></textarea>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="row mt10 mb50 neworder-btn">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-9">
+					<a href=""><span class="btn btn-primary btn-pad fr">返回</span></a>
+					<button id="submitBtn" type="button" class="btn btn-primary btn-pad">确定</button>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+<!--	<div class="wrapper">
+		<div id="main" class="container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">推送商品管理</a>
+						>
+						<a href="">新建订单</a>
+					</div>
+				</div>
+			</div>
+			<form id="form" action="/audit/change" method="POST">
+			<div class="row tablescroll mt10">
+				<table id="table" class="table2">
+					<thead>
+						<tr>
+							<td>日期</td>
+							<td>订单编号</td>
+							<td>商品名称</td>
+							<td>货号</td>
+							<td>SKU编码</td>
+							<td>数量</td>
+							<td>进货价格</td>
+							<td>应付金额</td>
+							<td>状态</td>
+							<td>操作</td>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($this->list as $row ): ?>
+						<tr>
+						<td><?=$row['payTime']?></td>
+						<td><?=$row['orderCode']?></td>
+						<td><?=$row['name']?></td>
+						<td><?=$row['goodsNo']?></td>
+						<td><?=$row['code']?></td>
+						<td><?=$row['number']?></td>
+						<td><?=$row['purchPrice']?></td>
+						<td><?=$row['number']*$row['purchPrice']?></td>
+						<td>
+						<?php if ( $row['account_status'] == 1 ) { echo "等待确认"; }
+						elseif ( $row['account_status'] == 2 ) { echo "确认完成"; }
+						elseif ( $row['account_status'] == 3 ) { echo "驳回申请"; }?>
+						</td>
+						<td>
+							<p>
+								<span class="btn btn-green"><?php if ( $row['account_status'] == 2 ) { echo "取消"; }elseif( $row['account_status'] == 1 OR  $row['account_status'] == 3 )  { echo "通过"; }?></span>
+								<span class="btn btn-org">异常</span>
+							</p>
+							<input type="hidden" name="relation['<?=$row['id']?>']" />
+						</td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="row childpad">
+				<div class="col-lg-4 col-lg-offset-2">
+					<div class="inp-tit">驳回理由</div>
+					<div class="inp-inp">
+						<div><input name="audit_note" class="form-control" type="text" /></div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<input name="id" type="hidden" value="<?=$this->id?>">
+					<button id="submitBtn" type="button" class="btn btn-primary">确定</button>
+					<button class="btn btn-primary">返回</button>
+				</div>
+			</div>
+			</form>
+		</div>
+		
+	</div>
+	-->
+	<script>
+	$('#submitBtn').prev().attr('href',document.referrer)
+	
+	$(function(){
+		var reg = /\b(status)=(\d+)\b/;
+		var param = document.referrer.match(reg);
+		var $tr = $('#table tr');
+		if (param == null) {return}
+		if (param[0] != 'status=0' ) {
+			$('#submitBtn').hide();
+			$tr.find('td:last').hide();
+			$('#audit_note').attr('disabled',"")
+		};
+	})
+
+var $lastTd = $('#table').children('tbody').children('tr');
+for(var i=0;i<$lastTd.length;i++){
+	$lastTd.eq(i).children('td').last().click(function(e){
+		var $target = $(e.target);
+		var $hidden = $target.parent().parent().find('input');
+		if($target.html()=='通过'){
+			$hidden.val('2');
+			$target.html('取消');
+			$target.parent().parent().prev().html('确认完成');
+		}else if($target.html()=='取消'){
+			$hidden.val('1');
+			$target.html('通过');
+			$target.parent().parent().prev().html('等待确认');
+		}else if($target.html()=='异常'){
+			$hidden.val('3');
+			$target.prev().html('通过');
+			$target.parent().parent().prev().html('驳回申请');
+		}
+	})
+}
+
+$('#submitBtn').click(function(){
+	for (var i = 0; i < $lastTd.length; i++) {
+		var $thisHide = $lastTd.eq(i).find('td :last').val();
+		if ($.trim($thisHide) == '' || $.trim($thisHide) == '1') {
+			alert("有未审核订单");
+			return false;
+		};
+	};
+	if (confirm("确定要提交吗？")) {
+		$('#form').submit();
+	};
+})
+	</script>

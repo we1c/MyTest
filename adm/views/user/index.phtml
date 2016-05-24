@@ -1,0 +1,41 @@
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+
+<div class="col-md-10">
+<h4>列表</h4>
+    <form method="get">
+		<div class="input-group">
+			<input style="width:200px" type="text" name="keyword" 
+				placeholder="输入昵称" /> 
+				<button class="btn btn-primary" type="submit">搜索</button>
+			
+		</div>
+	</form>
+
+    <table class="table">
+  		<tr>
+  			<td>ID</td><td>名字</td><td>昵称</td><td>邮箱</td><td>内部用户</td><td>创建时间</td><td>操作</td>
+  		</tr>
+
+  		<?php foreach ($this->list as $row): ?>
+	  		<tr>
+	  			<td><?=$row['Id']?></td>
+	  			<td><a href="/detail/index/?uid=<?=$row['Id']?>"><?=$row['Name']?></a></td>
+	  			<td><?=$row['NickName']?></td>
+	  			<td><?=$row['Email']?></td>
+	  			<td><?php if ($row['State']==1) {
+	  				echo '是';
+	  			}else{
+	  				echo '否';
+	  			}?></td>
+	  			<td><?=$row['CreateTime']?></td>
+	  			<td>
+	  			    <a href="/user/edit/?Id=<?=$row['Id']?>">编辑</a>
+	  			    <a href="/user/resume/?Id=<?=$row['Id']?>">简历</a>
+	  			</td>
+	  		</tr>
+  		<?php endforeach; ?>
+	</table>
+	<?=$this->pagebar?>
+</div>

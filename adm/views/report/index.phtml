@@ -1,0 +1,190 @@
+	<div class="wrapper">
+		<div id="main" class="scrollbar container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">报表管理</a>
+						>
+						<a href="">日销售额报表</a>
+					</div>
+					
+				</div>
+				
+			</div>
+			<form method="GET">
+			<div class="row mt10">
+				<div class="tabhead col-sm-12">
+                    <input name="start" id="indate" class="top-search form-control" type="text" placeholder="请输入日期" value="<?=$this->start?>" readonly/>
+                    <span class="block linheit top-search"> - </span>
+                    <input name="end" id="indate2" class="top-search form-control" type="text"  placeholder="请输入日期" value="<?=$this->end?>" readonly/>
+					
+					<!-- <div class="btn-group btn-search">
+					  	<span class="btn btn-default dropdown-toggle">按店铺<i class="caret"></i></span>
+					  	<ul class="batch-menu">
+					  			<li data="">请选择</li>
+					  		<?php foreach ($this->shopList as $shop) :?>
+								<li data="<?=$shop['id']?>"><?=$shop['scode']?></li>
+							<?php endforeach;?>
+						</ul>
+						<input type="hidden" name="shop" value="<?=$this->shop;?>" />
+					</div> -->
+					<input type="text" placeholder="例：AA001"  class="form-control top-search" name="shop" value="<?=$this->shop;?>" />
+					<div class="btn-group btn-search">
+					  	<input id="channel" name="channel" type="text" placeholder="分销商"  class="form-control top-search" value="<?=$this->channel?>" disableautocomplete autocomplete="off" />
+					  	<ul class="batch-menu">
+					  		<?php foreach ($this->disList as $k=>$v) : ?>
+					  			<?php if ($k<5) : ?>
+									<li><?=$v['name']?></li>
+					  			<?php else : ?>
+					  				<li class="none"><?=$v['name']?></li>
+					  			<?php endif;?>
+							<?php endforeach;?>
+						</ul>
+					</div>
+					<button class="block btn btn-primary top-search" id="btnSubmit">搜索</button>
+					<span id="batchExport" class="top-search btn btn-primary">导出所有商品</span>
+				</div>
+			</div>
+			</form>
+			<div class="row tablescroll mt10">
+				<div class="state-table">
+					<table class="state-section">
+						<?php if ($this->list) :?>
+						<thead>
+							<tr>
+								<th colspan="20" class="state-title">报表管理</th>
+							</tr>
+							<tr>
+								<th rowspan="2">日期</th>
+								<th colspan="3">收入</th>
+								<th colspan="6">支出</th>
+								<th rowspan="2">订单量</th>
+								<th rowspan="2">商品数量</th>
+								<th rowspan="2">毛利</th>
+								<th rowspan="2">毛利率%</th>
+								<th rowspan="2">配销率%</th>
+							</tr>
+							<tr>
+								<th>平台价</th>
+								<!-- <th>统一运费</th>
+								<th>统一包装费</th>
+								<th>证书费用</th>
+								<th>价格波动</th> -->
+								<th>渠道价</th>
+								<th>销售额</th>
+								<th>商品成本</th>
+								<th>实付运费</th>
+								<th>包装费</th>
+								<th>平台费</th>
+								<th>转账费</th>
+								<th>合计</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($this->list as $key=>$value) :?>
+								<tr>
+									<td><?=$key?></td>
+									<td><?=$value['platPrice']?></td>
+									<td><?=$value['channelPrice'];?></td>
+									<td><?=$value['price'];?></td>
+									<td><?=$value['purchPrice']?></td>
+									<td><?=$value['real_freight']?></td>
+									<td><?=$value['real_pack']?></td>
+									<td><?=$value['price_platf']?></td>
+									<td><?=$value['price_transfer']?></td>
+									<td><?=$value['expenses'];?></td>
+									<td><?=$value['orderNum']?></td>
+									<td><?=$value['number']?></td>
+									<td><?=number_format($value['profit'], 2, '.', '');?></td>
+									<td><?=$value['rate']?></td>
+									<td><?=$value['distribution']?></td>
+								</tr>
+							<?php endforeach;?>
+							<tr class="total">
+								<?php foreach ($this->monthTotal as $row ) :?>
+								<td><?=$row?></td>
+								<?php endforeach;?>
+							</tr>
+						</tbody>
+						<?php else:?> 
+						<tfoot>
+							<tr>
+								<td colspan="20" class="hasNo">
+									<div class="hasNo-wrap">
+										<div class="fl"><img src="/img/hasNo.png"></div>
+										<div class="fl"><h4 class="text-left">暂无更多数据</h4><p>请选择条件进行查询</p></div>
+										<div class="clearfix"></div>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+						<?php endif;?>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--JavaScript-->
+<script type="text/javascript" src="/js/test.js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/js/test.js/jedate.min.js" ></script>
+<script>
+	//日期
+jeDate({
+	dateCell:"#indate",//isinitVal:true,
+	format:"YYYY-MM-DD",
+	isTime:false, //isClear:false,
+})
+jeDate({
+	dateCell:"#indate2",//isinitVal:true,
+	format:"YYYY-MM-DD",
+	isTime:false, //isClear:false,
+})    
+//模糊搜索
+    $('.btn-search').children('.form-control').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.btn-search').children('.form-control').next('.batch-menu').children('li').click(function(){
+        var data = $(this).attr('data')
+        $(this).parent().next().val(data);
+        $(this).parent().prev().val($(this).text())
+    })
+    $("#channel").keyup(function(){
+		var txt = $(this).val();
+		if (txt != '') {
+			$(this).next().children('li').hide();
+			$.each($(this).next().children('li'),function(){
+				if($(this).text().indexOf(txt) >= 0){
+					$(this).show();
+					$("#channel").next().show();
+				}
+			})
+		}else{
+			$(this).next().children('li').attr('style',"")
+		}
+	})
+
+	$('#batchExport').bind({
+        click:function(){
+            var $form = $(this).parent().parent().parent();
+            $form.attr('action','/report/export');
+            $form.submit();
+            $form.attr('action','');
+            return false;
+        }
+    });
+/*	$("#btnSubmit").click(function(){
+
+	})*/
+/*    $(function(){
+    	var $input = $('.btn-search input');
+    	for (var i = 0; i < $input.length; i++) {
+    		var $thisInput = $input.eq(i);
+    		var text = $thisInput.prev().children("li[data='"+$thisInput.val()+"']").text();
+    		$thisInput.prev().prev().html(text + '<i class="caret"></i>');
+    	}
+    })*/
+
+</script>		

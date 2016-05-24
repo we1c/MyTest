@@ -1,0 +1,21 @@
+<style>
+.active {background-color:#ccc}
+</style>
+<ul class="nav hidden-xs hidden-sm">
+    <li <?=$this->_controllerName == 'Dev' ?  'class="active"' : ''?> ><a href="/dev">首页</a></li>
+    <!-- <li <?=$this->_controllerName == 'Supplier' ?  'class="active"' : ''?> ><a href="/supplier/index">供应商管理</a></li>
+    <li <?=$this->_controllerName == 'Distributor' ?  'class="active"' : ''?> ><a href="/distributor/index">分销商管理</a></li>
+    <li <?=$this->_controllerName == 'Shop' ?  'class="active"' : ''?> ><a href="/shop/index">店铺管理</a></li>
+    <li <?=$this->_controllerName == 'Goods' ?  'class="active"' : ''?> ><a href="/goods/index">商家商品管理</a></li>
+    <li <?=$this->_controllerName == 'Platf' ?  'class="active"' : ''?> ><a href="/platf/index">平台商品管理</a></li>
+    <li <?=$this->_controllerName == 'Push' ?  'class="active"' : ''?> ><a href="/push/index">推送商品管理</a></li>
+    <li <?=$this->_controllerName == 'Order' ?  'class="active"' : ''?> ><a href="/order/index">订单管理</a></li>
+    <li <?=$this->_controllerName == 'Import' ?  'class="active"' : ''?> ><a href="/import/index">批量导入</a></li>
+    <li <?=$this->_controllerName == 'Admin' && ($this->_actionName == 'index' || $this->_actionName == 'add') ?  'class="active"' : ''?> ><a href="/admin/index">后台用户</a></li>
+    <li <?=$this->_controllerName == 'Developer' && $this->_actionName == 'index' ?  'class="active"' : ''?> ><a href="/developer/index">账号设置</a></li>
+    <li <?=$this->_controllerName == 'Role' ?  'class="active"' : ''?>><a href="/role/index">角色管理</a></li> -->
+    <?php foreach ( $this->mymenus as $val ){?>
+        <li <?=$this->_controllerName == ucfirst($val['con']) ?  'class="active"' : ''?> ><a href="/<?php echo $val['con'];?>/<?php echo $val['act'];?>"><?php echo $val['name'];?></a></li>
+    <?php }?>
+    <li><a href="/developer/signout">退出登录</a></li>
+</ul>

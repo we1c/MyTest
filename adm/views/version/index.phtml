@@ -1,0 +1,101 @@
+
+
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">系统管理</a>
+                        >
+                        <a href="">版本管理</a>
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->
+            <div class="tabhead col-xs-12">
+                <form action="" method='get'>
+                        <a class="top-search btn btn-primary" href='/version/add'>添加</a>
+                        <input class="form-control top-search" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="店铺名称" />
+                        <button class="block top-search btn btn-primary" type="submit">搜索</button>
+                </form>
+                <div class="setwrap top-search">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                <span class='linheit'>总数：<i class='red'><?=$this->total ?></i></span>
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable">
+                <thead>
+                    <tr>
+                        <td>版本号</td>
+                        <td>描述</td>
+                        <td>创建时间</td>
+                        <td>下载链接</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($this->list):?>
+			  		<?php foreach ($this->list as $row): ?>
+				  		<tr>
+				  			<td><?=$row['id']?></td>
+			                <td>
+			                	<?php
+			                		$str=htmlspecialchars_decode($row['descript']);
+			                		$str=str_replace('<p','<p style="overflow:hidden;width:80px;white-space:nowrap;"',$str);
+			                		echo $str;
+			                	?>
+			                </td>
+			                <td><?=$row['createTime']?></td>
+                            <td>
+                                <?php if ( $row['app_type'] == 1 ) {
+                                    echo $this->url."OnlyOne.apk";
+                                }elseif ( $row['app_type'] == 2 ){
+                                    echo $this->url."OnlyOne.ipa";
+                                }?>
+                            </td>
+				  			<td>
+				  			      <?php if($row['status'] == 0): ?>
+				  			          <a  href="/version/del/?id=<?=$row['id']?>">删除</a>
+				  			      <?php else: ?>
+				  			          <a  href="/version/enable/?id=<?=$row['id']?>">开启</a>
+				  			      <?php endif; ?>
+				  			    <a  href="/version/edit/?id=<?=$row['id']?>">编辑</a>
+				  			    <!-- <a class="deletemsg" href="/version/del/?id=<?=$row['id']?>">删除</a> -->
+				  			</td>
+				  		</tr>
+			  		<?php endforeach; ?>
+			  		<?php endif;?>
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>25</li>
+                            <li>30</li>
+                            <li>35</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>

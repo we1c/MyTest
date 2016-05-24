@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>添加供应商</title>
+</head>
+<body>
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<div class="all-elements">
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+    <div id="content" class="page-content">
+
+        <div class="content">
+			<div class="container">
+				<div class="addSuppliers">
+					<h4 class="addSuppliNav">店铺详情</h4>
+					<form class="addshop">
+    					<ul class="addSuppul">
+    						<li>
+    							<span class="suplitit">店铺名称：</span>
+    							<div class="suplidiv">
+    								<p><input type="text" name="shop[name]" class="suppliput name" placeholder="请输入店铺名称" /></p>
+    							</div>
+    						</li>
+    						<li>
+    							<span class="suplitit">地址：</span>
+    							<div class="suplidiv">
+    								<p class="addressselect">
+    									<select name="shop[province]" id="province" class="province">
+        									    <option value="">请选择省份</option>
+        									<?php foreach ($this->province as $v): ?>
+        										<option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+        									<?php endforeach; ?>
+    									</select>
+    									<select name="shop[city]" id="city" class="city">
+    										<option value="">请选择城市</option>
+    									</select>
+    									<select name="shop[area]" id="area" class="area">
+    										<option value="">请选择地区</option>
+    									</select>
+    								</p>
+    								<!--<p><input type="text" class="suppliput" placeholder="请输入详细地址" /></p>-->
+    							</div>
+    						</li>
+    						<li>
+    							<span class="suplitit">联系人：</span>
+    							<div class="suplidiv">
+    								<p><input type="text" name="shop[contact]" class="suppliput contact" placeholder="请输入联系人名称" /></p>
+    							</div>
+    						</li>
+    						<li>
+    							<span class="suplitit">电话：</span>
+    							<div class="suplidiv">
+    								<p><input type="text" name="shop[tel]" class="suppliput tel" placeholder="请输入电话" /></p>
+    							</div>
+    						</li>
+    						<li>
+    							<span class="suplitit">微信：</span>
+    							<div class="suplidiv">
+    								<p><input type="text" name="shop[weixin]" class="suppliput weixin" placeholder="请输入微信号" /></p>
+    							</div>
+    						</li>
+    						<li>
+    							<span class="suplitit">账号：</span>
+    							<div class="suplidiv">
+    								<p><input type="text" name="user[account]" class="suppliput account" placeholder="请输入账号名称" /></p>
+    							</div>
+    						</li>
+    						<li>
+    							<span class="suplitit">密码：</span>
+    							<div class="suplidiv">
+    								<p><input type="password" name="user[pwd]" class="suppliput supplipwd pwd" value="" placeholder="请输入密码" /></p>
+    							</div>
+    						</li>
+    					</ul>
+    					<input type="button" class="editsavebtn button button-turqoise" id="addshop" value="确定" />
+					</form>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

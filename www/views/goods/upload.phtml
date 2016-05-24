@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>上传商品</title>
+</head>
+
+<body>
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<div class="all-elements">
+
+    <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+
+    <div id="content" class="page-content">
+
+        <form action="/goods/upload" method="post">
+        <div class="content">
+		<!--上传商品-->
+			<div class="container">
+				<div class="decoration"></div>
+            	<h4>商品图</h4>
+                <p>上传jpg等格式</p>
+            	<!--  <div class="one-third productInfo">
+                	<a href="#"><img class="responsive-image" src="images/ads/1.jpg" alt="img"></a>
+					<span class="delprobtn"></span>
+                </div>-->
+            	
+				<div class="one-third productInfo addproduct" id="addproduct">
+                	<a href="javascript:void(0)" id="file_a"><span class="addproductbtn"></span></a>
+                	<input type="file" name="file" id="file" style="display: none;"/>
+                </div>
+            </div>
+		
+		<!--上传商品-->
+			<!--price start-->
+			<div class="container">
+				<div class="graybg pricebox">
+					<div class="addboxNav"><span class="addboxNavIco"></span><h4 class="addboxNavTit">价格设置</h4></div>
+					<div class="one-all priceInfo">
+						<span class="">市场价</span>
+						<div class="priceInfodiv"><input type="text" name="marketprice" /></div>
+					</div>
+					<div class="one-all priceInfo">
+						<span class="">售价</span>
+						<div class="priceInfodiv"><input type="text" name="price" /></div>
+					</div>
+					<div class="one-all priceInfo">
+						<span class="">底价</span>
+						<div class="priceInfodiv"><input type="text" name="baseprice" /></div>
+					</div>
+				</div>
+				<div class="graybg pricebox">
+					<div class="addboxNav"><span class="addboxNavIco"></span><h4 class="addboxNavTit">商品信息</h4></div>
+					<div class="priceInfo proInfo">
+						<span class="">名称</span>
+						<div class="priceInfodiv"><input type="text" name="name" /></div>
+					</div>
+					<div class="priceInfo proInfo proInfotag">
+						<span class="">标签</span>
+						<div class="priceInfodiv">
+							<div class="protagbox">
+							<!--  <span class="protag"><span class="protaganme">器皿</span><i class="deltags"></i></span>-->
+							</div>
+							<span class="protag addprotag overlay"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--price end-->
+			<!--推荐 start-->
+			<div class="container">
+                <div class="toggle-3 tuijian">
+                    <a href="javascript:void(0)" class="deploy-toggle-3 tuijianNav" id="tuijianStatus"><h4 class="addboxNavTit">推荐</h4><em><strong></strong></em></a>
+                    <div style="display: none;"><input type="radio" id="unrecommend" name="recommend" value="0" checked="checked"/><input type="radio" id="isrecommend" name="recommend"  value="1" /></div>
+                    <div class="toggle-content">
+                        <p>开启推荐，此商品会出现在橱窗中。</p>
+                    </div>
+                </div>
+            </div>
+			<!--推荐 end-->
+			<!--参数 start-->
+			<div class="container">
+                <!--<h4>参数设置</h4>-->
+				<div class="parameNav">
+					<h4 class="addparameNavTit">参数设置</h4>
+					<span class="addparameNavIco addparaInfobtn"></span>
+				</div>
+				<div class="addparaInfobox">
+					<!--  <div class="big-notification">
+						<h4 class="uppercase"><input type="text" class="parameTitput" value="生成时间" /></h4>
+						<a href="#" class="close-big-notification">x</a>
+						<p><input type="text" class="parameTxt" value="2015年5月" /></p>
+					</div>-->
+					
+				</div>
+            </div>
+			<!--参数 end-->
+			<!--简介 start-->
+			<div class="container">
+                <h4>简介：</h4>
+				<div class="aboutCont">
+					<textarea name="intro"></textarea>
+				</div>
+			</div>
+			
+			<!--简介 end-->
+           <div class="container">
+                <input type="submit" class="editsavebtn button button-turqoise " value="保存" />
+			</div>
+        </div>
+        </form>
+    </div>
+</div>
+<!--添加标签弹层-->
+<!-- 模态框（Modal） -->
+<div class="window-overlay">
+	<div class="window-overlaybg"></div>
+	<div class="window tagsboxdiv">
+		<div class="addtagputdiv">
+			<input type="text" class="addtagput" />
+		</div>
+		<div class="tagsbox">
+			<a href="javascript:;" class="tagshref" data-id="1">育儿</a>
+			<a href="javascript:;" class="tagshref" data-id="2">励志</a>
+			<a href="javascript:;" class="tagshref" data-id="3">健康</a>
+			<a href="javascript:;" class="tagshref " data-id="4">节日</a>
+			<a href="javascript:;" class="tagshref" data-id="5">旅游</a>
+			<a href="javascript:;" class="tagshref" data-id="6">创业</a>
+			<a href="javascript:;" class="tagshref" data-id="7">汽车</a>
+		</div>
+		<div class="tagsbtnbox">
+			<span class="tagserbtn button button-turqoise tagsubmitbtn">确定</span>
+			<span class="tagserbtn button button-dark tagresetbtn">取消</span>
+		</div>
+	</div>
+</div>
+<!--添加标签弹层-->
+<!--添加参数-->
+<div id="parali" style=" display:none;">
+<div class="big-notification">
+	<h4 class="uppercase"><input type="text" class="parameTitput" value="" placeholder="请输入参数" /></h4>
+	<a href="#" class="close-big-notification">x</a>
+	<p><input type="text" class="parameTxt" value="" placeholder="请输入参数值" /></p>
+</div>
+</div>
+</body>
+</html>

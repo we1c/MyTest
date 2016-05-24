@@ -1,0 +1,1 @@
+ALTER TABLE `push`  MODIFY COLUMN `status` COMMENT '0正常，1审核中，2锁定，3价格异常';

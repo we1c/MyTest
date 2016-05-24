@@ -1,0 +1,270 @@
+
+	<div class="wrapper">
+		<div id="main" class="scrollbar container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">详情模板管理</a>
+						>
+						<a href="">编辑模板</a>
+					</div>
+					
+				</div>
+				
+			</div>
+			<form method="post" action="/goodstemplet/save" id="form" enctype="multipart/form-data">
+            
+            	<div class="row mt10">
+				<div class="col-lg-2">
+					<div class="leftinfo">
+						<ul>
+							<li class="active"><div>模块信息</div></li>
+						</ul>
+					</div>
+				</div>
+				<ul id="modul" class="col-lg-9">
+				
+
+				<li class="neworder-info modul">
+						<h4 class="tit">模块信息</h4>
+						<hr />
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <input type="checkbox">
+								    <span>主标题</span>
+								</div>
+							</div>
+							<div class="col-sm-6 mb10">
+						      	<input type="text" class="form-control" name="main_title[]" value="<?=$templet['main_title']?>" />
+						    </div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <input type="checkbox">
+								    <span>副标题</span>
+								</div>
+							</div>
+							<div class="col-sm-6 mb10">
+						      	<input type="text" class="form-control" name="small_title[]" />
+						    </div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <input type="checkbox" onclick="changeState(this)">
+								    <input type="hidden" name="is_img[]" value="0">
+								    <span>引入图片</span>
+								</div>
+							</div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+							    	<input type="checkbox" onclick="changeState(this)">
+								    <input type="hidden" name="is_spec[]" value="0">
+								    <span>引入规格</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <input type="checkbox">
+								    <span>添加描述</span>
+								</div>
+							</div>
+							<div class="col-sm-6 mb10">
+						      	<textarea name="info[]"></textarea>
+						    </div>
+						</div>
+						
+						
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <input type="checkbox">
+								    <span>添加图片</span>
+								</div>
+							</div>
+						    <div class="col-md-10 col-lg-10">
+						    	<ul class="row detailsimg details-group">
+									<li><img class="img-thumbnail" src="/img/newimg.gif"/><input class="fileInput" onchange="addImg(this)" type="file" name="file[]" num="0" multiple="multiple" /></li>
+								</ul>
+								<ul class="dragUl row detailsimg details-group"></ul>
+						    </div>
+						</div>
+						
+						<div class="row childpad text-right modul-info">
+							<span onclick="deleteThisModul(this)" class="btn btn-default">删除</span>
+						</div>
+						<div>
+							<input type="hidden" class="sort" name="sort[]" value="1">
+						</div>
+					</li>
+					
+					<?php echo $this->html ?>
+				</ul>
+			</div>
+			<input type="hidden" id="cat_id" name="cat_id" value="<?=$this->cat_id?>">
+			<input type="hidden" id="cat_name" name="cat_name" value="">
+            </form>
+			
+			<div class="row mt10">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-9">
+					<div class="row childpad text-right modul-info">
+						<span class="btn btn-yes-1" onclick="cloneLi()">新增</span>
+						<span class="btn btn-no">保存</span>
+						<span class="btn btn-default " onclick="goback()">返回</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--JavaScript-->
+<script type="text/javascript" src="/js/test.js/jquery.dragsort-0.5.2.js" ></script>
+<script type="text/javascript">
+	
+	$('.btn-no').click(function(){		
+		$info = $('#main').find('.neworder-info');
+		for(var i=0;i<$info.length;i++){
+			var _this = $info.eq(i);
+			_this.find('.sort').val(i+1);
+			var $input = _this.find('.dragUl li input');
+			for(var j=0;j<$input.length;j++){
+				var name = $input.eq(j).attr('name');
+				if($input.eq(j).hasClass('oldimg')){
+					var oldimgid = $input.eq(j).attr('oldimgid');
+					name = 'oldimgsort['+i+'][]';
+					$input.eq(j).attr('name',name);
+					$input.eq(j).val(oldimgid+'-'+j);
+				}else{
+					name = name.replace(/imgSort\[\d*\]/,'imgSort['+(i)+']');
+					$input.eq(j).attr('name',name);
+					$input.eq(j).val(j);
+				}					
+			}
+			var $delOldinput = _this.find('.dragUl .delOldImg');
+			for (var k =0; k<$delOldinput.length; k++) {
+				$delOldinput.eq(k).attr('name','delOldImg['+i+'][]');
+			}
+			_this.find('.temp_id').attr('name','temp_id['+i+']');	
+		}
+		$('#form').submit();   
+	})
+	function changeState(v){
+		if ($(v).next().val()=='1') {
+			$(v).next().val('0');
+		}else{
+			$(v).next().val('1');
+		}
+	}
+
+	function goback(){
+		location.href='/goodstemplet/index';
+	}
+</script>
+<script>	
+	//新增模块
+	
+	var $modul = $('#modul').children('li').eq(0).clone();
+	$('#modul').children('li').eq(0).remove();
+	function cloneLi(){
+		var $nextModul = $modul.clone();
+		$('#modul').append($nextModul);
+		$nextModul.find('.dragUl').dragsort();
+		modulCheckGroup($nextModul);
+	}
+	//复选框	
+	modulCheckGroup($('#modul').children('li'));
+	function modulCheckGroup(obj){
+		obj.find('.checkbox-group').click(function(){
+	        if($(this).children('input').is(':checked')){
+	            $(this).children('input').prop('checked',false);
+	            $(this).children('input:hidden').val('0');
+	        }else {
+	            $(this).children('input').prop('checked',true);
+	            $(this).children('input:hidden').val('1');
+	        }
+	    })
+	    obj.find('.checkbox-group').children('input').click(function(e){
+	        e.stopPropagation();
+	    })
+	}
+		
+	//删除本模块
+	function deleteThisModul(obj){
+		var $li = $(obj).parent().parent();
+		if($('#modul').children('li').length>1){
+			$_confirm('确定要删除该模块吗？',function(){
+				var temp_id = $li.find('.temp_id').val();
+				if(temp_id){
+					var html = '<input type="hidden" name="deltempid[]" value="'+temp_id+'">';
+					$('#modul').append(html);
+				}
+				
+				$li.remove();
+			})
+		}else {
+			$_confirm('至少要留一个');		
+		}
+		
+	}
+
+//上传图片
+	function addImg(obj){
+		var num = parseInt($(obj).attr('num'));
+		var showBox = obj.parentNode.parentNode.parentNode.getElementsByClassName('dragUl')[0];
+		var file = obj;
+		var fileList = file.files;
+		for(var i=0;i<fileList.length;i++){
+			var reader = new FileReader();
+			reader.readAsDataURL(fileList[i]);
+			reader.index = i;
+			reader.num = num;
+			reader.onload = function(){
+				showBox.innerHTML+='<li><img class="img-thumbnail" src="'+this.result+'"/><div num="'+this.num+'" class="imgdel" index="'+this.index+'"><span class="fr btn btn-primary newimage">删除</span><span class="fl btn btn-primary" onclick="showImg(JSsiblings(this.parentNode))">查看原图</span><input type="hidden" class="imgSort" name="imgSort[][up'+this.num+']['+this.index+']" value="'+num+'" /></div></li>';
+			}
+		}
+		var li = $(obj.parentNode.parentNode.parentNode.parentNode.parentNode).index();
+		$(obj).attr('name','file['+li+'][up'+num+'][]').hide();
+		var $inp = $('<input onchange="addImg(this)" class="fileInput" type="file" name="file[]" num="'+(num+1)+'" multiple="multiple" />');
+		$(obj).parent().append($inp);
+	}
+
+//删除新上传的图片
+	$('#modul').on('click','.imgdel .newimage',function(){
+		if( confirm('你确定要删除吗？') ){
+            //获取删除图片的批次和索引
+            var num = $(this).parent().attr('num'),index = $(this).parent().attr('index');
+            //记录删除file标签的具体某个索引图片
+            $(this).parent().parent().parent().append('<input type="hidden" name="delImg[][up'+num+']['+index+']" value="'+num+'-'+index+'"/>')
+            //删除页面内的显示图片
+            $(this).parent().parent().remove();
+        }
+	})
+//删除已经保存的图片
+	$('#modul').on('click','.imgdelOld',function(evt){
+		if( confirm('你确定要删除保存的图片吗？') ){
+            var imgId = $(this).parent().attr('imgid');
+            var hash = $(this).parent().attr('hash');
+            $(this).parent().parent().parent().append('<input type="hidden" class="delOldImg" name="delOldImg[][]" value="'+hash+'" />');
+            $(this).parent().parent().remove();
+        }
+        return false;
+	})
+
+//图片排序
+	$(".dragUl").dragsort();
+	$('#modul').dragsort({dragSelectorExclude:'span, input, textarea'});
+	
+//信息切换
+	var $liList = $('.leftinfo ul li');
+	var $info = $('#main').find('.neworder-info');
+</script>
+

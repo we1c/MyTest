@@ -1,0 +1,76 @@
+<script type="text/javascript" src="../upload/js/jquery-1.10.0.min.js"></script>
+<script type="text/javascript" src="../upload/js/jquery.uploadify.min.js"></script>
+<div class="wrapper">
+		<div id="main" class="scrollbar container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">渠道商品</a>
+						>
+						<a href="">新建订单</a>
+					</div>
+					
+				</div>
+				
+			</div>
+			<div class="row mt10">
+				<div class="col-lg-2">
+					<div class="leftinfo">
+						<ul id="step">
+							<li class="active" action="orderInsert"><div>(一)导入订单</div></li>
+							<li action="orderUpdate"><div>(二)导入商品</div></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-6 neworder-info">
+					<form action="/import/dispatch" id="upload" method="post" enctype="multipart/form-data">
+						<input id="action" type="hidden" name="action">
+						<div class="row">
+							<div class="col-md-12 linheit">
+								<input type="file" id="file_upload_excel" class="update" name="fileName"/>
+							</div>
+							<input id="record" type="hidden" name="" value="" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#file_upload_excel').uploadify({
+            'multi'    : false,
+            'swf'      : '../upload/uploadify.swf',
+            'uploader' : '../upload/uploadify.php',
+            'fileSizeLimit': '5120KB',
+            'buttonText': '<span class="btn btn-yes-0">选择文件</span>',
+            'fileExt' : '*.xls; *.xlsx',
+            'queueID'  : 'excel_file_queue',
+            'onUploadSuccess' : function(file, data, response) {
+                if(data==2){
+                  $('#getvalsname1').html(file.name + '上传失败');
+                  alert("上传失败");
+                }else if(data){
+					var strs=data.split("||");
+					var action = $('#step').find('li.active').attr('action');
+					$('#action').val(action);
+					$("#record").attr('name','files['+strs[0]+']');
+					$("#record").val(file.name);
+					$.post($('#upload').attr('action'),$("#upload").serialize(),function(result){
+						console.log(result);
+					    if( result.success==1 ){
+					        alert(result.data);
+					        $('#step').find('li').eq(0).removeClass('active');
+					        $('#step').find('li').eq(1).addClass('active');
+					    }else{
+					    	alert( result.error );
+					    }
+					},'json');
+               }
+            }
+    	});
+	})
+</script>   

@@ -1,0 +1,250 @@
+
+
+
+<div class="wrapper">
+	<div id="main" class="scrollbar container-fluid">
+		<div class="row mt10">
+			<div class="col-xs-12">
+				<div class="BreadcrumbNav white">
+					<a href="">首页</a>
+					>
+					<a href="">商品属性管理</a>
+					>
+					<a href="">添加属性</a>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="row mt10">
+			<div class="col-lg-2">
+				<div class="leftinfo">
+					<ul>
+						<li class="active"><div>添加属性</div></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-lg-9 neworder-info">
+				<h4 class="tit">添加属性</h4>
+				<hr />
+<form id="form" method="post" action="/attribute/add" >
+				<input type="hidden" id="curCat" name="cat_id" value="" is_attr_pid="0">
+				<div class="row childpad mb10">
+				    <div class="col-sm-5">
+				    	<div class="inp-tit">属性名称</div>
+						<div class="inp-inp">
+							<div>
+							    <input type="text" name="attr_name" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row childpad">
+					<div class="col-sm-12">
+				    	<div class="inp-tit">所属类型</div>
+						<div class="inp-inp">
+							<div>
+								<div class="col-sm-3 classifywrap pdl0 mb10">
+							   		<div class="classifymenu" level="1">
+							   			<div class="classifysearch">
+							   				<input type="text" />
+							   				<span><img src="/img/classifysearch.png"/></span>
+							   			</div>
+							   			<ul class="classifylist">
+							   				<?php if( !empty($this->category) ):?>
+							   				<?php foreach( $this->category as $k => $cat ):?>
+							   					<li onclick="getCategory(this)" cat_id="<?=$cat['id']?>" is_attr_pid="<?=$cat['is_attr_pid']?>">
+							   						<?=$cat['name']?>
+							   					</li>
+							   				<?php endforeach;?>
+							   				<?php endif;?>
+							   			</ul>
+							   		</div>
+							   	</div>
+							   	<div class="col-sm-3 classifywrap pdl0 mb10">
+							   		<div class="none classifymenu" level="2">
+							   			<div class="classifysearch">
+							   				<input type="text" />
+							   				<span><img src="/img/classifysearch.png"/></span>
+							   			</div>
+							   			<ul class="classifylist">
+							   				
+							   			</ul>
+							   		</div>
+							   	</div>
+							   	<div class="col-sm-3 classifywrap pdl0 mb10">
+							   		<div class="none classifymenu" level="3">
+							   			<div class="classifysearch">
+							   				<input type="text" />
+							   				<span><img src="/img/classifysearch.png"/></span>
+							   			</div>
+							   			<ul class="classifylist">
+							   				
+							   			</ul>
+							   		</div>
+							   	</div>  
+							</div>
+						</div>
+					</div>
+				</div>
+<script>
+	//获取商品分类
+	function getCategory(obj){
+		var is_attr_pid = $(obj).attr('is_attr_pid');
+		var cat_id = $(obj).attr('cat_id');
+		$('#curCat').attr('is_attr_pid',is_attr_pid);
+		$('#curCat').val(cat_id);
+		$(obj).addClass('active').siblings().removeClass('active');
+		var curParent = $(obj).parent().parent();
+		var level = curParent.attr('level');
+		if( level != '3' ){
+			$.post('/attribute/getcategorybypid',{'pid':cat_id},function(result){
+				if( result.success == 1 ){
+					var category = result.data;
+					var html = '';
+					while( category.length ){
+						var curCat = category.shift();
+						html += '<li cat_id="'+curCat.id+'" is_attr_pid="'+curCat.is_attr_pid+'" onclick="getCategory(this)">'+curCat.name+'</li>'
+					}
+					//console.log(html);return false;
+					var nextAll = curParent.parent().nextAll();
+					nextAll.find('ul').html('');
+					nextAll.children().hide();
+					var nextParent = $('.classifymenu[level="'+(++level)+'"]');
+					nextParent.find('ul').html(html);
+					nextParent.show();
+				}else if( result.success == 2 ){
+					alert(result.notice);
+				}else{
+					alert(result.error);
+				}
+			},'json');
+		}
+	}
+	//商品类目搜索
+	var $classify = $('.classifymenu');
+	$.each($classify, function() {
+		$(this).find('input').keyup(function(){
+			var txt = $(this).val();
+			$(this).parent().siblings().children('li').hide();
+			$.each($(this).parent().siblings().children('li'),function(){
+				if($(this).text().indexOf(txt) >= 0){
+					$(this).show();
+				}
+			})
+		})
+	});
+	
+</script>
+				<div class="row childpad mb10">
+				    <div class="col-sm-5">
+				    	<div class="inp-tit">是否启用</div>
+						<div class="inp-inp">
+							<div class="linheit">
+							    <input type="radio" name="status" value="1" checked="checked">
+							    <span class="mr20 ml10">是</span>
+							    <input type="radio" name="status" value="0">
+							    <span class="mr20 ml10">否</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row childpad mb10">
+				    <div class="col-sm-5">
+				    	<div class="inp-tit">是否为关键属性</div>
+						<div class="inp-inp">
+							<div class="linheit">
+							    <input type="radio" name="is_key_attr" value="1" checked="checked">
+							    <span class="mr20 ml10">是</span>
+							    <input type="radio" name="is_key_attr" value="0">
+							    <span class="mr20 ml10">否</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row childpad mb10">
+				    <div class="col-sm-5">
+				    	<div class="inp-tit">是否为销售属性</div>
+						<div class="inp-inp">
+							<div class="linheit">
+							    <input type="radio" name="is_sale_attr" value="1" checked="checked">
+							    <span class="mr20 ml10">是</span>
+							    <input type="radio" name="is_sale_attr" value="0">
+							    <span class="mr20 ml10">否</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row childpad mb10">
+				    <div class="col-sm-5">
+				    	<div class="inp-tit">属性类型</div>
+						<div class="inp-inp">
+							<div class="linheit">
+							    <input type="radio" name="attr_type" value="0">
+							    <span class="mr20 ml10">唯一属性</span>
+							    <input type="radio" name="attr_type" value="1" checked="checked">
+							    <span class="mr20 ml10">单选属性</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row childpad mb10">
+				    <div class="col-sm-5">
+				    	<div class="inp-tit">录入方式</div>
+						<div class="inp-inp">
+							<div class="linheit">
+							    <input type="radio" name="input_type" value="0">
+							    <span class="mr20 ml10">手动录入</span>
+							    <input type="radio" name="input_type" value="1" checked="checked">
+							    <span class="mr20 ml10">下拉菜单选择</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row childpad mb10">
+					    <div class="col-sm-5 col-xs-9">
+					    	<div class="inp-tit">下拉可选值</div>
+							<div class="inp-inp">
+								<div id="vals">
+								    <input type="text" name="attr_value[]" class="form-control mb10">
+								</div>
+							</div>
+						</div>
+						<div id="delVal" class="fl">
+							<span id="addVal" class="btn btn-primary mb10">添加</span>
+						</div>
+				</div>
+				<div class="row childpad mb10">
+					<div class="col-xs-12 text-center">
+						<button type="reset" class="btn btn-primary">重置</button>
+						<button class="btn btn-primary" id="submit">确定</button>
+					</div>
+				</div>
+</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	//增加属性值
+	$('#addVal').click(function(){
+		$('#vals').append($('<input type="text" name="attr_value[]" class="form-control mb10">'));
+		$('#delVal').append($('<span onclick="delVal(this)" class="btn btn-primary mb10 block">删除</span>'));
+	})
+	//删除属性值
+	function delVal(obj){
+		$('#vals').children('input').eq($(obj).index()).remove();
+		$(obj).remove();
+	}
+
+	$('#submit').click(function(){
+		var curCat = $('#curCat');
+		if( curCat.attr('is_attr_pid') == '0' ){
+			alert('该分类不为属性的父类\r\n请先到类目管理修改\r\n再做尝试！');
+			return false;
+		}else{
+			$(this).submit();
+		}
+	})
+</script>

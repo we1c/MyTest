@@ -1,0 +1,76 @@
+
+    <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">版本号</label>
+		<div class="col-sm-10">
+			<div class="btn-group">
+			  <label class="checkbox">
+			 <input type="text" name="code" class="form-control" id="code" value="<?=$this->Info['versionCode']?>">
+			  </label>
+			 </div>
+		</div>
+	</div>
+	 
+	<div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">版本路径</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			     <label class="checkbox">
+                      <input type="text" name="dir" class="form-control" id="dir" value="<?=$this->Info['dir']?>">
+			     </label>    
+		     </div>
+		</div>
+	</div>
+	
+	<div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">创建时间</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			     <label class="checkbox">
+                      <input type="text" name="updateTime" class="form-control" id="updateTime" value="<?=$this->Info['createTime']?>" readonly="readonly">
+			     </label>
+		     </div>
+		</div>
+	</div>
+
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">版本描述</label>
+		<div class="col-sm-10">
+		      <script id="editor" type="text/plain" name="descript" style="width:500px;height:220px;"><?=htmlspecialchars_decode($this->Info['descript'])?></script>
+		</div>
+	 </div>
+	<script>
+    $(function(){
+    	
+//     	$('#file').change(function(){
+//         	var $this = $(this);
+//     		var fd = new FormData();
+//     	    fd.append("file", $(":file")[0].files[0]); //jQuery 方式
+//     	    //jQuery 方式发送请求
+//     	    $.ajax({
+//     	      type:"post",
+//     	      url:"/goods/upfile",
+//     	      data: fd,
+//     	      dataType:"json",
+//     	      processData: false,
+//     	      contentType: false
+//     	    }).done(function(res){
+//         	    if(res.success == 1) {
+//       	    	  var imghtml = '<img src="'+res.data.imgurl+'" style="width:100px" class="goodsimgs" alt="img"><input type="hidden" name="imgs[]" value="'+res.data.path+'"/> </div>';
+//       	    	  $this.parent().append(imghtml);
+//         	    } else {
+//             	    alert(res.error);
+//         	    }    
+//     	    });
+// 		});
+    	
+   	 //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor',{
+        	toolbars: [
+        	           ['fullscreen', 'source', 'undo', 'redo'],
+        	           ['selectall', 'cleardoc', 'removeformat']
+        	       	]
+            });
+        
+    })
+	</script>

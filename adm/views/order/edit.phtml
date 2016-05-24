@@ -1,0 +1,232 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+<div class="col-md-10 form-group">
+    <h4>编辑</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+      
+    <form method="POST" id="form">
+        <input type="hidden" name="keyword" value="<?=$this->keyword?>">
+        <input type="hidden" name="status" value="<?=$this->status?>">
+        <input type="hidden" name="dist" value="<?=$this->dist?>">
+        <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">订单信息</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+			  <label class="checkbox"> 
+                                             付款方式： <select name="payway" id="payway" class="form-control" style="width:120px;display:inline">
+                           <option value="">请选择</option>
+                           <?php if ( $this->payway ): ?>
+                               <?php foreach ( $this->payway as $v ): ?>
+                	               <option value="<?=$v['id'] ?>" <?php if ( $this->info['payw'] == $v['id'] ): ?> selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+                	           <?php endforeach; ?>
+            	           <?php endif; ?>
+            	       </select><br><br>
+                                             付款类型： <select name="paytype" id="paytype" class="form-control" style="width:120px;display:inline">
+                           <option value="">请选择</option>
+            	           <?php if ( $this->paytype ): ?>
+                               <?php foreach ( $this->paytype as $v ): ?>
+                	               <option value="<?=$v['id'] ?>" <?php if ( $this->info['payType'] == $v['id'] ): ?> selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+                	           <?php endforeach; ?>
+            	           <?php endif; ?>
+            	       </select><br><br>
+                                             收款账号： <select name="paybank" id="paybank" class="form-control" style="width:100px;display:inline">
+                           <option value="">请选择</option>
+            	           <?php if ( $this->paybank ): ?>
+                               <?php foreach ( $this->paybank as $v ): ?>
+                	               <option value="<?=$v['id'] ?>" <?php if ( $this->info['payBank'] == $v['id'] ): ?> selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+                	           <?php endforeach; ?>
+            	           <?php endif; ?>
+            	       </select><br><br>
+                                             提货方式： <select name="deliver" class="form-control" style="width:100px;display:inline">
+            	           <option value="1" <?php if ( $this->info['deliverWay'] == 1 ): ?> selected="selected"<?php endif; ?>>快递</option>
+            	           <option value="2" <?php if ( $this->info['deliverWay'] == 2 ): ?> selected="selected"<?php endif; ?>>自取</option>
+            	      </select><br><br>
+               <p> 买家备注： <input name="remark" value="<?=$this->info['remark'] ?>" class="form-control" style="width:200px;display:inline"/> </p><br>
+               <p>实付价格： <input name="realprice" value="<?=$this->info['price'] ?>" class="form-control" id="realPrice" style="width:200px;display:inline"/></p><br>
+               <p>运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费： <input name="freight"  value="<?=$this->info['freight'] ?>" class="form-control" id="freight" style="width:200px;display:inline"/></p>
+               </label>
+            </div>
+		</div>
+	 </div>
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">客户信息</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+			  <label class="checkbox">
+                                                收  货  人 ： <input name="consignee" value="<?=$this->info['uname'] ?>" class="form-control" id="consignee" style="width:200px;display:inline"/><br><br>
+                                                手  机  号 ：  <input name="phone" class="form-control" id="phone"  value="<?=$this->info['tel'] ?>" style="width:200px;display:inline"/><br><br>
+                                                详细地址： <select name="province" class="form-control" id="province" style="width:120px;display:inline">
+            	           <option value="">省</option>
+            	           <?php foreach ( $this->province as $v ): ?>
+            	               <option value="<?=$v['id'] ?>" <?php if ( $this->info['province'] == $v['id'] ): ?>selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+            	       </select>
+            	       <select name="city" class="form-control" id="city" style="width:120px;display:inline">
+        	               <option value="">市</option>
+            	           <?php foreach ( $this->city as $v ): ?>
+            	               <option value="<?=$v['id'] ?>" <?php if ( $this->info['city'] == $v['id'] ): ?>selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+            	       </select>
+            	       <select name="area" class="form-control" id="area" style="width:120px;display:inline">
+            	           <option value="">区/县</option>
+            	           <?php foreach ( $this->area as $v ): ?>
+            	               <option value="<?=$v['id'] ?>" <?php if ( $this->info['area'] == $v['id'] ): ?>selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+            	       </select>
+            	       <input name="address" class="form-control" value="<?=$this->info['address']?>" id="address" style="width:200px;display:inline"/>
+            	       </label>
+            </div>
+		</div>
+	 </div>
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品信息</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+            	<table class="form-group formCustom" id="goodsInfo">
+            	   <tr class="form-group">
+            	       <td style="width:200px;">商品图</td>
+            	       <td style="width:200px;">商品名称</td>
+            	       <td style="width:200px;">SKU编码</td>
+            	       <td style="width:200px;">商品货号</td>
+            	       <td style="width:200px;">平台价</td>
+            	   </tr>
+            	   <tr class="form-group">
+            	       <td style="width:200px;"><img src="<?=$this->info['goodsImg']?>" width="100px" height="100px"></td>
+            	       <td style="width:200px;"><?=$this->info['goodsName'] ?></td>
+            	       <td style="width:200px;"><?=$this->info['code'] ?></td>
+            	       <td style="width:200px;"><?=$this->info['goodsNo'] ?></td>
+            	       <td style="width:200px;"><?=$this->info['purchPrice']*$this->info['ptimes'] ?></td>
+            	   </tr>
+            	</table>
+            </div>
+		</div>
+	 </div>
+	  <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">合计</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+                 <div>
+			         <label class="checkbox">
+                                                                             商品总金额 <span style="color: red" class="gTotal"><?=$this->info['purchPrice']*$this->info['ptimes'] ?></span> 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                                                             实付 <span style="color: red" class="gMoney"><?=$this->info['price'] ?></span> 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            	     </label>
+                 </div>
+            </div>
+		</div>
+	 </div>
+ 		<div class="form-group">
+     		<input type="hidden" name="id" value="<?=$this->info['id']; ?>"/>
+        	<button type="button" class="btn btn-primary" id="submitBtn">保存编辑</button>
+        </div>
+    </form>
+</div>
+    <script>
+    $(document).on('keyup', '#realPrice', function() {
+        var $purprice = $('#purPrice').val();
+        var $realprice = $(this).val();
+        if ( !$realprice ) {
+            var $total = 0;
+        	$('.gMoney').text( 0 );
+        } else {
+            var $total = $realprice - $purprice;
+        	$('.gMoney').text( $realprice );
+        }
+        })
+    $('#submitBtn').click(function() {
+        var $realprice = $('#realPrice').val();
+        
+        if ( $.trim($realprice) == '' ) {
+            alert('请填写实付价格');
+            return false;
+        }
+        
+        $('#form').submit();
+    })
+    
+    $(document).on("change", '#province',function() {
+    	var province = $(this).val();
+        var city = $('#city');
+        var area = $('#area');
+        city.html('<option value="">请选择城市</option>');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/city',{'province':province},function(result) {
+        	var html = '';
+            if(result.success == 1) {
+               	html += '<option value="">请选择城市</option>';
+              	for(var i=0;i<result.data.length;i++){
+              	    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+              	}
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择城市</option>';
+            } else if( result.success == 2 ){
+              alert(result.notice);
+            }
+        	city.html(html);
+        },'json')
+    });
+    $(document).on("change", '#city',function() {
+    	var city = $(this).val();
+        var area = $('#area');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/area',{'city':city},function(result) {
+        	var html = '';
+            if(result.success == 1) {
+               	html += '<option value="">请选择地区</option>';
+              	for(var i=0;i<result.data.length;i++){
+              	    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+              	}
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择地区</option>';
+            } else if( result.success == 2 ){
+              alert(result.notice);
+            }
+        	area.html(html);
+        },'json')
+    });
+    $(document).on("change", '#payway',function() {
+    	var $way = $(this).val();
+        var $type = $('#paytype');
+        $type.html('<option value="">请选择</option>');
+        $.post('/order/getPayType',{'pid':$way},function(result) {
+        	var html = '';
+            if(result.success == 1) {
+               	html += '<option value="">请选择</option>';
+              	for(var i=0;i<result.data.length;i++){
+              	    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+              	}
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择</option>';
+            } else if( result.success == 2 ){
+              alert(result.notice);
+            }
+        	$type.html(html);
+        },'json')
+    });
+    $(document).on("change", '#paytype',function() {
+    	var $type = $(this).val();
+        var $bank = $('#paybank');
+        $bank.html('<option value="">请选择</option>');
+        $.post('/order/getPayBank',{'pid':$type},function(result) {
+        	var html = '';
+            if(result.success == 1) {
+               	html += '<option value="">请选择</option>';
+              	for(var i=0;i<result.data.length;i++){
+              	    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+              	}
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择</option>';
+            } else if( result.success == 2 ){
+              alert(result.notice);
+            }
+        	$bank.html(html);
+        },'json')
+    });
+    </script>
+<style>
+.form-group {margin-bottom: 20px}
+</style>

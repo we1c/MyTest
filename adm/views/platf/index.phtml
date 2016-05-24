@@ -1,0 +1,390 @@
+
+
+<!--加载框-->
+    <div id="runWrap">
+        <div class="rundiv">
+            <div class="runclose">×</div>
+            <h4>页面加载中</h4>
+            <div class="runbar">
+                <div></div>
+            </div>
+        </div>
+    </div>
+<!--加载框结束-->
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">销售管理</a>
+                        >
+                        <a href="">商品选货</a>
+                    </div>
+
+                </div>
+
+            </div>
+        <div class="row mt10">
+<!-- search -->
+            <div class="tabhead col-xs-12">
+
+<form action="" method='get' name='search' id="search">
+            <input type="hidden" name="showType" value="<?=$this->showType;?>">
+            <input type="hidden" name="showList" value="<?=$this->active;?>">
+            <span id="showType" class="btn btn-primary top-search">
+                <?php if( $this->showType == 'fall' ):?>
+                    列表形式
+                <?php else:?>
+                    瀑布流形式
+                <?php endif;?>
+            </span>
+
+
+                <span class="top-search linheit">批量推送：</span>
+                <select class="form-control top-search" name="cids" id="cids">
+                    <option value="">请选择</option>
+                    <?php foreach ( $this->dis as $v ): ?>
+                        <option value="<?=$v['id'] ?>"><?=$v['name']?></option>
+                    <?php endforeach; ?>
+                </select>
+                <input type="button" id="batchPush" class="btn btn-primary top-search" value="推送">
+                <!-- <input name="keyword" value="<?=$this->keyword?>" class="form-control top-search" type="text" placeholder="名称，编码，货号" />
+
+                <span class="block top-search btn btn-primary" id='lowSearch'>搜索</span> -->
+                <div class="btn-group btn-search">
+                    <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                    <ul class="batch-menu">
+                        <li data="1">模糊查询</li>
+                        <li data="2">按sku查询</li>
+                        <li data="3">按货号查询</li>
+                    </ul>
+                </div>
+                <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+                <div class="btn-group">
+                    <div class="input-group">
+                        <input name="keyword" value="<?=$this->keyword?>" class="form-control" type="text" placeholder="请输入关键词" />
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id='lowSearch'>搜索</button>
+                        </div>
+                    </div>
+                </div>
+<!-- high-search -->
+                <div id="highSearch" class="btn-group">
+                    <span type="button" class="btn btn-primary">高级搜索</span>
+                    <span id="batch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </span>
+                    <div class="high-search batch-menu">
+
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                               <span class="top-search linheit">审核状态：</span>
+                                    <select class="form-control top-search" name="checkResult">
+                                        <option value="">全部</option>
+                                        <option value="0" <?php if($this->checkResult == 0) echo "selected = 'selected'" ?>>未审核</option>
+                                        <option value="1" <?php if($this->checkResult == 1) echo "selected = 'selected'" ?>>审核通过</option>
+                                        <option value="2" <?php if($this->checkResult == 2) echo "selected = 'selected'" ?>>无文案通过</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="top-search linheit">平台价格：</span>
+                                <input name="minPrice" value="<?=$this->minPrice?>" class="form-control top-search" type="text" />
+                                <span class="top-search linheit">至</span>
+                                <input name="maxPrice" value="<?=$this->maxPrice?>" class="form-control top-search" type="text"/>
+                            </div>
+                        </div>
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary fr disguise">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- high-search -->
+</form>
+                <div class="setwrap  top-search">
+                    <button id="setWindow" class="btn btn-primary  top-search">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                
+
+
+
+            </div>
+            <div class="row mt10 finance-ul">
+                <div class="col-xs-12">
+                    <ul>
+                        <li class="finance-btn <?php if ($this->active == 'all') echo ' active '; ?> "><a href="?showList=all&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>全部<span><?=$this->allTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'recommend') echo ' active '; ?> "><a href="?showList=recommend&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>推荐商品<span><?=$this->recommendTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'upload') echo ' active '; ?> "><a href="?showList=upload&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>商家上传<span><?=$this->uploadTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'platf') echo ' active '; ?> "><a href="?showList=platf&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>正常销售<span><?=$this->platfTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'stop') echo ' active '; ?> "><a href="?showList=stop&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>停止销售<span><?=$this->stopTotal?></span></p></a></li>
+                        <div class="clearfix"></div>
+                    </ul> 
+                </div>
+                
+            </div>
+        </div>
+
+<!-- content-list -->
+        <div class="row tablescroll">
+
+            <?php if( $this->showType == 'list' ): ?>
+                <?php include(dirname(__FILE__).'/index_list.phtml'); ?>
+            <?php else:?>
+                <?php include(dirname(__FILE__).'/index_fall.phtml'); ?>
+            <?php endif;?>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                    <input type="tel" value="<?=$this->page?>"/>
+                    <span class='go' total='<?=$this->total?>'>GO></span>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    //模糊搜索
+    // $('#searchType').val(1);
+    $('.tabhead .btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.tabhead .btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.tabhead .btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+    //高级搜索展开按钮点击
+    $('#batch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('#batch').next('.high-search').click(function(e){
+        e.stopPropagation();
+    })
+
+    //普通搜索按钮
+    $('#lowSearch').bind({
+        click:function(){
+            $('#highSearch').children().remove();
+            $('#search').submit();
+        }
+    })
+    //页面go跳转
+    $('.go').bind({
+        click:function(){
+            var go = parseInt($(this).prev().val());
+            var total = parseInt($(this).attr('total'));
+            var $current = $(this).parent().prev().find('span');
+            var href = $current.attr('href');
+            var reg = /pages=(\d+)/;
+            var pages = href.match(reg);
+            reg = /perpage=(\d+)/;
+            var perpage = href.match(reg);
+            if( go > parseInt(pages[1]) ){
+                alert('当前一共有'+total+'条记录\n每页显示'+perpage[1]+'条\n总共有'+pages[1]+'页\n请选择合适的页码');
+            }else{
+                href = href.replace(/\bpage=\d+\b/,'page='+go);
+                window.location.href = href;
+            }
+        }
+    });
+
+    //全选
+    var checkAll = false;
+    $("#checkBox").click(function(){
+        if(!checkAll){
+            $("#table").find("tr input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $("#table").find("tr input").prop({"checked":false});
+        }
+    })
+
+    //批量推送
+    $(document).on('click','#batchPush',function(){
+        var chks = $("#form").find("input[name='goodsIds[]']");
+
+        var cids = $('#cids').val();
+        var cname = $('#cids option:selected').text();
+        //search cids status keyword
+        if (cids == '') {
+            alert('请选择分销商');
+            return false;
+        }
+    	var bl=false;
+    	for(var i=0;i<chks.length;i++)
+    	{
+    	    if(chks[i].checked)
+    	    {
+        	    bl = true;
+        	    break;
+    	    }
+    	}
+    	if(!bl) {
+        	alert('最少选择一条信息');
+        	return false;
+    	}
+    	$.post('/platf/batchPush',$('form').serialize(),function(result){
+            //console.log(result);return false;
+    	    handlePushgoodsIds( result,cname );
+        },'json')
+    })
+
+    //切换页面按钮
+    $('#showType').bind({
+        click:function(){
+            var typeObj = $(this).parent().find("[name='showType']");
+            var typeValue = typeObj.val();
+            if( typeValue == 'list' ){
+                typeObj.val('fall');
+            }else{
+                typeObj.val('list');
+            }
+            $(this).parent().submit();
+            return false;
+        }
+    })
+    //关闭等待框
+    $('#runWrap').find('.runclose').click(function(){
+        $('#runWrap').hide();
+    })
+
+    function handlePushgoodsIds( result,cname ){
+        var data = result.data;
+        var msg = '';
+        var index;
+        if( !isEmpty( data ) ){
+            for( var i in data ){
+                var flag = false;
+                if( !isEmpty( data[i] ) ){
+                    switch( i ){
+                        case 'exist':
+                            msg += '<span style="font-size:22px;">已经推送该渠道的商品:</span><br>';
+                            break;
+                        case 'sqlError':
+                            msg += '<span style="font-size:22px;">写入数据库错误的商品(建议:重新尝试):</span><br>';
+                            break;
+                        case 'notAccess':
+                            msg += '<span style="font-size:22px;">未通过审核的商品(建议:推送审核通过后,重新尝试):</span><br>';
+                            break;
+                        case 'sqlSuccess':
+                            flag = true;
+                            msg += '<span style="font-size:22px;">普通推送成功的商品:</span><br>';
+                            break;
+                        case 'apiSuccess':
+                            flag = true;
+                            msg += '<span style="font-size:22px;">对接推送成功的商品:</span><br>';
+                            break;
+                        case 'apiFailed':
+                            msg += '<span style="font-size:22px;">对接失败的商品:</span><br>';
+                            break;
+                    }
+
+                    for( var k in data[i] ){
+                        msg += data[i][k] + ' , ';
+                        if( flag ){
+                            var html = $('.cname_'+k).html();
+                            html = html.replace( /<p>无<\/p>/,'' );
+                            $('.cname_'+k).html( html+'<p>'+cname+'</p>' );
+                        }
+                    }
+
+                    index = msg.lastIndexOf( ' , ' );
+                    msg = msg.substr( 0,index );
+                    msg += '<br>';
+                }
+            }
+            $_confirm( msg );
+        }
+    }
+
+    function isEmpty( obj ){
+        for( var i in obj ){
+            return false;
+        }
+        return true;
+    }
+
+    function handlePushChannels( result,gid ){
+        var data = result.data;
+        var cname = '';
+        var msg = '';
+        var index;
+        if( !isEmpty( data ) ){
+            for( var i in data ){
+                var flag = false;
+                if( !isEmpty( data[i] ) ){
+                    switch( i ){
+                        case 'exist':
+                            msg += '<span style="font-size:22px;">商品已经推送的渠道:</span><br>';
+                            break;
+                        case 'sqlError':
+                            msg += '<span style="font-size:22px;">商品写入数据库错误的渠道(建议:重新尝试):</span><br>';
+                            break;
+                        case 'notAccess':
+                            msg += '<span style="font-size:22px;">商品未通过审核不能对接的渠道:(建议:推送审核通过后,重新尝试):</span><br>';
+                            break;
+                        case 'sqlSuccess':
+                            flag = true;
+                            msg += '<span style="font-size:22px;">普通推送成功的渠道:</span><br>';
+                            break;
+                        case 'apiSuccess':
+                            flag = true;
+                            msg += '<span style="font-size:22px;">对接推送成功的渠道:</span><br>';
+                            break;
+                        case 'apiFailed':
+                            msg += '<span style="font-size:22px;">商品对接推送失败的渠道:</span><br>';
+                            break;
+                    }
+
+                    for( var k in data[i] ){
+                        msg += data[i][k] + ' , ';
+                        if( flag ){
+                            cname += '<p>'+data[i][k]+'</p>';
+                        }
+                    }
+                    index = msg.lastIndexOf( ' , ' );
+                    msg = msg.substr( 0,index );
+                    msg += '</span><br>';
+                }
+            }
+
+            if( cname ){
+                var html = $('.cname_'+gid).html();
+                html = html.replace( /<p>无<\/p>/,'' );
+                $('.cname_'+gid).html( html+cname );
+            }
+        }
+
+        $_confirm( msg );
+    }
+
+</script>

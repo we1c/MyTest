@@ -1,0 +1,405 @@
+<div class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">请复制网址</h4>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="copy" type="button" class="btn btn-primary" data-clipboard-text=''>复制</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<span id='hideHome' data="<?=$this->home?>" style='display:none;'></span>
+
+<form id="form">
+    <table id="table" class="scrollTable">
+        <thead>
+            <tr>
+                <td>
+                <input id="checkBox" type="checkbox" />全选
+                </td>
+                <td class="none">ID</td>
+                <td>店铺评分</td>
+                <td>缩略图</td>
+                <td>商品名称</td>
+                <td class="none">淘宝专用名</td>
+                <td>商品参数</td>
+                <td>SKU编号</td>
+                <td class="none">商品货号</td>
+                <td>库存</td>
+                <td>平台价格</td>
+                <td class="none">市场参考价</td>
+                <?php if($this->active != 'platf'): ?>
+                <td>供应商</td>
+                <?php endif; ?>
+                <?php if($this->active != 'upload' && $this->active != 'stop'): ?>
+                <td>状态</td>
+                <?php endif; ?>
+                <td>分销渠道</td>
+                <?php if($this->active != 'platf'): ?>
+                <td>开发进度</td>
+                <?php endif; ?>
+                <?php if($this->active != 'upload' && $this->active != 'stop'): ?>
+                <td>审核状态</td>
+                <?php endif; ?>                
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->list as $row): ?>
+            <tr>
+                <td><input type="checkbox" name="goodsIds[]" value="<?=$row['id'] ?>" /></td>
+                <td class="none"><?=$row['id']?></td>
+                <td><?=$row['shopScore']?></td>
+                <td><img onclick='showImg(this)' src="<?=$row['thumb']?>" /></td>
+                <td><?=$row['name']?></td>
+                <td class="none"><?=$row['taobao_special']?></td>
+                <td>
+                    <?php if ( json_decode($row['attribute'],true) ): ?>
+                    <?php foreach(json_decode($row['attribute'],true) as $v): ?>
+                        <?php if( $v['value']['name'] != '0' ):?>
+                            <p>
+                                <?=$v['key']['name']?>:
+                                <span><?=$v['value']['name']?></span>
+                            </p>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                    <?php endif; ?>
+                </td>
+                <td><?=$row['code']?></td>
+                <td class="none"><?=$row['goodsNo']?></td>
+                <td><?=$row['goodsStock']?></td>
+                <td><?php if( $row['ptimes']) echo ($row['purchPrice'] * $row['ptimes']);else echo ( round($row['purchPrice'])) ?></td>
+                <td class="none"><?php if ($row['mtimes']) echo ($row['purchPrice'] * $row['mtimes']);else echo $row['purchPrice']?></td>
+                <?php if($this->active != 'platf'): ?>
+                <td><?=$row['shopName']?></td>
+                <?php endif; ?>
+                <?php if($this->active != 'upload' && $this->active != 'stop'): ?>                
+                <td class='goodsStatus_<?=$row['id']?>'>
+                    <?php
+                        switch( $row['status'] ) {
+                            case 1 : echo '上架';break;
+                            case 2 : echo '售罄';break;
+                            case 3 : echo '停售';break;
+                            case 4 : echo '其他';break;
+                            case 5 : echo '删除';break;
+                            case 6 : echo '<span style="color:red">锁定</span>';break;
+                        }
+                    ?>
+                </td>
+                <?php endif; ?>
+                <td class='cname cname_<?=$row['id']?>'>
+                    <?php if($row['cname']): ?>
+                        <?php foreach($row['cname'] as $v): ?>
+                            <p><?=$v['name']?></p>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>无</p>
+                    <?php endif;?>
+                    <!-- <input type="button" value="查看渠道">
+                    <div class="LoginBox none cnamediv">
+                        <div class="row1">
+                            已推送的渠道
+                        </div>
+                        <div class="seldiv">
+                            <?php if($row['cname']): ?>
+                                <?php foreach($row['cname'] as $v): ?>
+                                    <div class="checkbox-group fl">
+                                        <span><?=$v['name']?></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <span>无</span>
+                            <?php endif;?>
+                        </div>
+                    </div> -->
+                </td>
+                <?php if($this->active != 'platf'): ?>
+                <td class="status_<?=$row['id']?>" >
+                    <?=$row['sp_status']?>
+                </td>
+                <?php endif; ?>
+                <?php if($this->active != 'upload' && $this->active != 'stop'): ?>
+                <td>
+                    <?php
+                        switch ($row['checkResult']) {
+                            case 0: echo '';break;
+                            case 1: echo '审核通过';break;
+                            case 2: echo '无文案审核通过';break;
+                        }
+                    ?>
+                </td>
+                <?php endif; ?>            
+                <td>
+                    <div class="btn-group btn-search">
+                        <span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+                        <ul class="batch-menu">
+                            <?php if($row['status'] == 1 || $row['status'] == 6) : ?>
+                                <a href="javascript:;" class="pushGoods" data="<?=$row['id']?>"><li><img src="/img/tuisong.png">推送</li></a>
+                            <?php endif;?>
+                            <a href="/platf/edit/?id=<?=$row['id']?>"><li><img src="/img/xiangqing.png">详情</li></a>
+                            <a href="javascript:;" class="copyUrl" data="<?php echo '/showcstm/index/?1ge='.base64_encode($row['id']);?>"><li><img src="/img/fuzhi.png">复制网址</li></a>
+                        </ul>
+                    </div>
+                    <!-- <?php if($row['platform'] == 2 && $row['status'] == 1 && $row['isChannel'] == 0): ?>
+                        <?php if($row['status'] == 1 || $row['status'] == 6) : ?>
+                            <p><a href="javascript:;" data="<?=$row['id']?>" action="down" class="updateGoods">下架</a></p>
+                            <p><a href="javascript:;" class="pushGoods" data="<?=$row['id']?>">推送</a></p>
+                        <?php endif;?>
+                     
+                        <p><a href="javascript:;" data="<?=$row['id']?>" action="up" class="updateGoods">上架</a></p>
+                        <p><a href="/platf/edit/?id=<?=$row['id']?>">详情</a></p>
+                    
+                        <p><a href="javascript:;" class="copyUrl" data="<?php echo '/showcstm/index/?1ge='.base64_encode($row['id']);?>">复制网址</a></p>
+                    <?php else: ?>
+                        <p><a href="/shopmarket/edit/?id=<?=$row['id']?>">详情</a></p>
+                    <?php endif; ?>
+                    
+                        <p><a href="javascript:;" data="<?=$row['id']?>" class="delGoods">删除</a></p> -->
+                </td>
+            </tr>
+        <?php endforeach;?>
+        </tbody>        
+    </table>
+</form>
+
+
+<style>
+    .mask{margin:0;padding:0;border:none;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;position:fixed;top:0;left:0;display:none;}
+    .LoginBox{position:fixed;left:50%;top:50%;transform: translateX(-50%) translateY(-50%);-webkit-transform: translateX(-50%) translateY(-50%);  background:white;width:800px;max-width: 100%; min-height:300px;border:3px solid #444;border-radius:7px;z-index:10000;}
+    .cname { position: relative; cursor: pointer; }
+    /* .cname:hover {background: #eee;}
+    .cname:hover .cnamediv{ display: block; } */
+    .cnamediv {position:absolute;left: auto; top: 100%; right: 100%;transform: none; max-width: none;}
+    .row1{background:#f7f7f7;padding:0px 20px;line-height:50px;height:50px;font-weight:bold;color:#666;font-size:20px;}
+     .loginrow{height:77px;line-height:77px;padding:0px 30px;text-align: center; font-family:华文楷体;font-size:x-large;}
+    .close_btn{font-family:arial;font-size:30px;font-weight:700;color:#999;text-decoration:none;float:right;padding-right:4px;}
+    .inputBox{border:1px solid #c3c3c3;padding:1px 3px 6px 3px;border-radius:5px;margin-left:5px;}
+    #txtName{height:27px;width:230px;border:none;}
+    #txtPwd{height:27px;width:230px;border:none;}
+    #loginbtn{color:White;background:#4490f7;text-decoration:none;padding:10px 95px;margin-left:auto;margin-right: auto; margin-top:40px;border-radius:5px;opacity:0.8;filter:alpha(opacity=80);}
+    .warning{float:right;color:Red;text-decoration:none;font-size:20px;font-weight:bold;margin-right:20px;display:none;}
+    .seldiv { width:100%; margin:10px 0; padding: 0 15px; line-height: 30px;}
+    #LoginBox .inp-inp input[type=checkbox] {width: auto;}
+    .LoginBox .checkbox-group {width: auto; margin-right: 10px; margin-bottom: 10px; cursor: pointer; border: 1px solid #ccc; padding: 0 14px 0 10px; }
+    .LoginBox .checkbox-group.active {background: #eee}
+    .LoginBox .checkbox-group span {-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+</style>
+<form id="pushGoods" action="">
+    <div class="mask" id="mask">
+        <div id="LoginBox" class="LoginBox">
+            <div class="row1">
+                推送商品<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn">×</a>
+            </div>
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="inp-tit">选择分销商：</div>
+                    <div class="inp-inp">
+                        <div class="linheit">
+                            <div id="pushAll" class="checkbox-group fl">
+                                <span>全选</span>
+                            </div>
+                            <div id="pushReverse" class="checkbox-group fl">
+                                <span>反选</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="seldiv">
+                <input type="hidden" name="goodsId" class="goodsId">
+                    <?php foreach ( $this->dis as $v ): ?>
+                        <div class="checkbox-group fl channels">
+                            <input type="hidden" name="channels[]" value="<?=$v['id'] ?>" disabled="disabled" />
+                            <span><?=$v['name']?></span>
+                        </div>
+                    <?php endforeach; ?>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row loginrow">
+                <a href="javascript:;" id="loginbtn">确定</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="/js/test.js/zeroClipboard/clipboard.min.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+        //查看渠道
+        /*var $cnameDiv = $('tbody .cname');
+        $cnameDiv.mouseover(function(){
+            var $this = $(this).children('.cnamediv');
+            var $thisHeight = $this.height() + $this.offset().top;
+            var $parentHeight = $('.tablescroll').height() + $('.tablescroll').offset().top;
+            if($thisHeight > $parentHeight - 20){
+                $this.css({'top':'auto','bottom':'100%'});
+            }
+        })*/
+
+        //弹出推送
+        $(".pushGoods").on('click', function (e) {
+            $('.goodsId').val($(this).attr('data'));
+            $("#mask").show();
+        });
+
+        //点击全选
+        $('#pushAll').bind({
+            click:function(){
+                if( $(this).hasClass('active') ){
+                    $(this).removeClass('active');
+                    $('.channels').each(function(i){
+                        $(this).removeClass('active');
+                        $(this).find('input').attr('disabled',true);
+                    })
+                }else{
+                    $(this).addClass('active');
+                    $('.channels').each(function(i){
+                        $(this).addClass('active');
+                        $(this).find('input').attr('disabled',false);
+                    })
+                }
+            }
+        })
+
+        //点击反选
+        $('#pushReverse').bind({
+            click:function(){
+                var active = 0;
+                $('.channels').each(function(i){
+                    if( $(this).hasClass('active') ){
+                        $(this).removeClass('active');
+                        $(this).find('input').attr('disabled',true);
+                    }else{
+                        $(this).addClass('active');
+                        $(this).find('input').attr('disabled',false);
+                        active++;
+                    }
+                });
+                if( active == $('.channels').length ){
+                    $('#pushAll').addClass('active');
+                }else{
+                    $('#pushAll').removeClass('active');
+                }
+            }
+        })
+
+        //点击具体
+        $('.channels').bind({
+            click:function(){
+                if( $(this).hasClass('active') ){
+                    $(this).removeClass('active');
+                    $(this).find('input').attr('disabled',true);
+                }else{
+                    $(this).addClass('active');
+                    $(this).find('input').attr('disabled',false);
+                }
+                $('#pushAll').addClass('active');
+                $('.channels').each(function(i){
+                    if( !$(this).hasClass('active') ){
+                        $('#pushAll').removeClass('active');
+                        return false;
+                    }
+                })
+            }
+        })
+
+        $(document).on('click','#loginbtn',function() {
+             var gid = $('.goodsId').val();
+             $.post('/platf/pushGoods',$('#pushGoods').serialize(),function(result) {
+                //console.log(result);return false;
+                if ( result.success == 1 ){
+                    handlePushChannels( result,gid );
+                }else if( result.success == 0 ){
+                    alert(result.error);
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+                $("#mask").css({ display: 'none' });
+            },'json')
+        })
+
+        //关闭
+        $(".close_btn").hover(function () { $(this).css({ color: 'black' }) }, function () { $(this).css({ color: '#999' }) }).on('click', function () {
+            $("#mask").css({ display: 'none' });
+        });
+    });
+
+    $('.updateGoods').click(function(){
+            var action = $(this).attr('action');
+            var id = $(this).attr('data');
+            var _this = this;
+            $.post('/platf/updateGoods/',{'id':id,'action':action},function(result){
+                if(result.success == 1){
+                    if(action == 'down'){
+                        $(_this).attr('action','up');
+                        alert('下架成功！');
+                        $(".goodsStatus_"+id).text('停售');
+                        $(_this).text('上架');
+                    }else{
+                        $(_this).attr('action','down');
+                        alert('上架成功！');
+                        $(".goodsStatus_"+id).text('上架');
+                        $(_this).text('下架');
+                    }
+                }else if( result.success == 0 ){
+                    alert('操作失败！');
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json');
+        })
+    $(document).on('click','.delGoods',function() {
+        if ( confirm('确定要删除该商品吗？') ) {
+            var $this = $(this);
+            var id = $(this).attr('data');
+            $.post('/platf/delGoods',{'id':id},function(result) {
+                if ( result.success == 1 ) {
+                    alert('删除成功');
+                    $this.parent().parent().parent().remove();
+                } else if( result.success == 0 ){
+                    alert(result.error);
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json')
+        }
+    })
+
+var btns;
+var clipboard;
+var zclipFlag = true;   
+    $('.copyUrl').click(function(){
+        $('.modal').show();
+        var copyAdress = $('#hideHome').attr('data') + $(this).attr('data');
+        $('.modal').find('.modal-body').children('p').html(copyAdress);
+        $('#copy').attr('data-clipboard-text',copyAdress);
+        $('.modal-dialog').css('margin-top','150px');
+        if(zclipFlag){
+            btns = document.getElementById("copy");
+            clipboard = new Clipboard(btns);
+            clipboard.on('success', function(e) {
+                alert('复制成功');
+            });
+            clipboard.on('error', function(e) {
+                alert('复制失败，请手动复制');
+            });
+            zclipFlag = false;
+        }
+    })
+    $('.modal').find('.close').click(function(){
+        $('.modal').hide();
+    })
+    $('.modal').find('.btn-default').click(function(){
+        $('.modal').hide();
+    })
+
+    window.onload=function(){
+        $('#runWrap').hide();
+    }
+</script>

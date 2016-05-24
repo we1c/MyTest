@@ -1,0 +1,90 @@
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+
+    <script type="text/javascript" charset="utf-8" src="/js/lightbox.js"> </script>
+    <link href="/css/lightbox.css" rel="stylesheet">
+<style>
+tr td:first-child {text-align:right}
+.ftd {width: 150px}
+</style>
+<div class="col-md-10">
+	
+    <table class="table">
+        <?php if($this->info):?>
+	  		<tr>
+	  			<td class="ftd">图片：</td>
+	  			<td>
+                    <a href="<?=$this->info['goodsImg']?>" data-lightbox="example-set" class="tile__list">
+                        <img src="<?=$this->info['goodsImg']?>" width="80px" height="80px" class="goodsimgs">
+                    </a>
+	  			</td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">商品名：</td><td><?=$this->info['goodsName']?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">商品参数：</td><td>
+	  			  <?php if ( $this->info['attribute'] ): ?>
+    	  			  <?php foreach ( $this->info['attribute'] as $v ): ?>
+    	  			      <?=$v['key']['name'] ?>:<?=$v['value']['name'] ?><br>
+    	  			  <?php endforeach; ?>
+	  			  <?php endif; ?>
+	  			</td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">货号：</td><td><?=$this->info['goodsNo'] ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">收货人：</td><td><?=$this->info['uname'] ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">收货人电话：</td><td><?=$this->info['tel'] ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">收货地址：</td><td><?=$this->info['province'] ?><?=$this->info['city'] ?><?=$this->info['area'] ?><?=$this->info['address'] ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">用户留言：</td><td><?php if($this->info['remark']): ?><?=$this->info['remark'] ?><?php else: ?>无<?php endif; ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">下单渠道：</td><td><?php if ( $this->info['channel'] ):?><?=$this->info['channel']['name'] ?><?php endif; ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">配送方式：</td><td><?php if($this->info['deliverWay'] == 1): ?>快递<?php else: ?>自取<?php endif; ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">快递信息：</td>
+	  			<td>
+	  			  <?php if ( $this->info['express'] ):?>
+    	  			      快递公司：<?=$this->info['express']['expressName'] ?><br>
+    	  			      快递单号：<?=$this->info['express']['number']?>
+    	  	      <?php else: ?>
+    	  	                            没有快递信息!
+	  			  <?php endif; ?>
+	  		    </td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">订单编号：</td><td><?=$this->info['orderCode']?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">支付方式：</td><td><?php if($this->info['payWay'] == 1): ?>微信<?php elseif($this->info['payWay'] == 2): ?>支付宝<?php endif; ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">订单状态：</td><td><?=$this->info['payStatus'] ?></td>
+	  		</tr>
+	  		
+	  		<tr>
+	  			<td class="ftd">订单总额：</td><td><?=$this->info['orderPrice'] ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">运费：</td><td><?=$this->info['freight'] ?></td>
+	  		</tr>
+	  		
+  		<?php endif;?>
+	</table>
+	<div style="text-align:center;"><a href="/order/index/?id=<?=$row['id'] ?>&keyword=<?=$this->keyword?>&status=<?=$this->status?>&dist=<?=$this->dist?>"><input class="btn btn-primary" type="button" value="返回" ></a></div>
+</div>
+<script type="text/javascript">
+$('.gbin1-list').sortable();
+</script>

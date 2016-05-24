@@ -1,0 +1,29 @@
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+
+<div class="col-md-10">
+<h4>管理员-列表</h4>
+	<div class="input-group">
+			<a class="btn btn-primary" href='/developer/add'>添加</a>
+	</div>
+    <table class="table">
+  		<tr>
+  			<td>ID</td><td>账号</td><td>姓名</td><td>创建时间</td><!--  <td>操作</td>-->
+  		</tr>
+
+  		<?php foreach ($this->list as $row): ?>
+	  		<tr>
+	  			<td><?=$row['id']?></td>
+	  			<td><?=$row['email']?></td>
+	  			<td><?=$row['name']?></td>
+	  			<td><?=$row['ts']?></td>
+	  			<!-- <td>
+	  			    <a href="/user/getoneuser/?id=<?=$row['id']?>">查看</a>
+	  			    <a href="/user/del/?id=<?=$row['id']?>">删除</a>
+	  			</td> -->
+	  		</tr>
+  		<?php endforeach; ?>
+	</table>
+	<?=$this->pagebar?>
+</div>

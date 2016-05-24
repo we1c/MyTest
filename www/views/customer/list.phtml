@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>客户列表</title>
+
+</head>
+
+<body>
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<div class="all-elements">
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+
+    <div id="content" class="page-content">
+ 
+        <div class="content">
+			<div class="container">
+				<div class="customerlist">
+				<?php if($this->list): ?>
+				<?php foreach ($this->list as $v): ?>
+					<div class="customerInfo">
+						<div class="orderlistinfodiv">
+							<img src="<?=$v['avata'] ?>" width="80" alt="img" />
+							<ul class="orderlistinfoul">
+								<li>
+									<span class="orderIco orderuserico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['name'] ?></p>
+									</div>
+								</li>
+								<li>
+									<span class="orderIco orderchatico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['weixin'] ?></p>
+									</div>
+								</li>
+								<li>
+									<span class="orderIco ordertelrico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['tel'] ?></p>
+									</div>
+								</li>
+								<li>
+									<span class="orderIco orderadressrico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['address'] ?></p>
+									</div>
+								</li>
+								<li class="amountli">
+									<span class="orderIco orderpriceico"></span>
+									<div class="orderdivpro">
+										<span class="amountlinav">累计消费金额：</span><span class="amountprice"><?=$v['total'] ?></span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<?php endforeach; ?>
+					<?php endif; ?>
+					
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

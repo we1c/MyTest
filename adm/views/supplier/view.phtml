@@ -1,0 +1,88 @@
+<div class="wrapper">
+    <div id="main" class="scrollbar container-fluid">
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">供应商管理</a>
+                    >
+                    <a href="">查看资料</a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-lg-2">
+                <div class="leftinfo">
+                    <ul>
+                        <li class="active"><div>查看-供货商</div></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 neworder-info">
+                <h4 class="tit">供应商</h4>
+                <hr />
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">昵称：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" value="<?=$this->list['name']?>" readonly/>
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">账号：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" value="<?=$this->list['account']?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">微信号：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" value="<?=$this->list['weixin']?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">性别：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?php if($this->list['sex'] == 1) :?>男<?php else : ?>女<?php endif; ?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">状态：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?php if($this->list['status'] == 1): ?>禁用<?php else: ?>正常<?php endif; ?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">创建时间：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?php echo date('Y-m-d',$this->list['createTime']) ?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">省份：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?=$this->list['pname'] ?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">城市：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?=$this->list['cname'] ?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">地区：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?=$this->list['aname'] ?>" readonly />
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">详细地址：</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control"  value="<?=$this->list['address'] ?>" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

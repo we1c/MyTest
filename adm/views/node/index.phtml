@@ -1,0 +1,150 @@
+
+<!-- include(dirname(__FILE__) . '/../sys/dev_nav.phtml')-->
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">系统管理</a>
+                        >
+                        <a href="">节点管理</a> 
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+                <a class="top-search btn btn-primary" href='/node/add'>添加</a>
+                
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable nodeTable">
+                <!-- <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td style="width: 400px">节点名称</td>
+                        <td>控制器</td>
+                        <td>方法</td>
+                        <td>父id</td>
+                        <td>排序</td>
+                        <td>等级</td>
+                        <td>状态</td>
+                        <td>操作</td>
+                    </tr>
+                </thead> -->
+                <tbody>
+                    <?php foreach ($this->data as $key => $menu): ?>
+                        <tr class="level1" nodeId="<?=$menu['id']?>" index="<?=$key?>">
+                            <td><?=$menu['id']?></td>
+                            <td><?=$menu['name']?></td>
+                            <td><?=$menu['con']?></td>
+                            <td><?=$menu['act']?></td>
+                            <!-- <td><?=$menu['pid']?></td>
+                            <td><?=$menu['sort']?></td>
+                            <td><?=$menu['level']?></td>
+                            <td><?=$menu['status']?></td> -->
+                            <td>
+                                <a href="/node/edit?id=<?=$menu['id']?>">编辑</a>
+                                <a class="del">删除</a>
+                            </td>
+                        </tr>
+                        <tr class="none" nodeId="<?=$menu2['id']?>" pid="<?=$menu['id']?>">
+                            <td colspan="20">
+                                <table class="table">
+                                    <?php foreach ($menu['son'] as $menu2) :?>
+                                        <tr class="none level2" nodeId="<?=$menu2['id']?>" pid="<?=$menu2['pid']?>">
+                                            <td><?=$menu2['id']?></td>
+                                            <td>--/<?=$menu2['name']?></td>
+                                            <td><?=$menu2['con']?></td>
+                                            <td><?=$menu2['act']?></td>
+                                            <!-- <td><?=$menu2['pid']?></td>
+                                            <td><?=$menu2['sort']?></td>
+                                            <td><?=$menu2['level']?></td>
+                                            <td><?=$menu2['status']?></td> -->
+                                            <td>
+                                                <a href="/node/edit?id=<?=$menu2['id']?>">编辑</a>
+                                                <a class="del">删除</a>
+                                            </td>
+                                        </tr>
+                                        <?php if ($menu2['son']) :?>
+                                            <tr class="none" pid="<?=$menu2['id']?>">
+                                                <td colspan="20">
+                                                    <table class="table">
+                                                        <?php foreach ($menu2['son'] as $menu3) :?>
+                                                            <tr class="none level3" nodeId="<?=$menu3['id']?>" pid="<?=$menu3['pid']?>" gpid="<?=$menu2['pid']?>" >
+                                                                <td><?=$menu3['id']?></td>
+                                                                <td>--/--/<?=$menu3['name']?></td>
+                                                                <td><?=$menu3['con']?></td>
+                                                                <td><?=$menu3['act']?></td>
+                                                                <!-- <td><?=$menu3['pid']?></td>
+                                                                <td><?=$menu3['sort']?></td>
+                                                                <td><?=$menu3['level']?></td>
+                                                                <td><?=$menu3['status']?></td> -->
+                                                                <td>
+                                                                    <a href="/node/edit?id=<?=$menu3['id']?>">编辑</a>
+                                                                    <a class="del">删除</a>
+                                                                </td>
+                                                            </tr>
+                                                        <?php endforeach;?>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                </table>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var nodeFlag = [];
+    for (var i = 0; i < $('tbody tr.level1').length; i++) {
+        nodeFlag[i] = 0;
+    }
+    $('tbody tr.level1').click(function(){
+        var nodeId = $(this).attr('nodeId');
+        var index = $(this).attr('index');
+        if (nodeFlag[index] == 0) {
+            $("tr[pid='"+nodeId+"']").show();
+            nodeFlag[index] = 1;
+        }else{
+            $("tr[pid='"+nodeId+"']").hide();
+            //$("tr[gpid='"+nodeId+"']").hide();
+            nodeFlag[index] = 0;
+        }
+    })
+    $('tbody tr.level2').click(function(){
+        var nodeId = $(this).attr('nodeId');
+        $("tr[pid='"+nodeId+"']").toggle('none');
+    })
+
+    $('table a').click(function(e){
+        e.stopPropagation();
+    })
+
+    $('.del').click(function(){
+
+        var $thisTr = $(this).parent().parent();
+        var $id = $thisTr.attr('nodeId');
+        $.post('/node/del', {'id': $id}, function( result ) {
+            if ( result.success == 1 ) {
+                $thisTr.hide();
+                alert( result.data );
+            } else if ( result.success == 0 ) {
+                alert( result.error );
+            } else if ( result.success == 2) {
+                alert( result.notice );
+            }
+        },'json');
+    })
+</script>

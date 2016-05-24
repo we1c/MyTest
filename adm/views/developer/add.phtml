@@ -1,0 +1,23 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+
+<div class="col-md-10">
+    <h4>添加</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+    <form method="POST" action="/developer/add">
+        <?php include(dirname(__FILE__) . '/form.phtml')?>
+
+        <button type="submit" class="btn btn-primary">确认添加</button>
+    </form>
+
+
+</div>
+
+<style>
+.form-group {margin-bottom: 20px}
+</style>

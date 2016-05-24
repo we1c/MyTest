@@ -1,0 +1,175 @@
+<link href="/css/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+<div class="wrapper">
+    <div id="main" class="scrollbar container-fluid">
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">推送商品管理</a>
+                    >
+                    <a href="">编辑商品</a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-lg-2">
+                <div class="leftinfo">
+                    <ul>
+                        <li class="active"><div>基础信息</div></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 neworder-info">
+                <h4 class="tit">商品信息</h4>
+                <hr />
+                      
+                <form method="POST" action="/push/presell" enctype="multipart/form-data" id="form">
+                    <input type="hidden" name="id" value="<?=$this->goods['id'] ?>" >
+                    <input type="hidden" name="pid" value="<?=$this->goods['preId'] ?>" >
+                    <input type="hidden" name="gid" value="<?=$this->goods['gid'] ?>" >
+                    <input type="hidden" name="keyword" value="<?=$this->keyword?>">
+                    <input type="hidden" name="channel" value="<?=$this->channel?>">
+                    
+                    <div class="row childpad">
+                        <label class="col-lg-1 col-md-2 control-label text-right">商品名称</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="goodsName" value="<?=$this->goods['name'] ?>" disabled >
+                        </div>
+                    </div>
+
+                    <div class="row childpad">
+                        <label class="col-lg-1 col-md-2 control-label text-right">销售方式</label>
+                        <div class="col-sm-4">
+                            <select  class="form-control" name="sellType">
+                                <option value="一口价" <?php if ( $this->goods['sellType'] == '一口价' ) echo " selected='selected'" ?>>一口价</option>
+                                <option value="0元起拍" <?php if ( $this->goods['sellType'] == '0元起拍' ) echo " selected='selected'" ?>>0元起拍</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row childpad">
+                        <div class="btn-group" style="width:100%">
+                            <label class="col-lg-1 col-md-2 control-label text-right">开始时间</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date form_datetime" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd" style="width:30%">
+                                    <input class="form-control" size="16" type="text" value="<?=$this->goods['startDay'] ?>" readonly>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </span>
+                                </div>
+                                <input type="hidden" id="dtp_input1" value="<?=$this->goods['startDay'] ?>" name="startday" /><br/>
+
+                                <div class="input-group date form_time_st"data-date-format="hh:ii" data-link-field="dtp_input2" data-link-format="hh:ii"  style="width:30%">
+                                    <input class="form-control" size="16" type="text" value="<?=$this->goods['startTime'] ?>" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                </div>
+                                <input type="hidden" id="dtp_input2" value="<?=$this->goods['startTime'] ?>" name="starttime" /><br/>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row childpad">
+                        <div class="btn-group" style="width:100%">
+
+                            <label class="col-lg-1 col-md-2 control-label text-right">结束时间</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date form_datetime" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd"  style="width:30%">
+                                    <input class="form-control" size="16" type="text" value="<?=$this->goods['endDay'] ?>" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                </div>
+                                <input type="hidden" id="dtp_input3" value="<?=$this->goods['endDay'] ?>" name="endday" /><br/>
+
+                                <div class="input-group date form_time_ed"data-date-format="hh:ii" data-link-field="dtp_input4" data-link-format="hh:ii"  style="width:30%">
+                                    <input class="form-control" size="16" type="text" value="<?=$this->goods['endTime'] ?>" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+                                </div>
+                                <input type="hidden" id="dtp_input4" value="<?=$this->goods['endTime'] ?>" name="endtime" /><br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row childpad">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">保存添加</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap-datetimepicker.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/js/bootstrap-datetimepicker.zh-CN.js"> </script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        startDate: "2016-01-01 00:00",
+        weekStart: 1,
+        autoclose: 1,
+        startView: 2,
+        minView: 2,
+        format:'yyyy-mm-dd',
+        forceParse: 0
+    });
+    $('.form_time_st').datetimepicker({
+        language:  'zh-CN',
+        startDate: "2016-01-01 00:00",
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 4,
+        format:'hh:ii',
+        forceParse: 0
+    });
+    $('.form_time_ed').datetimepicker({
+        language:  'zh-CN',
+        startDate: "2016-01-01 00:00",
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 4,
+        format:'hh:ii',
+        forceParse: 0
+    });
+
+    $("#submitBtn").click(function(){
+        var startDay=$.trim($("#dtp_input1").val());
+        var startTime=$.trim($("#dtp_input2").val());
+        var endDay=$.trim($("#dtp_input3").val());
+        var endTime=$.trim($("#dtp_input4").val());
+        //alert(pretime);alert(starttime);alert(endtime);
+        if(startDay=='' && startTime=='' && endDay=='' && endTime==''){
+             if(!confirm('您确定要清空该 预售商品！')){
+                return false;
+             };
+        }else if(startDay!='' && startTime!='' && endDay!='' && endTime!=''){
+            if(startDay > endDay){
+                alert('开始日期 不能 大于 结束日期');
+                return false;
+            }else if(startDay == endDay){
+                if(startTime >= endTime ){
+                    alert('开始时间 不能 大于或等于 结束时间');
+                    return false;
+                }
+            }
+        }else{
+            alert('预售商品必须包括:\n 年 月 日 时 分 秒');
+            return false;
+        }
+        $('#submitBtn').submit();
+    })
+</script>

@@ -1,0 +1,71 @@
+
+
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+
+            <div class="row mt10">
+                <div class="col-xs-12 index-welcome">
+                    <div class="fl mr20"><img src="/img/avatar.png"/></div>
+                    <div class="fl index-tips">
+                        <h4><span class="mr20"><?=$this->bucket?>好，<?=$this->_developer['name']?>。</span><span>预测未来的最好方法是参与创造！</span></h4>
+                        <p>
+                            <?php if( $this->showTime == 'now' ):?>
+                                本次登录时间：<?=date('Y-m-d H:i:s',$this->loginTime);?>
+                            <?php else:?>
+                                最近一次登录：<?=date('Y-m-d H:i:s',$this->lastTime);?>
+                            <?php endif;?>
+                            <!-- 周一下午2:30 -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+<!-- search -->            
+        <!-- <div class="row mt10">
+            <div class="tabhead col-xs-12">
+                <form action="" method='get'>
+                        <a class="top-search btn btn-primary" href='/supplier/add'>添加</a>
+                        <input class="form-control top-search" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="姓名，账号" />
+                        <button class="block top-search btn btn-primary" type="submit">搜索</button>
+                </form>
+                <div class="setwrap top-search">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                <span class='linheit'>总数：<i class='red'><?=$this->total ?></i></span>
+            </div>
+        </div> -->
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable">
+                <thead>
+                    
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <!-- <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>25</li>
+                            <li>30</li>
+                            <li>35</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+<!-- page-end -->
+    </div>
+</div>

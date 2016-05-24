@@ -1,0 +1,135 @@
+<script type="text/javascript" src="/js/test.js/jedate.min.js" ></script>
+	<div class="wrapper">
+		<div id="main" class="container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">财务管理</a>
+						>
+						<a href="">财务审核</a>
+					</div>
+					
+				</div>
+				
+			</div>
+			<div class="row mt10 finance-ul">
+				<div class="col-xs-12">
+					<ul>
+						<li class="finance-btn <?php if ($this->status == 0) echo ' active '; ?>"><a href="?status=0&keyword=<?=$this->keyword?>&start=<?=$this->start?>&end=<?=$this->end?>"><p>待处理的审核<span><?=$this->total0?></span></p></a></li>
+						<li class="finance-btn <?php if ($this->status == 1) echo ' active '; ?>"><a href="?status=1&keyword=<?=$this->keyword?>&start=<?=$this->start?>&end=<?=$this->end?>"><p>我批准的审核<span><?=$this->total1?></span></p></a></li>
+						<li class="finance-btn <?php if ($this->status == 2) echo ' active '; ?>"><a href="?status=2&keyword=<?=$this->keyword?>&start=<?=$this->start?>&end=<?=$this->end?>"><p>我驳回的审核<span><?=$this->total2?></span></p></a></li>
+						<div class="clearfix"></div>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="row mt10">
+			    <div class="tabhead col-xs-12">
+	                <form action="" method='get'>
+	                	<input type="hidden" value="<?=$this->status?>" name="status">
+                        <input class="form-control top-search" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="供应商名称" />
+                        <span class="block linheit top-search">申请时间：</span>
+                        <input name="start" id="indate4" class="top-search form-control" type="text" placeholder="请输入日期" value="<?=$this->start?>" readonly/>
+                        <span class="block linheit top-search"> - </span>
+                        <input name="end" id="indate5" class="top-search form-control" type="text"  placeholder="请输入日期" value="<?=$this->end?>" readonly/>
+                        <button class="block top-search btn btn-primary" type="submit">搜索</button>
+	                </form>
+	            </div>
+			</div>
+			<div class="row tablescroll">
+				<table id="table" class="table3 scrollTable">
+					<thead>
+						<tr>
+							<td>编号</td>
+							<td>结算类型</td>
+							<td>供货商编号</td>
+							<td>申请人</td>
+							<td>提交时间</td>
+							<td>备注</td>
+							<td>应付小计</td>
+							<?php if ($this->status == 1 or $this->status == 2) :?>
+							<td>实付小计</td>
+							<td>审核时间</td>
+							<td>审核备注</td>
+							<?php endif;?>
+							<td>查看详细</td>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($this->list as $row ): ?>
+						<tr>
+							<td><?=$row['id'];?></td>
+							<td>
+								<?php if($row['type'] == 1) echo "供货商结算";
+								elseif($row['type'] == 2) echo "退货";?>
+							</td>
+							<td><?=$row['scode']?></td>
+							<td><?=$row['devName'];?></td>
+							<td><p><?=date('Y-m-d',$row['createTime'])?></p></td>
+							<td><?=$row['note'];?></td>
+							<td><?=$row['total']?></td>
+							<?php if ($this->status == 1 or $this->status == 2) :?>
+							<td><?=$row['real_total']?></td>
+							<td><?=date('Y-m-d',$row['auditTime'])?></td>
+							<td><?=$row['audit_note'];?></td>
+							<?php endif;?>
+							<td><p><a href="/audit/view?type=<?=$row['type']?>&id=<?=$row['id']?>"><span data="<?=$row['id']?>">详情</span></a></p></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+
+				<!-- page -->
+	        <div class="row center mb10">
+	            <div class="pagenav">
+	                <div id="Pagination" class="flickr">
+	                    <?=$this->pagebar;?>
+	                </div>
+	                <div class="page-count">
+	                    <div>
+	                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+	                        <ul id="pageCountSelect">
+	                            <li>-- 请选择 --</li>
+	                            <li>30</li>
+	                            <li>50</li>
+	                            <li>100</li>
+	                        </ul>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	<!-- page-end -->
+		</div>
+	</div>
+<script>
+//日期
+jeDate({
+    dateCell:"#indate4",//isinitVal:true,
+    format:"YYYY-MM-DD",
+    isTime:false, //isClear:false,
+    minDate:"1970-1-1 00:00:00"
+})
+jeDate({
+    dateCell:"#indate5",//isinitVal:true,
+    format:"YYYY-MM-DD",
+    isTime:false, //isClear:false,
+    minDate:"1970-1-1 00:00:00"
+})
+function hideOrderDetail(){
+	$('#orderDetail').prev().removeClass('active').find('.btn-orderDetails').text('+').attr('style','');
+	$('#orderDetail').remove();
+}
+$('#highSearch').children('span').click(function(){
+	if($(this).parent().hasClass('active')){
+		$(this).parent().removeClass('active');
+		$(this).parent().children('.high-search').hide();
+	}else {
+		$(this).parent().addClass('active');
+		$(this).parent().children('.high-search').show();
+	}
+})	
+
+</script>

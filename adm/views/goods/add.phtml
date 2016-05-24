@@ -1,0 +1,291 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+    <script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+<div class="col-md-10">
+    <h4>添加-商品</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+      
+<form method="POST" action="/goods/add" enctype="multipart/form-data" id="form">
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">店铺</label>
+		<div class="col-sm-10">
+			<div class="btn-group">
+			  <label class="checkbox">
+			     <select name="shopId" class="form-control" id="shopId">
+			         <option value="">请选择店铺</option>
+			         <?php foreach ($this->shop as $v): ?>
+			         <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+			         <?php endforeach; ?>
+			     </select>
+			  </label>    
+			 </div>
+		</div>
+	 </div>
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品名称</label>
+		<div class="col-sm-10">
+			<div class="btn-group">
+			  <label class="checkbox">
+			     <input type="text" class="form-control" id="goodsName" name="name" >
+			  </label>    
+			 </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">市场价格</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			     <label class="checkbox">
+                      <input type="text" class="form-control" id="goodsPrice" name="price">
+			     </label>    
+		     </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">库存</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			     <label class="checkbox">
+                      <input type="text" class="form-control" name="stock">
+			     </label>    
+		     </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">是否显示价格</label>
+		<div class="col-sm-10" style="height:50px;line-height:50px;">
+		      是:<input type="radio" name="showPrice" value="1" checked="checked">
+		      否:<input type="radio" name="showPrice" value="0">
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">类目</label>
+		<div class="col-sm-10">
+			 <div class="btn-group">
+			    <select name="category1" id="category1" class="category1 form-control" style="width:150px; display:inline">
+			    <option value="">请选择一级类目</option>
+				<?php foreach ($this->category1 as $v): ?>
+					<option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+				<?php endforeach; ?>
+    			</select>
+    			<select name="category2" id="category2" class="category2 form-control" style="width:150px; display:inline">
+    				<option value="">请选择二级类目</option>
+    				<?php if($this->category2): ?>
+    				<?php foreach ($this->category2 as $v): ?>
+    				    <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+    				<?php endforeach; ?>
+    				<?php endif; ?>
+    			</select>
+    			<select name="category3" id="category3" class="category3 form-control" style="width:150px; display:inline">
+    				<option value="">请选择三级类目</option>
+    				<?php if($this->category3): ?>
+    				<?php foreach ($this->category3 as $v): ?>
+    				    <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+    				<?php endforeach; ?>
+    				<?php endif; ?>
+    			</select>
+			 </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">参数</label>
+        <div class="col-sm-10 parData">
+            <div class="btn-block">
+                <div class="btn-group">
+                    <button class="btn btn-info addPar" type="button">添加参数</button>
+                </div>
+            </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品描述</label>
+		<div class="col-sm-10">
+                <div class="btn-group">
+			        <script id="intro" type="text/plain" name="intro" style="width:500px;height:200px;"></script>
+                </div>
+		</div>
+	 </div>
+	 
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">图片</label>
+		<div class="col-sm-10">
+			 <img src="/upload/images/uploadButton.png" id="uploadfile" style="width:100px;">
+			 <input type="file" style="display: none" id="file" name="file[]" multiple="multiple">
+			 <div id="content"></div>
+		</div>
+	 </div>
+	 <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">详情</label>
+		<div class="col-sm-10">
+		      <script id="editor" type="text/plain" name="content" style="width:500px;height:220px;"></script>
+		</div>
+	 </div>
+	
+	 <div class="form-group">
+        	<button type="button" class="btn btn-primary" id="submitBtn">保存添加</button>
+        </div>
+        
+	<script>
+        $(function(){
+        	var inputElement = document.getElementById("file");
+            inputElement.addEventListener("change", handleFiles, false);
+            function handleFiles(){
+                var fileList = this.files;
+                console.log(fileList.path);
+                var dd = document.getElementById('content');
+                for( var i = 0 ; i < fileList.length ; i++ ){
+                    var url =window.URL.createObjectURL(fileList.item(i));
+                    dd.innerHTML += "<span style='margin:5px'><img src='"+url+"' width='120px'/></span>";
+                }
+            }
+            
+        	$(document).on('click','.addPar',function() {
+            	var html = '<div class="btn-block"><div class="btn-group">';
+                html += '参数名 ：&nbsp;<input class="form-control" style="display:inline;width:160px" type="text" name="key[]">';
+                html += '</div>';
+            	html += '<div class="btn-group">';
+                html += '&nbsp;参数值 ：&nbsp;<input class="form-control" style="display:inline;width:160px" type="text" name="value[]">';
+                html += '</div></div>';
+                $(this).parent().parent().before(html);
+            });
+            
+            $('.goodsimgs').dblclick(function() {
+                $(this).next().remove();
+                $(this).remove();
+            });
+            
+        	$('#uploadfile').click(function() {
+      		  $('#file').trigger('click');
+            });
+    
+       	 //实例化编辑器
+            //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+
+        //商品描述
+            var ue_intro = UE.getEditor('intro',{
+            	toolbars: [
+        	           ['fullscreen', 'source', 'undo', 'redo'],
+        	           ['selectall', 'cleardoc', 'removeformat']
+        	       	]
+                });
+            var ue = UE.getEditor('editor',{
+            	toolbars: [
+            	           ['fullscreen', 'source', 'undo', 'redo'],
+            	           ['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc','simpleupload','justifyleft','justifyright','justifycenter','justifyjustify']
+            	       ]
+                });
+
+            $('#submitBtn').click(function() {
+                var $shopId = $('#shopId').val();
+                var $shopName = $('#goodsName').val();
+                var $goodsPrice = $('#goodsPrice').val();
+                if ( $.trim($shopId) == '') {
+                    alert('请选择店铺');
+                    return false;
+                }
+                if ( $.trim($shopName) == '' ) {
+                    alert('请填写商品名称');
+                    return false;
+                }
+                if ( $.trim($goodsPrice) == '' ) {
+                    alert('请填写商品价格');
+                    return false;
+                }
+                if(isNaN($goodsPrice)){
+             	   alert("请填写正确的价格");
+             	   return false;
+             	}
+                $('#form').submit();
+            })
+        })
+        
+        $(document).on("change", '#category1',function() {
+	var pid = $(this).val();
+	var category2 = $('#category2');
+	var category3 = $('#category3');
+	category2.html('<option value="">请选择二级类目</option>');
+	category3.html('<option value="">请选择三级类目</option>');
+	$.post('/goods/category',{'pid':pid},function(result) {
+		var html = '';
+		if(result.success == 1) {
+			html += '<option value="">请选择二级类目</option>';
+			for(var i=0;i<result.data.length;i++){
+				html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+			}
+		} else if( result.success == 0 ){
+			html += '<option value="">请选择二级类目</option>';
+		} else if( result.success == 2 ){
+			alert(result.notice);
+		}
+		category2.html(html);
+	},'json')
+});
+$(document).on("change", '#category2',function() {
+	var pid = $(this).val();
+	var category3 = $('#category3');
+	category3.html('<option value="">请选择三级类目</option>');
+	$.post('/goods/category',{'pid':pid},function(result) {
+		var html = '';
+		if(result.success == 1) {
+			html += '<option value="">请选择三级类目</option>';
+			for(var i=0;i<result.data.length;i++){
+				html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+			}
+		} else if( result.success == 0 ){
+			html += '<option value="">请选择三级类目</option>';
+		} else if( result.success == 2 ){
+			alert(result.notice);
+		}
+		category3.html(html);
+	},'json')
+});
+$(document).on("change", '#category3',function() {
+	var $this = $(this);
+	var pid = $this.val();
+	$.post('/goods/getPara',{'pid':pid},function(result) {
+		var html = '';
+		if(result.success == 1) {
+			for(var i=0;i<result.data.length;i++){
+				html += '<div class="btn-block">';
+                html += '<div class="btn-group">';
+                html += '参数名 ：&nbsp;<select name="key[]" class="form-control" style="display:inline;width:160px">';
+                html += '<option value="'+result.data[i].name+'-'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                html += '</select></div>';                
+                html += '<div class="btn-group">';
+                html += '&nbsp;参数值 ：&nbsp;<select name="value[]" class="form-control" style="display:inline;width:160px">';
+                html += '<option value="">请选择参数值</option>';
+                for( var j = 0; j < result.data[i].child.length; j++) {
+                	html += '<option value="'+result.data[i].child[j].name+'-'+result.data[i].child[j].id+'">'+result.data[i].child[j].name+'</option>';
+                }
+                html += '</select></div></div>';
+			}
+           
+            $('.addPar').parent().parent().before(html);
+		} else if( result.success == 0 ){
+			alert('该类目下没有参数，请重新选择');
+		} else if( result.success == 2 ){
+			alert( result.notice );
+		}
+	},'json')
+});
+	</script>
+</form>
+
+
+</div>
+
+<style>
+.form-group {margin-bottom: 20px}
+</style>

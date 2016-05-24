@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta content="IE=11.0000" http-equiv="X-UA-Compatible">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+	<meta name="GENERATOR" content="MSHTML 11.00.9600.17496">
+	<title>登录页面</title>
+    <link rel="stylesheet" type="text/css" href="/css/login.css"/>
+	<script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+ 	
+	<style>
+		
+	</style>
+
+</head>
+<body>
+	<div class="top_div"></div>
+	<div class="bottom_div">
+		<div id="header">
+			<div class="tou"></div>
+			<div class="initial_left_hand" id="left_hand"></div>
+			<div class="initial_right_hand" id="right_hand"></div>
+		</div>
+		<p class="erp-name">只有一个系统后台管理中心</p>
+		<form id="form" method="post">
+			<input type="hidden" class="client" name="client" value="">
+			<input type='hidden' id="isStore" name='isStore' value='0'/>
+			<P>
+				<span class="u_logo"></span>
+				<input class="ipt" type="text" id="email" name="email" placeholder="请输入用户名" value="<?=$this->email?>"> 
+		    </p>
+			<p>
+				<span class="p_logo"></span>
+				<input class="ipt" id="password" type="password" name="password" placeholder="请输入密码" value="">
+		  	</p>
+	  	</form>
+		<div class="bottom-btn">
+			<p>
+				<span class="fl">
+					<!-- <a style="color: rgb(204, 204, 204);" href="#">忘记密码?</a> -->
+				</span>
+				<span class="fr mt10">
+					<!-- <a style="color: rgb(204, 204, 204); margin-right: 10px;" href="#">注册</a>   -->
+					<span id="checkbox" class="check"></span>
+					<span class="rember">记住账号</span>
+		            <button id="submitBtn">登录</button>
+	           </span>
+	        </p>
+	    </div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		//得到焦点
+		$("#password").focus(function(){
+			$("#left_hand").animate({
+				left: "162",
+				top: " 49"
+			},{step: function(){
+				if(parseInt($("#left_hand").css("left"))>153){
+					$("#left_hand").attr("class","left_hand");
+				}
+			}}, 2000);
+			$("#right_hand").animate({
+				right: "162",
+				top: "49"
+			},{step: function(){
+				if(parseInt($("#right_hand").css("right"))> 153){
+					$("#right_hand").attr("class","right_hand");
+				}
+			}}, 2000);
+		});
+		// 失去焦点
+		$("#password").blur(function(){
+			$("#left_hand").attr("class","initial_left_hand");
+			$("#left_hand").attr("style","left:110px;top:74px;");
+			$("#right_hand").attr("class","initial_right_hand");
+			$("#right_hand").attr("style","right:110px;top:74px");
+		});
+	});
+	var flag = true;
+    $('#checkbox').click(function(){
+      if(flag){
+        $(this).css('background-image','url(/img/checkbox.jpg)');
+        $('#isStore').val('1');
+        flag = false;
+      }else{
+        $(this).css('background-image','none');
+        $('#isStore').val('0');
+        flag = true;
+      }
+    });
+
+    $('#submitBtn').bind({
+      click:function(){
+        var email=$('#email').val();
+        var password=$('#password').val();
+        if(email==''){
+          alert('请填写邮箱！');
+          return false;
+        }
+        if(password==''){
+          alert('请填写密码！');
+          return false;
+        }
+
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            $('.client').val('micro');
+        }
+
+        $('#form').submit();
+      }
+    });
+    
+    window.onload=function(){
+      var isStore=$('#email').val();
+      if(isStore){
+        $('#checkbox').trigger('click');
+      }
+    }
+</script>
+</html>

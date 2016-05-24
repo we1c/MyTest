@@ -1,0 +1,360 @@
+<div class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">请复制网址</h4>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="copy" type="button" class="btn btn-primary" data-clipboard-text=''>复制</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<span id='hideHome' data="<?=$this->home?>" style='display:none;'></span>
+
+
+<div class="row mt10">
+<!-- search -->
+                <div class="tabhead col-xs-12">            
+                    <form action="" method='get'>
+                        <input type="hidden" name="perpage" value="<?=$this->perpage?>">
+                        <input type="hidden" name="showType" value="<?=$this->showType?>">
+                        <input type="hidden" name="channel" value="<?=$this->channel?>">
+                        <span class="block top-search btn btn-primary change">切换渠道</span>
+                            <!-- <span class="top-search linheit">分销商：</span>
+                            <select class="form-control top-search" name="channel">
+                                <option value="" <?php if($this->channel==''){echo "selected='selected'";}?>>全部</option>
+                                <?php foreach( $this->dis as $v ): ?>
+                                    <option value="<?=$v['id']?>" <?php if($v['id']==$this->channel){echo "selected='selected'";}?>>
+                                        <?=$v['name']?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select> -->
+
+                            <span class="top-search linheit">排序：</span>
+                            <select class="form-control top-search" name="time">
+                                <option value="1" <?php if($this->time == 1){echo "selected='selected'";}?>>按审核时间排序</option>
+                                <option value="0" <?php if($this->time == 0){echo "selected='selected'";}?>>按预售时间排序</option>
+                            </select>
+                            
+                            <!-- <input name="keyword" value="<?=$this->keyword?>" class="form-control top-search" type="text" placeholder="名称，编码，货号" />
+                            <button class="block top-search btn btn-primary">搜索</button> -->
+                            <div class="btn-group btn-search">
+                                <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                                <ul class="batch-menu">
+                                    <li data="1">模糊查询</li>
+                                    <li data="2">按sku查询</li>
+                                    <li data="3">按货号查询</li>
+                                </ul>
+                            </div>
+                            <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+                            <div class="btn-group">
+                                <div class="input-group">
+                                    <input name="keyword" value="<?=$this->keyword?>" class="form-control" type="text" placeholder="请输入关键词" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="lowSearch">搜索</button>
+                                    </div>
+                                </div>
+                            </div>
+<!-- high-search -->
+
+                <div id="highSearch" class="btn-group">
+                    <span type="button" class="btn btn-primary">高级搜索</span>
+                    <span id="batch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </span>
+                    <div class="high-search batch-menu">
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="top-search linheit">平台价格：</span>
+                                <input name="minPrice" value="<?=$this->minPrice?>" class="form-control top-search" type="text" />
+                                <span class="top-search linheit">至</span>
+                                <input name="maxPrice" value="<?=$this->maxPrice?>" class="form-control top-search" type="text"/>
+                            </div>
+                        </div>
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary fr disguise">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+<!-- high-search -->
+                    </form>
+<!-- export -->
+                    <div class="setwrap  top-search">
+                        <button id="setWindow" class="btn btn-primary">列设置</button>
+                        <div class="set-window">
+                        
+                        </div>
+                    </div>
+                    <a href="/push/export"><button class="btn btn-primary top-search">导出所有商品</button></a>
+                    <a href="javascript:"><button class="btn btn-primary top-search" id="batchDel">批量移除</button></a>
+                    <span class='linheit'>数量：<i class='red'><?=$this->total?></i></span>
+                </div>
+            </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+<form action="" method="post" id='batchForm' >
+    <table id="table" class="scrollTable">
+        <thead>
+            <tr>
+                <td><input id="checkBox" type="checkbox" />全选</td>
+                <td>缩略图</td>
+                <td>商品名称</td>
+                <td>商品参数</td>
+                <td>SKU编号</td>
+                <td>库存</td>
+                <!-- <td>渠道价</td> -->
+                <td>所属批次</td>
+                <td width="5%">状态</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->list as $row): ?>
+            <tr>
+                <td><input type="checkbox" name="puids[]" value="<?=$row['id']?>" /></td>
+                <!-- <td><?=$row['id']?></td> -->
+                <td><img onclick='showImg(this)' src="<?=$row['thumb']?>" /></td>
+                <td><?=$row['name']?></td>
+                <td>
+                    <?php if ( json_decode($row['attribute'],true) ): ?>
+                    <?php foreach(json_decode($row['attribute'],true) as $v): ?>
+                        <p>
+                            <?=$v['key']['name']?>:
+                            <span><?=$v['value']['name']?></span>
+                        </p>
+                    <?php endforeach;?>
+                    <?php endif; ?>
+                </td>
+                <td><?=$row['code']?></td>
+                <!-- <td><?=$row['goodsNo']?></td> -->
+                <td><?=$row['goodsStock']?></td>
+                <!-- <td><?php if($row['ptimes']) echo round($row['purchPrice']*$row['ptimes']);else echo '';?></td> -->
+               <!-- <td><?php if ($row['ctimes'] && $row['ptimes']) echo (round($row['purchPrice'] * $row['ctimes'] * $row['ptimes']));else echo ''?></td>  -->
+                <td><?php if($row['batch']) echo $row['batch']; ?></td>
+                <td id='status'><?php
+                    switch ($row['status']) {
+                        case 0 : echo "上架";break;//4状态是仓库中,推送商品页面才显示
+                    }
+                    ?>
+                </td>
+                <td>
+                <div class="btn-group btn-search">
+                      <span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+                      <ul class="batch-menu">                
+                    <?php if( $this->action ):?>
+                        <?php if($row['status']==3): ?>
+                            <a href ='javascript:;'   data="<?=$row['id']?>" channel="<?=$row['channel']?>" id='upGoods'><li>上架</li></a>
+                        <?php endif ?>
+                            <a href ="/sellplan/edit?id=<?=$row['sellplanId']?>&goodsId=<?=$row['goodsId']?>&channel=<?=$row['channel']?>&pushId=<?=$row['id']?>" channel="<?=$row['channel']?>" status="<?=$row['status']?>" class="editGoods"><li>编辑</li></a>
+                            <a href ="javascript:;" pushId="<?=$row['id']?>" sellplanId="<?=$row['sellplanId']?>" channel="<?=$row['channel']?>" status="<?=$row['status']?>" goodsId="<?=$row['goodsId']?>" class="delGoods"><li>移除</li></a>
+                            <a href ="javascript:;" class="copyUrl" data="/showcstm/index/?1ge=<?=base64_encode($row['goodsId'])?>"><li复制地址></li></a>
+                        <?php endif;?>
+                        <!-- <p><a href="/push/edit/?id=<?=$row['id']?>&keyword=<?=$this->keyword?>&channel=<?=$this->channel?>"><li>详情</li></a></p> -->
+                      </ul>
+                </div>
+                </td>
+            </tr>
+        <?php endforeach;?>
+        </tbody>
+    </table>
+</form>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                    <input type="tel" value="<?=$this->page?>"/>
+                    <span class='go' total='<?=$this->total?>'>GO></span>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->  
+    </div>
+</div>
+<script src="/js/test.js/zeroClipboard/clipboard.min.js"></script>
+<script>
+    //模糊搜索
+    // $('#searchType').val(1);
+    $('.tabhead .btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.tabhead .btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.tabhead .btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+    //高级搜索展开按钮点击
+    $('#batch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('#batch').next('.high-search').click(function(e){
+        e.stopPropagation();
+    })
+
+    //普通搜索按钮
+    $('#lowSearch').bind({
+        click:function(){
+            $('#highSearch').children().remove();
+            $('#search').submit();
+        }
+    })
+    $(document).ready(function(){
+        $('.change').bind({
+            click:function(){
+                var $form = $(this).parent();
+                $form.children().remove();
+                $form.append("<input type='hidden' name='showType' value='choice' />");
+                $form.submit();
+            }
+        })
+
+        $('.go').bind({
+            click:function(){
+                var go = parseInt($(this).prev().val());
+                var total = parseInt($(this).attr('total'));
+                var $current = $(this).parent().prev().find('span');
+                var href = $current.attr('href');
+                var reg = /pages=(\d+)/;
+                var pages = href.match(reg);
+                reg = /perpage=(\d+)/;
+                var perpage = href.match(reg);
+                if( go > parseInt(pages[1]) ){
+                    alert('当前一共有'+total+'条记录\n每页显示'+perpage[1]+'条\n总共有'+pages[1]+'页\n请选择合适的页码');
+                }else{
+                    href = href.replace(/\bpage=\d+\b/,'page='+go);
+                    window.location.href = href;
+                }
+            }
+        });
+
+        $('#batchDel').click(function(){
+            var $input = $('#batchForm').find("tr input[name='puids[]']");
+            var flag = false;
+            for(var i=0,len=$input.length;i<len;i++){
+                if( $input[i].checked ){
+                    flag = true;
+                    break;
+                }
+            }
+            if( !flag ){
+                alert('请选择至少一个商品！');
+                return false;
+            }
+            $.post('/push/batchDel',$('form').serialize(),function(result){
+                if( result.success == 1 ){
+                    $('#batchForm').find("tr input:checked").each(function(i){
+                        $(this).parent().parent().remove();
+                    })
+                    alert(result.data);
+                }else{
+                    //console.log(result.error.error);
+                    var success = result.error.success;
+                    var error = result.error.error;
+                    if( success ){
+                        for(var i=0,len=success.length;i<len;i++ ){
+                            var obj = $('#batchForm').find("tr input[value='"+success[i]+"']");
+                            obj.parent().parent().remove();
+                        }
+                    }
+
+                    var msg = "批量删除商品失败\n";
+                    if( success ){
+                        msg += "ID为("+success.join(' , ')+")的商品删除成功\n";
+                    }
+                    if( error.unlock ){
+                        msg += "ID为("+error.unlock.join(' , ')+")的商品目前有预售计划\n";
+                    }
+                    if( error.lock ){
+                        msg += "ID为("+error.lock.join(' , ')+")的商品目前已被锁定\n";
+                    }
+                    if( error.fail ){
+                        msg += "ID为("+error.fail.join(' , ')+")的商品操作失败，可直接重试\n";
+                    }
+                    msg += "请将商品的预售计划删除或解锁商品后，再次重试！";
+                    alert(msg);
+                }
+            },'json');
+
+        })  
+        // 移除计划商品
+        $('.delGoods').click(function(){
+            var sellplanId=$(this).attr('sellplanId');
+            var goodsId=$(this).attr('goodsId');
+            var channel=$(this).attr('channel');
+            var pushId=$(this).attr('pushId');
+            var _this=this;
+                if(confirm('你确定要移除吗')){
+                    $.post('/sellplan/delSellPlan',{'pushId':pushId,'sellplanId':sellplanId,'channel':channel,'goodsId':goodsId},function(result){
+                        if( result.data){
+                            $(_this).parents('tr').remove();
+                        }else{
+                            alert( result.error );
+                            return;
+                        }
+                    },'json');
+                }
+        })
+    })
+    //全选
+    var checkAll = false;
+    $("#checkBox").click(function(){
+        if(!checkAll){
+            $("#table").find("tr input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $("#table").find("tr input").prop({"checked":false});
+        }
+    })
+
+    var btns;
+    var clipboard;
+    var zclipFlag = true;   
+    $('.copyUrl').click(function(){
+        $('.modal').show();
+        var copyAdress = $('#hideHome').attr('data') + $(this).attr('data');
+        $('.modal').find('.modal-body').children('p').html(copyAdress);
+        $('#copy').attr('data-clipboard-text',copyAdress);
+        $('.modal-dialog').css('margin-top','150px');
+        if(zclipFlag){
+            btns = document.getElementById("copy");
+            clipboard = new Clipboard(btns);
+            clipboard.on('success', function(e) {
+                alert('复制成功');
+            });
+            clipboard.on('error', function(e) {
+                alert('复制失败，请手动复制');
+            });
+            zclipFlag = false;
+        }
+    })
+    $('.modal').find('.close').click(function(){
+        $('.modal').hide();
+    })
+    $('.modal').find('.btn-default').click(function(){
+        $('.modal').hide();
+    })
+</script>

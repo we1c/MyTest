@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>订单列表</title>
+
+</head>
+
+<body>
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<div class="all-elements">
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+
+    <div id="content" class="page-content">
+
+        <div class="content">
+			<div class="container">
+			<?php if($this->list): ?>
+			<?php foreach ($this->list as $v): ?>
+				<div class="productlist orderlist">
+					<div class="column productlistinfo orderlistinfo">
+						<div class="orderlistinfoTop">
+							<span class="orderpirce"><?=$v['price'] ?>元</span>
+							<h4><?=$v['goodsName'] ?></h4>
+							
+						</div>
+						<div class="orderlistinfodiv">
+							<img src="<?=$v['img'] ?>" width="80" alt="img" />
+							<ul class="orderlistinfoul">
+								<li>
+									<span class="orderIco orderuserico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['userName'] ?></p>
+									</div>
+								</li>
+								<li>
+									<span class="orderIco orderchatico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['weixin'] ?></p>
+									</div>
+								</li>
+								<li>
+									<span class="orderIco ordertelrico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['tel'] ?></p>
+									</div>
+								</li>
+								<li>
+									<span class="orderIco orderadressrico"></span>
+									<div class="orderdivpro">
+										<p><?=$v['address'] ?></p>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<?php if($v['status'] == 0 && $v['pay'] == 1): ?>
+						  <div class="orderstatus"><span><a href="javascript:;" class="sendgoods" data-id="<?=$v['id'] ?>" >未发货</a></span></div>
+						<?php elseif ($v['pay'] == 0 && $v['status'] == 0): ?>
+						  <div class="orderstatus"><span>等待付款</span></div>
+						<?php elseif($v['status'] == 1 && $v['pay'] == 1) : ?>
+						  <div class="orderstatus"><span><a href="javascript:;" class="sendfinish" data-id="<?=$v['id'] ?>">发货中</a></span></div>
+						<?php elseif($v['status'] == 2 && $v['pay'] == 1) : ?>
+						  <div class="orderstatus"><span>完成</span></div>
+						<?php endif; ?>
+					</div>
+				</div>
+				<?php endforeach; ?>
+				<?php endif; ?>			
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

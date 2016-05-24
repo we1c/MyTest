@@ -1,0 +1,414 @@
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+        <!-- BreadNav -->
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">采购管理</a>
+                    >
+                    <a href="">类目管理</a> 
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+            <div class="col-lg-12" id="addClassify">
+                <span class="btn btn-primary mb10">添加根分类</span>
+                <span class="btn btn-primary mb10" id="add_child" level="">添加子分类</span>
+                <span class="btn btn-primary mb10" attr="" id="del">删除</span>
+            </div>
+        </div>
+
+        <div class="row mt10">
+            <div class="col-lg-2">
+                <div id="nestable-menu"><span class="btn btn-primary mb10">全部打开</span></div>
+
+<!-- 
+<li id="node024" noChildren="true"><a href="#">不能有子集</a></li>
+<li id="node025" noDrag="true"><a href="#">不能拖动</a></li>
+-->
+<?php if( $this->tree ):?>
+    <ul id="dhtmlgoodies_tree1" class="dhtmlgoodies_tree">
+        <?php foreach( $this->tree as $k => $v ):?>
+            <li id="node<?=$v['id']?>" noDrag="true" noSiblings="true" data-id="<?=$v['id']?>" data-level="<?=$v['level']?>">
+                
+                <a href="#">
+                    <?=$v['name']?>
+                    <?php if( !empty($v['child']) ):?>
+                        (<span><?=count($v['child']);?></span>)
+                    <?php else:?>
+                        (<span>0</span>)
+                    <?php endif;?>
+                </a>
+
+                <?php if( !empty( $v['child'] ) ):?>
+                    <ul>
+                        <?php foreach( $v['child'] as $kk => $vv ):?>
+                            <li id="node<?=$vv['id']?>" data-id="<?=$vv['id']?>" data-level="<?=$vv['level']?>">
+                                
+                                <a href="#">
+                                    <?=$vv['name']?>
+                                    <?php if( !empty($vv['child']) ):?>
+                                        (<span><?=count($vv['child']);?></span>)
+                                    <?php else:?>
+                                        (<span>0</span>)
+                                    <?php endif;?>
+                                </a>
+                                
+                                <?php if( !empty( $vv['child'] ) ):?>
+                                    <ul>
+                                        <?php foreach( $vv['child'] as $kkk => $vvv ):?>
+                                            <li id="node<?=$vvv['id']?>" data-id="<?=$vvv['id']?>" data-level="<?=$vvv['level']?>" >
+                                
+                                                <a href="#">
+                                                    <?=$vvv['name']?>
+                                                    <?php if( !empty($vvv['child']) ):?>
+                                                        (<span><?=count($vvv['child']);?></span>)
+                                                    <?php else:?>
+                                                        
+                                                    <?php endif;?>
+                                                </a>
+                                                
+                                                <?php if( !empty( $vvv['child'] ) ):?>
+                                                    
+                                                <?php endif;?>
+                                            </li>
+                                        <?php endforeach;?>
+                                    </ul>
+                                <?php endif;?>
+                            </li>
+                        <?php endforeach;?>
+                    </ul>
+                <?php endif;?>
+            </li>
+        <?php endforeach;?>
+    </ul>
+<?php endif;?>          
+            </div>
+
+            <form id='catInfo'>
+                <div class="col-lg-2">
+                    <div class="leftinfo none">
+                        <ul class="info_tab" id="" is_attr_pid="" add_cat="">
+                            <li class="active"><div>基础信息</div></li>
+                            <li ><div>属性信息</div></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-7 neworder-info none">
+                    <div class="row mb10 mt10">
+                        <span class="fl linheit mr20">类目名称</span>
+                        <input name="name" type="text" class="form-control fl mr20 name"/>
+                    </div>
+                    <div class="row mb10">
+                        <span class="fl linheit mr20">是否有子类目</span>
+                        <select name="is_parent" class="form-control fl is_parent">
+                            <option value="3">请选择</option>
+                            <option value="0">否</option>
+                            <option value="1">是</option>
+                        </select>
+                    </div>
+                    <div class="row mb10">
+                        <span class="fl linheit mr20">是否含有属性</span>
+                        <select name="is_attr_pid" class="form-control fl is_attr_pid">
+                            <option value="3">请选择</option>
+                            <option value="0">否</option>
+                            <option value="1">有</option>
+                        </select>
+                    </div>
+                    <div class="row mb10">
+                        <input type="hidden" class="currentCatId" name="id" value="">
+                        <input type="hidden" class="level" name="level" value="">
+                        <input type="hidden" class="action" name="action" value="" >
+                        <button class="btn btn-primary fr mr20" id="save">保存</button>
+                        
+                    </div>
+                </div>
+            </form>
+            <div class="col-lg-7 none neworder-info">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                属性名<input type="text" class="form-control mr20" />
+                                属性值<input type="text" class="form-control mr20" />
+                                <span class="btn btn-primary">搜索</span>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody class="attrs"></tbody>
+                </table>
+            </div>
+            <div class="col-lg-7 none neworder-info"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/test.js/drag-drop-folder-tree.js"></script>
+
+<script>
+//结构图
+var treeObj0 = new JSDragDropTree();
+    treeObj0.setTreeId('dhtmlgoodies_tree1');
+    treeObj0.setMaximumDepth(3);
+    treeObj0.initTree();
+    treeObj0.expandAll();
+
+//保存按钮
+$('#save').bind({
+    click:function(){
+        var action = $("[name='action']").val();
+        action = action == 'edit' ? action : 'add';
+
+        $.post('/category/'+action,$('#catInfo').serialize(),function(result){//console.log(result);
+            if( result.success == 1 ){
+                alert(result.data.msg);
+                window.location.reload();
+                /*if( action == 'add' ){
+                    var catInfo = result.data.catInfo;
+                    var str = "<li id='node<?=$v['"+catInfo.id+"']?>' noDrag='true' noSiblings='true' data-id='"+catInfo.id+"' data-level='"+catInfo.level+"'><img src='/img/tree/dhtmlgoodies_minus.gif' style='visibility: hidden;'><img src='/img/tree/dhtmlgoodies_folder.gif'><a href='#'> "+catInfo.name+" (<span>0</span>)</a><ul></ul></li>";
+                    if( catInfo.cat_pid == 0 ){
+                        $('#dhtmlgoodies_tree1').append( str );
+                    }else{
+                        var $parent = $('#node'+catInfo.cat_pid);
+                        $parent.find('ul:eq(0)').append( str );
+                        var $num = $parent.find('span:eq(0)');
+                        var childNum = parseInt($num.text());
+                        $num.text( ++childNum );
+                    }
+                }*/
+
+            }else if( result.success == 0 ){
+                alert(result.error);
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json');
+        return false;
+    }
+});
+
+$('#del').bind({
+    click:function(){
+        var liFlag = false;
+        for(var i=0;i<$nestableList.length;i++){
+            if($nestableList.eq(i).hasClass('active')){
+                liFlag = true;
+            }
+        }
+        if(liFlag){
+            //隐藏表单信息
+            $('.leftinfo').addClass('none');
+            $tabDiv.eq(0).addClass('none');
+            $tabDiv.eq(1).addClass('none');
+            /*//设定表单内容
+            $('.name').val('');
+            $('.is_parent').find("option").attr('selected',false);
+            $('.is_parent').find("option[value='1']").attr('selected',true);
+            $('.is_attr_pid').find("option").attr('selected',false);
+            $('.is_attr_pid').find("option[value='3']").attr('selected',true);*/
+            if( confirm( '你确定要删除吗？' ) ){
+                //清空属性展示
+                $('.attrs').html('');
+                var id = $(this).attr('attr');
+                $.post('/category/delCat',{'id':id},function(result){
+                    if( result.success == 1 ){
+                        alert(result.data);
+                        var $parentNum = $('#node'+id).parent().parent().find('span:eq(0)');
+                        var num = parseInt($parentNum.text());
+                        if( $parentNum.text() != '全部打开' ) $parentNum.text( --num );
+                        $('#node'+id).remove();
+                    }else{
+                        alert(result.error);
+                    }
+                },'json');
+            }
+        }else {
+            alert('请选择类目');
+        }
+        return false;
+    }
+})
+
+//点击类目
+var $tabDiv = $('.neworder-info');
+var $nestableList = $('#dhtmlgoodies_tree1').find('li').children('a');
+$nestableList.mousedown(function(){
+    var parentId = $(this).parents('li').eq(1).attr('data-id')
+    $nestableList.removeClass('onmove')
+    $(this).addClass('onmove').attr('old-parent',parentId)
+    console.log(parentId)
+})
+$('body').mouseup(function(){
+    var that = $('.onmove');
+    if(that.length>0){
+        that.removeClass('onmove');
+        setTimeout(function(){
+            var selfId = that.parents('li').eq(0).attr('data-id');
+            var oldParent = that.attr('old-parent');
+            var curParentId = that.parents('li').eq(1).attr('data-id');
+            //console.log(selfId,oldParent,curParentId);
+            if( oldParent != curParentId ){
+                $.post('/category/changeParent/',{'id':selfId,'pid':curParentId},function(result){
+                    if( result.success == 1 ){
+                        alert( result.data );
+                    }else if( result.success == 2 ){
+                        alert( result.notice );
+                    }else if( result.success == 0 ){
+                        alert( result.error );
+                        $('#node'+oldParent).children('ul').append(that.parents('li').eq(0));
+                    }
+                },'json')
+            }
+        },500)
+    }
+})
+
+$nestableList.click(function(e){
+    e.preventDefault();
+    //移除所有a链接的活跃样式
+    $nestableList.removeClass('active');
+    
+
+    $(this).addClass('active');//给当前点击a增加活跃样式
+    $('.leftinfo').removeClass('none').find('li').eq(0).addClass('active').siblings().removeClass('active');//基础信息选项卡变亮
+     
+    //属性信息隐藏
+    $tabDiv.addClass('none');
+    $tabDiv.eq(0).removeClass('none');//基础信息展示
+    $('.attrs').html('');//属性内容保证为空清空
+    $('.info_tab').attr('add_cat','');//取消增加分类标识
+    $('.action').val('edit');//取消增加分类的提交按钮
+
+    var id = $(this).parent().attr('data-id');//获取当前点击的类目ID
+    $('.currentCatId').val(id);//给保存的表单隐藏域增加当前点击的类目ID
+    $('#del').attr( 'attr',id );
+    var level = $(this).parent().attr('data-level');
+    $('.level').val(level);
+    $('#add_child').attr( 'level',level );
+
+    $.post('/category/getInfoById',{'id':id},function( result ){
+        if( result.success == '1' ){
+            var info = result.data;
+            $('.info_tab').attr({'id':info.id,'is_attr_pid':info.is_attr_pid});
+            $('.name').val(info.name);
+            $('.is_parent').find('option[value='+info.is_parent+']').prop('selected',true);
+            $('.is_attr_pid').find('option[value='+info.is_attr_pid+']').prop('selected',true);
+        }
+    },'json');
+
+});
+
+//切换内容
+$('.leftinfo').find('li').click(function(){
+    $tabDiv.addClass('none');
+    $tabDiv.eq($(this).index()).removeClass('none');
+    $(this).addClass('active').siblings().removeClass('active');
+    var add_cat = $(this).parent().attr('add_cat');
+    if( add_cat == 'parent' ) {
+        $('.attrs').html("<tr><td colspan='2' style='color:red'>请添加根类目</td></tr>");
+        return;
+    }else if( add_cat == 'child' ){
+        $('.attrs').html("<tr><td colspan='2' style='color:red'>请添加子类目录</td></tr>");
+        return;
+    }
+    var is_attr_pid = $(this).parent().attr('is_attr_pid');
+    if( $(this).index() <= 1 ){
+        if( is_attr_pid == '1' ){
+            var id = $(this).parent().attr('id');
+            $.post('/category/getAttrByCatId',{'id':id},function(result){
+                if( result.success == '1' ){
+                    if( result.data.length == 0 ){
+                        $('.attrs').html('<tr><td colspan="2" style="color:red">该类目暂时没有设置属性</td></tr>');
+                        return false;
+                    }
+                    var content = result.data;
+                    var keyLen = content.length;
+                    var str = '';
+                    for( var i=0;i<keyLen;i++ ){
+                        var x,child=content[i].child;
+                        for( x in child ){
+                            str += "<tr><td>"+content[i].attr_name+"</td><td>"+child[x].values+"</td></tr>";
+                        }
+                    }
+                    $('.attrs').html(str);
+                }
+            },'json');
+        }else{
+            $('.attrs').html('<tr><td colspan="2" style="color:red">该类目没有关联属性</td></tr>');
+        }
+    }
+
+})
+
+//添加根分类
+$('#addClassify').children('span').eq(0).click(function(){
+    //移除所有a链接的活跃样式
+    $nestableList.removeClass('active');
+    $('.leftinfo').removeClass('none').find('li').eq(0).addClass('active').siblings().removeClass('active');
+    $tabDiv.eq(0).removeClass('none');
+    $tabDiv.eq(1).addClass('none');
+
+    $('.name').val('');
+    $('.is_parent').find("option[value='1']").prop('selected',true);
+    $('.is_attr_pid').find("option[value='0']").prop('selected',true);
+    $('.info_tab').attr('add_cat','parent');
+    $('.attrs').html('');
+    $('.action').val('add_root');
+
+    $('.currentCatId').val(0);
+    $('.level').val(0);
+
+})
+
+//添加子分类
+$('#addClassify').children('span').eq(1).click(function(){
+    if( $('#add_child').attr('level') == 3 ){
+        alert('请选择一级、二级类目');
+        return;
+    }
+    var liFlag = false;
+    for(var i=0;i<$nestableList.length;i++){
+        if($nestableList.eq(i).hasClass('active')){
+            liFlag = true;
+        }
+    }
+    if(liFlag){
+        $('.leftinfo').removeClass('none').find('li').eq(0).addClass('active').siblings().removeClass('active');
+        $tabDiv.eq(0).removeClass('none');
+        $tabDiv.eq(1).addClass('none');
+        //设定表单内容
+        $('.name').val('');
+        $('.is_parent').find("option[value='1']").prop('selected',true);
+        $('.is_attr_pid').find("option[value='3']").prop('selected',true);
+        
+        //清空属性展示
+        $('.attrs').html('');
+        //设定增加分类的类型,用于属性展示添加子类
+        $('.info_tab').attr('add_cat','child');
+        //设定给控制器识别增加类型
+        $('.action').val('add_child');
+    }else {
+        alert('请选择父类');
+    }
+    
+})
+
+//页面加载成功，所有关闭
+treeObj0.collapseAll();
+//全部展开和关闭按钮
+$('#nestable-menu').children('span').click(function(){
+    if($(this).text()=='全部打开'){
+        treeObj0.expandAll();
+        $(this).text('全部关闭');
+    }else {
+        treeObj0.collapseAll();
+        $(this).text('全部打开');
+    }
+})
+</script>

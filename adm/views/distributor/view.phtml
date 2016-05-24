@@ -1,0 +1,26 @@
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+<style>
+tr td:first-child {text-align:right}
+.ftd {width: 150px}
+</style>
+<div class="col-md-10">
+	<h4>详情</h4>
+    <table class="table">
+        <?php if($this->list):?>
+	  		<tr>
+	  			<td class="ftd">名称：</td><td><?=$this->list['name']?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">手机号码：</td><td><?=$this->list['account']?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">状态：</td><td><?php if($this->list['status'] == 1): ?>禁用<?php else: ?>正常<?php endif; ?></td>
+	  		</tr>
+	  		<tr>
+	  			<td class="ftd">创建时间：</td><td><?=date('Y-m-d H:i:s', $this->list['createTime']) ?></td>
+	  		</tr>
+  		<?php endif;?>
+	</table>
+</div>

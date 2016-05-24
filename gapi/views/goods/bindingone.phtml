@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>手机绑定</title>
+<link href="/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="phonebox">
+	<dl class="phoneTopdl">
+		<dt><img src="/images/bg04.png" width="210px" /></dt>
+		<dd>绑定手机号，第一时间查看订单详情</dd>
+	</dl>
+	<div class="phoneform">
+		<div class="phonefotop overf">
+			<div class="phonefotopdiv overf">
+				<span class="phonepan">+86</span>
+				<div class="phoneputdiv"><input type="text" name="phone" class="phonetxt" placeholder="请输入您常用手机号" /></div>
+			</div>
+		</div>
+		<span class="phonebtn">发送验证码</span>
+	</div>
+	<div style="display: none;" class="phoneNumWrong">
+		<p style="text-align: center;">请输入正确的手机号</p>
+	</div>
+</div>
+<script type="text/javascript" src="/js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="/js/method.js" ></script>
+<script>
+	$(".phonebtn").click(function(){
+		var $phoneNum = $(".phonetxt").val();
+		var reg = /^1\d{10}$/;
+		if(reg.test($phoneNum)){
+			subPhoneNum($phoneNum);
+			sessionStorage.setItem("phoneNum",$phoneNum);//存储手机号
+			$.post('/goods/verify',{'phone':$phoneNum},function( result ) {
+			    if ( result.success == 1 ) {
+				    //alert( result.data );
+				    window.location.href = '/goods/bindingtwo?phone='+$phoneNum;
+			    } else {
+				    alert( result.error );
+			    }
+			},'json')
+// 			window.location.href = 'binding2.html';
+		}else{
+			$(".phoneNumWrong").css({"display":"block"});
+			setTimeout(function(){
+				$(".phoneNumWrong").css({"display":"none"});
+				$(".phonetxt").val('');
+			},2000)
+		}
+		
+	})
+</script>
+</body>
+
+<script>
+//analytics
+(function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-71370659-1', 'auto');
+ga('send', 'pageview');
+</script>
+</html>

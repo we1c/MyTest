@@ -1,0 +1,332 @@
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+	<div class="wrapper">
+		<div id="main" class="scrollbar container-fluid">
+			<div class="row mt10">
+				<div class="col-xs-12">
+					<div class="BreadcrumbNav white">
+						<a href="">首页</a>
+						>
+						<a href="">文案模板管理</a>
+						>
+						<a href="">添加模板</a>
+					</div>
+					
+				</div>
+				
+			</div>
+			<form method="post" action="/copywritertemplet/add" id="form">
+            <div class="row mt10">
+            	<div class="col-lg-2">
+					<div class="leftinfo">
+						<ul>
+							<li class="active"><div>模板信息</div></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-9 neworder-info">
+					<div class="row childpad">
+					<h4 class="tit">选择类目</h4>
+						<hr />
+
+	        <!--<label class="col-lg-1 col-md-2 control-label text-right">选择类目</label>-->
+				        <div class="col-sm-3 classifywrap mb10" level="0">
+				            <div class="classifymenu" level="0">
+				                <div class="classifysearch">
+				                    <input type="text" />
+				                    <span><img src="/img/classifysearch.png"/></span>
+				                </div>
+				                <ul class="classifylist" level="0">
+				                    <?php foreach ($this->category1 as $v): ?>
+				                        <li value="<?=$v['id'] ?>" class="<?= $v['id']==$this->Info['category1'] ? 'active':'';?>" onclick="category(this)"><?=$v['name'] ?></li>
+				                    <?php endforeach; ?>
+				                </ul>
+				                <input type="hidden" name="category1" value="<?=$this->Info['category1']?>">
+				            </div>
+				        </div>
+				        <div class="col-sm-3 classifywrap mb10" level="1">
+				            <div class="classifymenu <?=empty($this->category2)?'none':'';?>" level="1">
+				                <div class="classifysearch">
+				                    <input type="text" />
+				                    <span><img src="/img/classifysearch.png"/></span>
+				                </div>
+				                <ul class="classifylist" level="1" >
+				                    <?php foreach ($this->category2 as $v): ?>
+				                        <li value="<?=$v['id'] ?>" class="<?=$v['id']==$this->Info['category2']?'active':''?>" onclick="category(this)"><?=$v['name'] ?></li>
+				                    <?php endforeach; ?>
+				                </ul>
+				                <input type="hidden" name="category2" value="<?=$this->Info['category2']?>">
+				            </div>
+				        </div>
+				        <div class="col-sm-3 classifywrap mb10" level="2">
+				            <div class="classifymenu <?=empty($this->category3)?'none':'';?>" level="2">
+				                <div class="classifysearch">
+				                    <input type="text" />
+				                    <span><img src="/img/classifysearch.png"/></span>
+				                </div>
+				                <ul class="classifylist" level="2">
+				                    <?php foreach ($this->category3 as $v): ?>
+				                        <li value="<?=$v['id'] ?>" class="<?=$v['id']==$this->Info['category3']?'active':''?>" onclick="category(this)"><?=$v['name'] ?></li>
+				                    <?php endforeach; ?>
+				                </ul>
+				                <input type="hidden" name="category3" value="<?=$this->Info['category3']?>">
+				            </div>
+				        </div>
+			        <!-- <div class="col-sm-2 mb10">
+			            <span class="btn btn-primary">添加商品目录</span>
+			        </div> -->
+			    	</div>
+				</div>
+	        
+
+			</div>
+			<div class="row mt10">
+            	
+				<ul id="modul" class="col-lg-9 col-lg-offset-2">
+					<li class="neworder-info modul">
+						<h4 class="tit">模块信息</h4>
+						<hr />
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <span>引入标题</span>
+								</div>
+							</div>
+							<div class="col-sm-6 mb10">
+						      	是
+						      	<input type="radio" name="is_title" value="1" checked="checked"/>
+						      	否
+						      	<input type="radio" name="is_title" value="0"/>
+						    </div>
+						</div>
+						
+						<div class="row childpad">
+						    <div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <span>引入规格</span>
+								</div>
+							</div>
+							<div class="col-sm-6 mb10">
+								是
+						      	<input type="radio" name="is_spec" value="1" checked="checked"/>
+						      	否
+						      	<input type="radio" name="is_spec" value="0"/>
+						    </div>
+						</div>
+						
+						<div class="row childpad">
+
+							<div class="col-lg-2 col-md-3 mb10">
+							    <div class="checkbox-group">
+								    <span>文案描述</span>
+								</div>
+							</div>
+							<div id="" class="col-sm-9 mb10">
+						      	<script id="intro" type="text/plain" name="intro" style="height:200px;"></script>
+						    </div>
+
+					    </div>
+
+
+<!--						<div class="row childpad text-right modul-info">
+							<span onclick="deleteThisModul(this)" class="btn btn-default">删除</span>
+						</div>
+						<div>
+							<input type="hidden" class="sort" name="sort[]" value="1">
+						</div>
+-->
+					</li>
+					
+					
+				</ul>
+				
+			</div>
+			<input type="hidden" id="cat_id" name="cat_id" value="">
+			<input type="hidden" id="cat_name" name="cat_name" value="">
+			<input type="hidden" id="changenum" value="1">
+            </form>
+			
+			<div class="row mt10">
+				<div class="col-lg-2"></div>
+				<div class="col-lg-9">
+					<div class="row childpad text-right modul-info">
+<!--						<span class="btn btn-yes-1" onclick="cloneLi()">新增</span>  -->
+						<span class="btn btn-no">保存</span>
+						<span class="btn btn-default " onclick="goback()">返回</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--JavaScript-->
+<script type="text/javascript" src="/js/test.js/jquery.dragsort-0.5.2.js" ></script>
+<script type="text/javascript">
+	function category(obj){
+        var parent = $(obj).parent();
+        var pid = $(obj).val();
+        $(obj).addClass('active').siblings().removeClass('active');
+        var level = parseInt(parent.attr('level'));
+        var relation = new Array();
+        relation = ['category','category','getPara'];
+        parent.next().attr('value',pid);
+        $.post('/checkone/'+relation[level],{'pid':pid},function(result){
+            if( result.success == 1 ){
+                var str='';
+                if( level == 0 ){
+                    $(".classifylist:gt("+level+")").html('');
+                    $(".classifymenu:gt("+level+")").hide();
+                    var data = result.data;
+                    var len = data.length;
+                    for( var i=0;i<len;i++ ){
+                        str += '<li value="'+data[i].id+'" onclick="category(this)">'+data[i].name+'</li>';
+                    }
+                    var next = level + 1;
+                    $(".classifylist[level='"+next+"']").html(str);
+                    $(".classifymenu[level='"+next+"']").show();
+                }
+                if( level == 1 ){
+                	$(".classifylist:gt("+level+")").html('');
+                    $(".classifymenu:gt("+level+")").hide();
+                    var data = result.data;
+                    var len = data.length;
+                    for( var i=0;i<len;i++ ){
+                        str += '<li value="'+data[i].id+'" class="cat3">'+data[i].name+'</li>';
+                    }
+                    var next = level + 1;
+                    $(".classifylist[level='"+next+"']").html(str);
+                    $(".classifymenu[level='"+next+"']").show();
+                }              
+            }
+        },'json')
+    }
+
+    $('.classifywrap').find('input').keyup(function(){
+            var txt = $(this).val();
+            $(this).parent().siblings().children('li').hide();
+            $.each($(this).parent().siblings().children('li'),function(){
+                if($(this).text().indexOf(txt) >= 0){
+                    $(this).show();
+                }
+            })
+    });
+
+    $(document).on("click", '.cat3',function() {
+    	var thirdId = $(this).val();
+    	var thirdName = $(this).text();
+    	$(this).addClass('active').siblings().removeClass('active');
+    	$('#cat_id').val(thirdId);
+    	$('#cat_name').val(thirdName);
+        $.post('/copywritertemplet/checkIsHasTemplet',{'cat_id':thirdId},function(result) {
+        	var html = '';
+        	html += result;
+    		$('#modul').html(html);
+    		var num = parseInt($('#changenum').val());
+    		$('#changenum').val(num+1);
+    		$('#modul').find('#intro').attr('id','intro'+num);
+    		UE.getEditor('intro'+num,{
+	    	toolbars: [
+	               ['fullscreen', 'source', 'undo', 'redo'],
+	               ['selectall', 'cleardoc', 'removeformat']
+	            ]
+	        });          
+           
+        },'text')
+
+    })
+
+/*    $(document).on("click",'#modul input,textarea,#intro',function(){
+    	if(!$('#checkSelect').val()){
+			$_confirm('请先选择类目',function(){
+
+			})
+		}
+    })
+
+	$('#modul input,textarea').click(function(evt){
+		if(!$('#checkSelect').val()){
+			$_confirm('请先选择类目',function(){
+
+			})
+		}
+	})
+*/
+
+    //提交表单
+	
+	$('.btn-no').click(function(){		
+		var selected = $('#checkSelect').val();
+		if(selected){
+			$('#form').submit();
+		}else{
+			$_confirm('请先选择类目',function(){
+
+			});
+		}    
+	})
+
+	function goback(){
+		location.href='/copywritertemplet/index';
+	}
+</script>
+<script>	
+	//新增模块
+/*	var $modul = $('#modul').children('li').clone();
+	function cloneLi(){
+		var $nextModul = $modul.clone();
+		var numLi = $('#modul').children('li').length;
+		$('#modul').append($nextModul);		
+		$nextModul.find('.dragUl').dragsort();
+		$nextModul.find('#intro').attr('id','intro'+numLi);
+		modulCheckGroup($nextModul); 
+		UE.getEditor('intro'+numLi,{
+    	toolbars: [
+               ['fullscreen', 'source', 'undo', 'redo'],
+               ['selectall', 'cleardoc', 'removeformat']
+            ]
+        });
+		
+	}
+
+	//复选框	
+	modulCheckGroup($('#modul').children('li'));
+	function modulCheckGroup(obj){
+		obj.find('.checkbox-group').click(function(){
+	        if($(this).children('input').is(':checked')){
+	            $(this).children('input').prop('checked',false);
+	            $(this).children('input:hidden').val('0');
+	        }else {
+	            $(this).children('input').prop('checked',true);
+	            $(this).children('input:hidden').val('1');
+	        }
+	    })
+	    obj.find('.checkbox-group').children('input').click(function(e){
+	        e.stopPropagation();
+	    })
+	}
+	
+	//删除本模块
+	function deleteThisModul(obj){
+		var $li = $(obj).parent().parent();
+		if($('#modul').children('li').length>1){
+			$_confirm('确定要删除该模块吗？',function(){
+				$li.remove();
+			})
+		}else {
+			$_confirm('至少要留一个');		
+		}
+		
+	}
+*/	
+	//编辑器调用
+	var ue_intro = UE.getEditor('intro',{
+    	toolbars: [
+               ['fullscreen', 'source', 'undo', 'redo'],
+               ['selectall', 'cleardoc', 'removeformat']
+            ]
+        });
+
+//	$('#modul').dragsort({dragSelectorExclude:'span, input, textarea'});
+	
+
+</script>
+

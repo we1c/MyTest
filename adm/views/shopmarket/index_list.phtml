@@ -1,0 +1,229 @@
+
+<form id="form">
+    <table id="table" class="scrollTable">
+        <thead>
+            <tr>
+                <td>
+                <input id="checkBox" type="checkbox" />全选
+                </td>
+                <td>ID</td>
+                <td>缩略图</td>
+                <td>商品名称</td>
+                <td>商品参数</td>
+                <td>SKU编号</td>
+                <td>商品货号</td>
+                <td>库存</td>
+                <td>平台价格</td>
+                <td>市场参考价</td>               
+                <td>供应商</td>
+                <td>分销渠道</td>
+                <td>开发进度</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->list as $row): ?>
+            <tr>
+                <td><input type="checkbox" name="goodsId[]" value="<?=$row['id'] ?>" /></td>
+                <td><?=$row['id']?></td>
+                <td><img onclick='showImg(this)' src="<?=$row['thumb']?>" /></td>
+                <td><?=$row['name']?></td>
+                <td>
+                    <?php if ( json_decode($row['attribute'],true) ): ?>
+                    <?php foreach(json_decode($row['attribute'],true) as $v): ?>
+                        <p>
+                            <?=$v['key']['name']?>:
+                            <span><?=$v['value']['name']?></span>
+                        </p>
+                    <?php endforeach;?>
+                    <?php endif; ?>
+                </td>
+                <td><?=$row['code']?></td>
+                <td><?=$row['goodsNo']?></td>
+                <td><?=$row['goodsStock']?></td>
+                <td><?php if( $row['ptimes']) echo (round($row['purchPrice'] * $row['ptimes']));else echo ( round($row['purchPrice'])) ?></td>
+                <td><?php if ($row['mtimes']) echo (round($row['purchPrice'] * $row['mtimes']));else echo round($row['purchPrice'])?></td>
+                <td><?=$row['shopName']?></td>
+                <td class='cname_<?=$row['id']?>'>
+                    <?php if($row['cname']): ?>
+                        <?php foreach($row['cname'] as $v): ?>
+                            <p><?=$v['name']?></p>
+                        <?php endforeach;?>
+                    <?php else: ?>
+                        无
+                    <?php endif;?>
+                </td>
+                <td class="status_<?=$row['id']?>" >
+                    <?=$row['sp_status']?>
+                </td>
+                <td>
+                    <?php if($row['status'] == 1 || $row['status'] == 6) : ?>
+                        <!-- <p><a href="javascript:;" data="<?=$row['id']?>" action="down" class="updateGoods">下架</a></p> -->
+                        <!-- <p><a href="javascript:;" class="pushGoods" action="<?=$row['action']?>" data="<?=$row['id']?>">推送</a></p> -->
+                    <?php endif;?>
+                    
+                    <!-- <p><a href="javascript:;" data="<?=$row['id']?>" action="up" class="updateGoods">上架</a></p> -->
+                    <p><a href="/shopmarket/edit/?id=<?=$row['id']?>">详情</a></p>
+                    <!-- <p><a href="javascript:;" data="<?=$row['id']?>" class="delGoods">删除</a></p> -->
+                </td>
+            </tr>
+        <?php endforeach;?>
+        </tbody>
+    </table>
+</form>
+
+
+<style>
+    .mask{margin:0;padding:0;border:none;width:100%;height:100%;background:#333;opacity:0.6;filter:alpha(opacity=60);z-index:9999;position:fixed;top:0;left:0;display:none;}
+    #LoginBox{position:absolute;left:50%;top:50%;background:white;width:426px;height:282px;border:3px solid #444;border-radius:7px;z-index:10000;display:none;}
+    .row1{background:#f7f7f7;padding:0px 20px;line-height:50px;height:50px;font-weight:bold;color:#666;font-size:20px;}
+     .loginrow{height:77px;line-height:77px;padding:0px 30px;font-family:华文楷体;font-size:x-large;}
+    .close_btn{font-family:arial;font-size:30px;font-weight:700;color:#999;text-decoration:none;float:right;padding-right:4px;}
+    .inputBox{border:1px solid #c3c3c3;padding:1px 3px 6px 3px;border-radius:5px;margin-left:5px;}
+    #txtName{height:27px;width:230px;border:none;}
+    #txtPwd{height:27px;width:230px;border:none;}
+    #loginbtn{color:White;background:#4490f7;text-decoration:none;padding:10px 95px;margin-left:70px;margin-top:40px;border-radius:5px;opacity:0.8;filter:alpha(opacity=80);}
+    .warning{float:right;color:Red;text-decoration:none;font-size:20px;font-weight:bold;margin-right:20px;display:none;}
+    .seldiv { width:200px; margin:15px auto 0px; padding-bottom:50px;}
+    .fl { float:left;}
+    .fr { float:right;}
+    .seldiv > .selpan { width:80px; margin-right:10px;line-height:35px;}
+</style>
+
+    <div id="LoginBox">
+        <div class="row1">
+            推送商品<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="closeBtn">×</a>
+        </div>
+        <div class="seldiv">
+            <input type="hidden" class="goodsId">
+            <input type="hidden" class="action">
+            <span class="fl selpan">选择分销商:</span>
+            <select class="disId form-control fl"  style="width:100px">
+                <?php foreach ( $this->dis as $v ): ?>
+                    <option value="<?=$v['id'] ?>"><?=$v['name']?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="row loginrow">
+            <a href="javascript:;" id="loginbtn">确定</a>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $(function ($) {
+        //弹出推送
+        $(".pushGoods").hover(function () {
+            $(this).stop().animate({
+                opacity: '1'
+            }, 600);
+        }, function () {
+            $(this).stop().animate({
+                opacity: '0.6'
+            }, 1000);
+        }).on('click', function (e) {
+            $('.goodsId').val($(this).attr('data'));
+            $('.action').val($(this).attr('action'));
+            $("body").append("<div id='mask'></div>");
+            $("#mask").addClass("mask").fadeIn("slow");
+            $("#LoginBox").fadeIn("slow");
+            var e = e || window.event;
+            var clientX      = e.clientX;
+            var clientY      = e.clientY;
+            var scrollHeight = $(document).scrollTop();
+            /*var windowHeight = $(window).height();
+            var windowWidth  = $(window).width();*/
+            var popHeight    = $('#LoginBox').height();
+            var popWidth     = $('#LoginBox').width();
+            var posiTop      = clientY - popHeight;
+            var posiLeft     = clientX - popWidth * 1.5 ;
+            posiTop = posiTop > 0 ? posiTop : 0 ;
+            $('#LoginBox').css({"left": posiLeft + "px","top":posiTop + scrollHeight + "px"});
+        });
+
+        //按钮的透明度
+        $("#loginbtn").hover(function () {
+            $(this).stop().animate({
+                opacity: '1'
+            }, 600);
+        }, function () {
+            $(this).stop().animate({
+                opacity: '0.8'
+            }, 1000);
+        });
+        $(document).on('click','#loginbtn',function() {
+             var gid = $('.goodsId').val();
+             var action = $('.action').val();
+             var cid = $('.disId').val();
+             var cname = $('.disId').find('option:selected').text();
+             $.post('/shopmarket/pushGoods',{'gid':gid,'cid':cid,'cname':cname,'action':action},function(result) {
+                 if ( result.success == 1 ) {
+                     alert(result.data);
+                     var html = $('.cname_'+gid).html();
+                     html = html.replace(/无/,'');
+                     $('.cname_'+gid).html(html+'<p>'+cname+'</p>');
+                     var $status = $('.status_'+gid);
+                     if( $status.text().match(/商家上传/) ){
+                        $status.text('等待开发');
+                     }
+                     $("#LoginBox").fadeOut("fast");
+                     $("#mask").css({ display: 'none' });
+                 } else if( result.success == 0 ){
+                     alert(result.error);
+                     $("#LoginBox").fadeOut("fast");
+                     $("#mask").css({ display: 'none' });
+                 } else if( result.success == 2 ){
+                    alert(result.notice);
+                 }
+             },'json')
+        })
+        //关闭
+        $(".close_btn").hover(function () { $(this).css({ color: 'black' }) }, function () { $(this).css({ color: '#999' }) }).on('click', function () {
+            $("#LoginBox").fadeOut("fast");
+            $("#mask").css({ display: 'none' });
+        });
+    });
+
+    $('.updateGoods').click(function(){
+            var action = $(this).attr('action');
+            var id = $(this).attr('data');
+            var _this = this;
+            $.post('/platf/updateGoods/',{'id':id,'action':action},function(result){
+                if(result.success == 1){
+                    if(action == 'down'){
+                        $(_this).attr('action','up');
+                        alert('下架成功！');
+                        $(".goodsStatus_"+id).text('停售');
+                        $(_this).text('上架');
+                    }else{
+                        $(_this).attr('action','down');
+                        alert('上架成功！');
+                        $(".goodsStatus_"+id).text('上架');
+                        $(_this).text('下架');
+                    }
+                }else if( result.success == 0 ){
+                    alert('操作失败！');
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json');
+        })
+    $(document).on('click','.delGoods',function() {
+        if ( confirm('确定要删除该商品吗？') ) {
+            var $this = $(this);
+            var id = $(this).attr('data');
+            $.post('/platf/delGoods',{'id':id},function(result) {
+                if ( result.success == 1 ) {
+                    alert('删除成功');
+                    $this.parent().parent().parent().remove();
+                } else if( result.success == 0 ){
+                    alert(result.error);
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json')
+        }
+    })
+    window.onload=function(){
+        $('#runWrap').hide();
+    }
+</script>

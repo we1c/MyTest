@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta http-equiv="Cache-Control" content="max-age=315360000000"> -->
+  <title>erp管理系统</title>
+
+  <!-- Bootstrap css -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/css.css?v=16" rel="stylesheet" type="text/css"/>
+  <script type="text/javascript" charset="utf-8" src="/js/jquery-1.11.2.min.js" ></script>
+</head>
+
+<body>
+<!-- 给js列设置使用 -->
+<span id="con_act" con="<?=$this->_controllerName?>" act="<?=$this->_actionName?>"></span>
+<!-- showImg -->
+  <div id="showImg" class="showImg">
+    <div class="imgWrap">
+      <img src=""/>
+      <div id="prev"></div><div id="next"></div>
+    </div>
+  </div>
+
+  <div id="indexnav" class="container">
+    <nav class="head pc-head">
+      <div class="row">
+        
+        <div class="col-md-6">
+          <div class="navbar-header">
+            <p id="navbar-module" class="navbar-text"><img src="/img/logo.jpg"/>只有一个商户中心</p>
+<!-- menu-start  -->
+            <nav class="dev-sidebar">
+                <?php include(dirname(__FILE__) . '/sys/dev_menu.phtml')?>
+            </nav>
+<!-- menu-end  -->            
+          </div>
+<!--导航按钮-->
+            <div class="navbtn"><img src="/img/x.png" /></div>
+
+            <div class="clearfix"></div>
+        </div>
+<!-- head-start  -->
+        <?php include(dirname(__FILE__) . '/sys/dev_head.phtml')?>
+<!-- head-end  -->
+<!-- update_pwd-start -->
+        <?php include(dirname(__FILE__) . '/sys/update_pwd.phtml')?>
+<!-- update_pwd-end -->
+      </div>
+    </nav>
+  </div>
+<!-- error-start -->
+<?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+<?php endif;?>
+<!-- error-end -->
+<!--content-start-->
+  <?=$this->_layoutContent;?>
+<!--content-end-->
+
+<!-- foot-start -->
+  <?php include(dirname(__FILE__) . '/sys/dev_foot.phtml')?>
+<!-- foot-end -->
+
+</body>
+  <script type="text/javascript" src="/js/test.js/function.js?v=16" ></script>
+</html>

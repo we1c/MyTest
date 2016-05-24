@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>订单</title>
+<link href="/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/js/function.js"></script>
+</head>
+<body class="">
+	<div class="refundbox">
+		<dl class="refundtop">
+			<dt><img src="/images/bg14.png" /></dt>
+			<dd>退货申请</dd>
+		</dl>
+		<ul class="refundul overf">
+			<li class="overf liborder">
+				<span class="refuslipan fl">退款金额：</span>
+				<div class="refuslidiv">
+					<p>1290元</p>
+				</div>
+			</li>
+			<li class="overf liborder">
+				<span class="refuslipan fl">申请原因：</span>
+				<div class="refuslidiv">
+					<select class="refunobor refunsel">
+						<option>-请选择退货原因-</option>
+					</select>
+				</div>
+			</li>
+			<li class="overf liborder">
+				<span class="refuslipan fl">具体描述：</span>
+				<div class="refuslidiv">
+					<textarea class="refunobor refunarea" placeholder="请填写详细退货理由"></textarea>
+				</div>
+			</li>
+			<li class="overf">
+				<span class="refuslipan fl">联系电话：</span>
+				<div class="refuslidiv">
+					<input class="refunobor refunput" placeholder="请填写您的联系电话"/>
+				</div>
+			</li>
+		</ul>
+		<input type="submit" class="refundbtn" value="提交"/>
+	</div>
+</body>
+
+<script>
+//analytics
+(function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-71370659-1', 'auto');
+ga('send', 'pageview');
+</script>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>商品列表</title>
+<script type="text/javascript">
+function swapStyleSheet(sheet){
+	document.getElementById('pagestyle').setAttribute('href', sheet);
+	$.post('/goods/setcolor',{'data':sheet},function(result) {
+	    
+	},'json');
+}
+</script>
+
+</head>
+<body>
+
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<!--Demo purposes only, can be deleted!-->
+    <div class="stylesheet-changer">
+        <div class="styles">
+            <a class="variation-changer" onclick="swapStyleSheet('/css/menus-variation.css')"></a>
+            <a class="blue-changer" onclick="swapStyleSheet('/css/menus-blue.css')"></a>
+            <a class="green-changer" onclick="swapStyleSheet('/css/menus-green.css')"></a>
+            <a class="orange-changer" onclick="swapStyleSheet('/css/menus-orange.css')"></a>
+            <a class="magenta-changer" onclick="swapStyleSheet('/css/menus-magenta.css')"></a>
+            <a class="red-changer" onclick="swapStyleSheet('/css/menus-red.css')"></a>
+            <a class="white-changer" onclick="swapStyleSheet('/css/menus-white.css')"></a>
+            <div class="clear"></div>
+            <p>Tap the icons to change the menu style!</p>
+        </div>
+    </div>
+<!--Demo purposes only, can be deleted!-->
+
+<div class="clear"></div>
+
+<div class="all-elements">
+
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+    <div id="content" class="page-content">
+
+        <div class="content">
+			<div class="container">
+				<div class="productlist">
+    				<?php if($this->list): ?>
+    				    <?php foreach ($this->list as $v): ?>
+        					<div class="column productlistinfo">
+        						<div class="prostorename">店铺名称：<?=$v['shopname'] ?></div>
+        						<img src="<?=$v['img'] ?>" width="80" alt="img" />
+        						<div class="productlistinfodiv">
+        							<div class="productOpert">
+        								<div class="undercarriage down downgoods" data-id="<?=$v['id'] ?>">下架</div>
+        								<?php if($v['recommend'] == 1): ?>
+        								<span class="recommend active unrecomm" data-id="<?=$v['id'] ?>">取消推荐</span>
+        								<?php else : ?>
+        								<span class="recommend recomm" data-id="<?=$v['id'] ?>">推荐</span>
+        								<?php endif; ?>
+        							</div>
+        							<div class="productabout">
+        								<span class="column-title column-name"><?=$v['name'] ?></span>
+        								<span class="column-id">编号：<?=$v['id'] ?></span>
+        								<em class="column-text">
+        									<span class="productprice"><?=$v['price'] ?>元</span>
+        								</em>
+        							</div>
+        						</div>
+        					</div>
+    					<?php endforeach; ?>
+                    <?php endif; ?>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="window-overlay">
+	<div class="window-overlaybg"></div>
+	<div class="window tagsboxdiv">
+	<form class="downform">
+		<div class="upGoodsel">
+			<a href="#" class="checkbox radio-twoCus radioCustom sellhide radio-twoCus-checked "><input type="radio" name="down" value="2" /><span>暂不出售</span></a>
+			<a href="#" class="checkbox radio-twoCus radioCustom sellhide"><input type="radio" name="down" value="3"/><span>损坏</span></a>
+			<a href="#" class="checkbox radio-twoCus radioCustom sellpricebtn"><input type="radio" name="down" value="4"/><span>已出售</span></a>
+			<div class="sellpricehide"><span>出售价格</span><input type="text" name="price" /></div>
+		</div>
+		
+		<div class="tagsbtnbox">
+		    <input type="hidden" name="goodsId" id="goodsId">
+			<span class="tagserbtn button button-turqoise " id="downform">确定</span>
+			<span class="tagserbtn button button-dark tagresetbtn">取消</span>
+		</div>
+	</form>
+	</div>
+</div>
+<!--添加标签弹层-->
+
+</body>
+</html>

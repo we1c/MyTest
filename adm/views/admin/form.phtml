@@ -1,0 +1,120 @@
+<div class="row mt10">
+    <div class="col-lg-2">
+        <div class="leftinfo">
+            <ul>
+                <li class="active"><div>管理员</div></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-9 neworder-info">
+        <h4 class="tit">管理员</h4>
+        <hr />
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">姓名</label>
+            <div class="col-sm-4">
+                <input type="text" id="name" name="name" class="form-control username"  placeholder="名称" value="<?=$this->info['name']?>">
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">账号</label>
+            <div class="col-sm-4">
+                <input type="text" id="account" name="account" class="form-control username"  placeholder="账号" value="<?=$this->info['account']?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">密码</label>
+            <div class="col-sm-4">
+                <input type="password" id="pwd" name="pwd" class="form-control userpwd"  placeholder="密码" value="">
+            </div>
+        </div>
+
+        <div class="row childpad ">
+            <div class="row childpad">
+                <label class="col-lg-1 col-md-2 control-label">角色</label>
+                <div class="col-sm-10" >
+                    <?php foreach ($this->rolelist as $row){ ?>
+                        <div class="checkbox-group checkBox" >
+                            <input name="roleId[]" value="<?=$row['id']?>" type="checkbox" <?php if(in_array($row['id'],$this->role)){ echo "checked='checked'"; }?> >
+                            <?=$row['name']?>
+                        </div>
+                    <?php }?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">分销商</label>
+            <div class="col-sm-10" id="checkedGroup" >
+                <div class="btn-group" id="checkBox">
+                    <input type="checkbox">
+                    全选
+                </div>
+                <?php if($this->distlist){ ?>
+                <?php foreach ($this->distlist as $item){ ?>
+                    <div class="btn-group check-group">
+                         <input type="checkbox" name="disId[]" value="<?=$item['id'];?>" <?php if($this->info['disId']): ?> <?php if(in_array($item['id'], explode(',', $this->info['disId']))) echo "checked='checked'"; ?><?php endif; ?>><?=$item['name'];?>
+                    </div>
+                <?php }?>
+                <?php }?>
+            </div>
+        </div>
+
+        <!-- <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">角色</label>
+            <div class="col-sm-4">
+                <select name="roleId" class="form-control username" style="width: 100%;">
+                <?php if($this->rolelist){ ?>
+                    <?php foreach ($this->rolelist as $item){ ?>
+                        <?php if ( $this->myId == 1 ): ?>
+                            <?php if ( $item['id'] > 1 ): ?>
+                                <option value="<?=$item['id']?>" <?php if($item['id'] == $this->info['roleId']){ ?>selected="selected"<?php }?> ><?=$item['name']?></option>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php if ( $this->myId == 2 ): ?>
+                            <?php if ( $item['id'] > 2 ): ?>
+                                <option value="<?=$item['id']?>" <?php if($item['id'] == $this->info['roleId']){ ?>selected="selected"<?php }?> ><?=$item['name']?></option>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    <?php }?>
+                <?php }?>
+            </select>
+            </div>
+        </div> -->
+
+    </div>
+</div>
+<script>
+    
+    $('#checkedGroup').find('.check-group').click(function(){
+        if($(this).children('input').is(':checked')){
+            $(this).children('input').prop('checked',false);
+        }else {
+            $(this).children('input').prop('checked',true);
+        }
+    })
+    $('#checkedGroup').find('.check-group').children('input').click(function(e){
+        e.stopPropagation();
+    })
+    //全选
+    var checkAll = false;
+    $("#checkBox").children('input').click(function(e){
+        e.stopPropagation();
+        if(!checkAll){
+            $(this).parent().siblings().find("input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $(this).parent().siblings().find("input").prop({"checked":false});
+        }
+    })
+    $("#checkBox").click(function(){
+        if(!checkAll){
+            $(this).parent().find("input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $(this).parent().find("input").prop({"checked":false});
+        }
+    })
+</script>

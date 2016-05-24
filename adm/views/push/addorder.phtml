@@ -1,0 +1,613 @@
+<div class="wrapper">
+    <div id="main" class="scrollbar container-fluid">
+      <div class="row mt10">
+        <div class="col-xs-12">
+          <div class="BreadcrumbNav white">
+            <a href="">首页</a>
+            >
+            <a href="">推送商品管理</a>
+            >
+            <a href="">新建订单</a>
+          </div>
+        </div>
+      </div>
+      <div class="row mt10">
+        <div class="col-lg-2">
+          <div class="leftinfo">
+            <ul>
+              <li class="active"><div>基础信息</div></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-9 neworder-info">
+          <h4 class="tit">订单信息</h4>
+          <hr />
+          <form method="POST" id="form">
+          <input type="hidden" name="keyword" value="<?=$this->keyword?>">
+          <input type="hidden" name="channel" value="<?=$this->channel?>">
+          <input type="hidden" name="page" value="<?=$this->page?>">
+          <input type="hidden" name="perpage" value="<?=$this->perpage?>">
+          <input type="hidden" name="time" value="<?=$this->time?>">
+          <input type="hidden" name="searchType" value="<?=$this->searchType?>">
+          <input type="hidden" id="purPrice" value="<?=$this->goods['purchPrice']; ?>"/>
+          <input type="hidden" name="gid" value="<?=$this->goods['id']; ?>"/>
+          <input type="hidden" name="sid" value="<?=$this->goods['shopId']; ?>"/>
+          <input type="hidden" name="pushid" value="<?=$this->goods['pushId']; ?>"/>
+          <input type="hidden" name="payway" value="<?=$this->goods['payway']; ?>"/>
+          <input type="hidden" name="paybank" value="<?=$this->goods['paybank']; ?>"/>
+          <input type="hidden" id="addressIndex" name="addressIndex" value=""/>
+          <div class="row childpad">
+              <label class="col-lg-1 col-md-2 control-label">付款方式</label>
+              <div class="col-sm-4">
+                  <select id="payway" class="form-control" style="width:100%;display:inline" disabled="">
+                       <option value="">请选择</option>
+                           <?php foreach ( $this->payway as $v ): ?>
+                             <option value="<?=$v['id'] ?>" <?php if ($v['id'] == $this->goods['payway']) echo "selected='selected'";?>><?=$v['name'] ?></option>
+                         <?php endforeach; ?>
+                 </select>
+              </div>
+              <label class="col-lg-1 col-md-2 control-label">下单渠道</label>
+              <div class="col-sm-4">
+                  <input type="text" value="<?=$this->goods['cname'] ?>" class="form-control" readonly/>
+              </div>
+          </div>
+          <!-- <div class="row childpad">
+              <label class="col-lg-1 col-md-2 control-label">店铺名称</label>
+              <div class="col-sm-4">
+                  <input type="text" value="<?=$this->shop['name'] ?>" class="form-control" readonly/>
+              </div>
+              <label class="col-lg-1 col-md-2 control-label">包邮限额</label>
+              <div class="col-sm-4">
+                  <input type="text" value="<?=$this->shop['quota'] ?>" class="form-control" readonly/>
+              </div>
+          </div> -->
+          <div class="row childpad">
+              <label class="col-md-2 col-lg-1 control-label">付款类型</label>
+              <div class="col-sm-4">
+                  <select name="paytype" id="paytype" class="form-control" style="width:100%;display:inline">
+                           <?php foreach ( $this->paytype as $v ): ?>
+                             <option value="<?=$v['id'] ?>" <?php if ($v['id'] == 4) echo "selected='selected'";?>><?=$v['name'] ?></option>
+                         <?php endforeach; ?>
+                  </select>
+              </div>
+              <label class="col-md-2 col-lg-1 control-label">提货方式</label>
+              <div class="col-sm-4">
+                  <select name="deliver" id="deliverWay" class="form-control" style="width:100%;display:inline">
+                      <option value="1">快递</option>
+                      <option value="2">自取</option>
+                  </select>
+              </div>
+          </div>
+          <div class="row childpad">
+              <label class="col-lg-1 col-md-2 control-label">收款账号</label>
+              <div class="col-sm-4">
+                  <select id="paybank" class="form-control" style="width:100%;display:inline" disabled="">
+                       <option value="">请选择</option>
+                       <?php foreach ( $this->paybank as $v ): ?>
+                             <option value="<?=$v['id'] ?>" <?php if ($v['id'] == $this->goods['paybank']) echo "selected='selected'";?>><?=$v['name'] ?></option>
+                         <?php endforeach; ?>
+                 </select>
+              </div>
+              <label class="col-md-2 col-lg-1 control-label">统一运费</label>
+              <div class="col-sm-4">
+                  <div class="form-control express">
+                      <select id="sel-express" class="sel-express">
+                        <!-- <option class="btn-express" data="<?=$this->spInfo['express']?>" value="<?=$this->spInfo['express']?>"></option> -->
+                        <?php foreach ($this->express as $v): ?>
+                          <option class="opt-express" data="<?=$v['price']?>" value="<?=$v['price']?>" <?php if($v['price'] == $this->spInfo['express']) echo "selected='selected'";?> ><?=$v['costName']?></option>
+                        <?php endforeach;?>
+                        <option class="btn-other" value="0" >其他</option>
+                      </select>
+                      <div class="cus-express">
+                        <input class="other-express fee" type="text" />
+                        <span class="close-inp">×</span>
+                      </div>
+
+                    <span class="span-num"></span>
+                    <span class="fr">元</span>
+                    <input id="freight" name="freight" class="fr express-press mr20 fee" type="hidden" />
+                  </div>
+              </div>
+          </div>
+
+          <div class="row childpad">
+              <label class="col-md-2 col-lg-1 control-label">证书费用</label>
+              <div class="col-sm-4">
+                  <div class="form-control express">
+                      <select id="sel-cer" class="sel-express">
+                        
+                        <?php foreach ($this->certificate as $v): ?>
+                          <option class="opt-express" data="<?=$v['price']?>" value="<?=$v['price']?>" <?php if($v['price'] == $this->spInfo['certificate']) echo "selected='selected'";?> ><?=$v['costName']?></option>
+                        <?php endforeach;?>
+
+                        <option class="btn-other" value="0" >其他</option>
+                      </select>
+                      <div class="cus-express">
+                        <input class="other-express fee" type="text" />
+                        <span class="close-inp">×</span>
+                      </div>
+
+                    <span class="span-num"></span>
+                    <span class="fr">元</span>
+                    <input id="certificate" name="price_certificate" class="fr express-press mr20 fee" type="hidden" />
+                  </div>
+              </div>
+              <label class="col-md-2 col-lg-1 control-label">包装费用</label>
+              <div class="col-sm-4">
+                  <div class="form-control express">
+                        <select id="sel-pack" class="sel-express">
+                          <!-- <option class="opt-express" data="<?=$this->spInfo['package']?>" value="<?=$this->spInfo['package']?>" ><?=$this->spInfo['package']?></option> -->
+
+                          <?php foreach ($this->package as $v): ?>
+                            <option class="opt-express" data="<?=$v['price']?>" value="<?=$v['price']?>" <?php if($v['price'] == $this->spInfo['package']) echo "selected='selected'";?> ><?=$v['costName']?></option>
+                          <?php endforeach;?>
+
+                          <option class="btn-other" value="0" >其他</option> 
+                        </select>
+                        <div class="cus-express">
+                          <input class="other-express fee" type="text" />
+                          <span class="close-inp">×</span>
+                        </div>
+
+                      <span class="span-num"></span>
+                      <span class="fr">元</span>
+                      <input id="pack" name="price_pack" class="fr express-press mr20 fee" type="hidden" />
+                    </div>
+                  <!--<input name="price_pack" class="form-control fee" id="pack" value="" />-->
+              </div>
+          </div>
+          <div class="row childpad">
+              <label class="col-md-2 col-lg-1 control-label">装裱费用</label>
+              <div class="col-sm-4">
+                  <input name="price_mount" class="form-control fee" id="mount" value="0" readonly="" />
+              </div>
+              <label class="col-md-2 col-lg-1 control-label">其他费用</label>
+              <div class="col-sm-4">
+                  <input name="price_other" class="form-control fee" id="other" value="0"class="fee" readonly="" />
+              </div>
+          </div>
+<script>
+    $(function(){
+        var freightVal = $('#sel-express option:selected').attr('data')
+        var cerVal = $('#sel-cer option:selected').attr('data')
+        var packVal = $('#sel-pack option:selected').attr('data')
+        $('#freight').val(freightVal)
+        $('#certificate').val(cerVal)
+        $('#pack').val(packVal)
+        $('#freight').prev().prev().html(freightVal)
+        $('#certificate').prev().prev().html(cerVal)
+        $('#pack').prev().prev().html(packVal)
+        var amount = $('#amount').children('input').val()
+        var totalPrice = $('#totalPrice').html()
+        $('#factPrice').html(totalPrice*amount+getFee())
+    })
+
+      $('.sel-express').change(function(){
+        if ($(this).val()=='0'){
+          $(this).hide()
+          $(this).next().show()
+          var hideVal = $(this).next().children('.other-express').val()
+          if (hideVal == '') {hideVal = 0}
+          $(this).next().next('.span-num').html('')
+          $(this).parent().find('.express-press').val(hideVal)
+          var amount = $('#amount').children('input').val()
+          var totalPrice = $('#totalPrice').html()
+          $('#factPrice').html(totalPrice*amount+getFee())
+        }else{
+          var hideVal = $(this).find('option:selected').attr('data')
+          $(this).parent().find('.express-press').val(hideVal)
+          $(this).parent().find('.span-num').html(hideVal)
+          var amount = $('#amount').children('input').val()
+          var totalPrice = $('#totalPrice').html()
+          $('#factPrice').html(totalPrice*amount+getFee())
+        }
+      })
+      $('.close-inp').click(function(){
+        $(this).parent().hide()
+        $(this).parent().prev().show()
+      })
+      
+      $('.other-express').bind('input propertychange', function() {
+        var hideVal = $(this).val()
+        $(this).parent().parent().find('.express-press').val(hideVal)
+      })
+      
+</script>
+          <div class="row childpad">
+              <label class="col-md-2 col-lg-1 control-label">买家留言</label>
+              <div class="col-md-10 col-lg-9">
+                  <textarea type="text" name="remark" class="form-control"></textarea>
+              </div>
+          </div>
+          <div class="row childpad">
+              <label class="col-md-2 col-lg-1 control-label">卖家留言</label>
+              <div class="col-md-10 col-lg-9">
+                  <textarea type="text" name="sellerremark" class="form-control"></textarea>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt10">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-9 neworder-info">
+          <h4 class="tit">客户信息</h4>
+          <hr />
+          <div class="row childpad">
+              <label class="col-md-2 col-lg-1 control-label">手机号码</label>
+              <div class="col-sm-4">
+                  <input name="phone" class="form-control" id="phone"/>
+              </div>
+          </div>
+          <div class="row childpad linheit mb10">
+            <label class="col-lg-2 col-md-4 control-label"><span class="mr20">地址列表</span><span class="btn-newadd">新增 +</span></label>
+            <div id="addList" class="">
+
+            </div>
+          </div>
+
+          <div id="newAdd" class="addlist active none" data="">
+            <div class="row childpad">
+                <label class="col-lg-1 col-md-2 control-label">客户姓名</label>
+                <div class="col-sm-4">
+                    <input name="consignee" class="form-control" id="consignee"/>
+                </div>
+                <label class="col-lg-1 col-md-2 control-label">座机号码</label>
+                <div class="col-sm-4">
+                    <input name="tel" type="text" class="form-control" />
+                </div>
+            </div>
+            
+            <div class="row childpad">
+                <label class="col-md-2 col-lg-1 col-xs-12 control-label">详细地址</label>
+                <div class="col-xs-12 col-md-10">
+                    <div class="cityselect fl mr20"> 
+                  <select id="province" name="province" class="form-control" id="province" style="width:100px;display:inline">
+                     <option value="">省</option>
+                     <?php foreach ( $this->province as $v ): ?>
+                         <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+                     <?php endforeach; ?>
+                 </select>
+                  <select id="city" name="city" class="form-control" id="city" style="width:100px;display:inline">
+                     <option value="">市</option>
+                 </select>
+                 <select id="area" name="area" class="form-control" id="area" style="width:100px;display:inline">
+                     <option value="">区/县</option>
+                 </select>
+                </div>
+                <input id="address" type="text" name="address" class="form-control fl auto" value="" />
+                </div>
+            </div>
+          </div>
+
+           
+        </div>
+      </div>
+      <div class="row mt10">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-9 neworder-info">
+          <h4 class="tit">商品信息</h4>
+          <hr />
+          <!--
+          <div class="row childpad">
+              <label class="col-lg-1 col-md-2 col-xs-3 control-label">发货仓库</label>
+              <div class="col-sm-4 col-xs-9">
+                  <select class="form-control">
+                    <option>我就开了个</option>
+                  </select>
+                  
+                  <button id="addNewGoods" class="btn btn-primary">添加商品</button>
+              </div>
+             
+          </div>
+          -->
+          <div class="row table-responsive">
+            <table class="table table-bordered">
+              <tr>
+                <td>缩略图</td>
+                <td>商品名称</td>
+                <td>SKU编码</td>
+                <td>商品货号</td>
+                <td>平台价格</td>
+                <td>数量</td>
+                <td>应付金额</td>
+                <td>实付价格</td>
+              </tr>
+              <tr>
+                <td><img src="<?=$this->goods['goodsImg'][0]['imgurl'] ?>" width="100px" height="100px"></td>
+                <td><?=$this->goods['name'] ?></td>
+                <td><?=$this->goods['code'] ?></td>
+                <td><?=$this->goods['goodsNo'] ?></td>
+                <td id="totalPrice"><?=$this->goods['totalPrice'] ?></td>
+                <td id="amount" class="text-nowrap">
+                    <span>-</span>
+                      <input id="goodsStock" data="<?=$this->spInfo['tradeCount'] ?>" value="1" type="text" name="number" class="form-control amount" />
+                    <span>+</span>
+                </td>
+                <td id="factPrice"><?=$this->goods['totalPrice'] ?></td>
+                <td><input id="realprice" name="realprice" class="form-width form-control" type="text" /></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row mt10 mb50 neworder-btn">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-9">
+          <input name="sub0" type="submit" class="fr btn btn-primary submitBtn" value="提交订单" />
+          <input name="sub1" type="submit" class="fr mr20 btn btn-primary submitBtn" value="到店取货" />
+        </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>      
+$(function(){
+    
+    //删除地址
+    $(document).on('click','.del-add',function(){      
+        if( confirm( '确定要删除该地址吗?' ) ){
+            var addressId = $(this).parent().attr('data');
+            $(this).parent().remove();
+            $.post('/push/delAddress',{'addressId':addressId},function(result){
+                if(result.success == 1){
+                    alert(result.data);
+                }else{
+                    alert(result.error);
+                }
+            },'json');
+        }           
+    })
+    //改变地址选中样式
+    $(document).on('click','.addlist',function(){
+        $('.addlist').removeClass('active');      
+        $(this).addClass('active');
+        var addressId = $(this).attr('data');
+        $('#addressIndex').val(addressId);
+    })
+    //新增地址
+    $('.btn-newadd').bind('click',function(){
+      $('#newAdd').removeClass('none');
+      $('#addList').find('.addlist').removeClass('active');
+      $('#newAdd').addClass('active');
+      $('#addressIndex').val('');
+    })
+    //显示客户地址
+    $('#phone').bind('input',function(){
+        var phone = $(this).val();
+        phone = phone.replace(/[\s-]/g,"");
+        if(phone.length==11){
+            $.post('/push/getAddress',{'tel':phone},function(result){
+                if(result.success == 1){
+                    var html = '';
+                    var list = result.data;           
+                    for(var i = 0;i<list.length;i++){
+                        html += '<div class="col-xs-12 addlist" data="address_'+list[i]['id']+'">';
+                        if(list[i]['province']){
+                            html += '<span class="mr20">'+list[i]['province']+'</span>';
+                        }
+                        if(list[i]['city']){
+                            html += '<span class="mr20">'+list[i]['city']+'</span>';
+                        }
+                        if(list[i]['area']){
+                            html += '<span class="mr20">'+list[i]['area']+'</span>';
+                        }
+                        if(list[i]['address']){
+                            html += '<span class="mr20">'+list[i]['address']+'</span>'; 
+                        }
+                        if(list[i]['name']){
+                            html += '<span class="mr20">'+list[i]['name']+'收</span>';
+                        }                       
+                        html += '<span class="fr del-add">x</span>';
+                        html += '</div>';
+                    }
+                    $('#addList').html(html);
+                    $('#newAdd').addClass('none');    
+                    var addressId = $('#addList').find('.addlist').eq(0).attr('data');
+                    $('#addressIndex').val(addressId);
+                    $('#addList').find('.addlist').eq(0).addClass('active');
+                }else{
+                    $('#addList').html('');
+                    alert(result.error);
+                }
+            },'json')  
+        }
+    })
+
+})
+
+//数量
+  var amount = 1;
+  $().ready(function(){
+    $('#goodsStock').val('1');
+  }) 
+  
+      
+  var maxAmount = parseInt($('#goodsStock').attr('data'));
+  $('#amount').children('span').click(function(){
+    //$('#goodsStock').trigger('change');
+    if($(this).html()=='-'){
+      amount--;
+      if(amount<1){
+        amount = 1;
+      }
+      $('#amount').children('input').val(amount);
+    }else{
+      amount++;
+      if(amount>maxAmount){
+        amount = maxAmount;
+      }
+      $('#amount').children('input').val(amount);
+    }
+      var fee = getFee()
+      $('#factPrice').html($('#totalPrice').html()*amount + fee);
+  })
+  $('#amount').children('input').bind('input propertychange', function() {
+    if($(this).val()>maxAmount){
+      $(this).val(maxAmount);
+    }
+    if($(this).val()<0){
+      $(this).val(1);
+    }
+    amount = $(this).val();
+      var fee = getFee()
+      $('#factPrice').html($('#totalPrice').html()*amount +fee);
+  })
+  $('.fee').bind('input propertychange', function() {
+    var amount = $('#amount').children('input').val()
+    var totalPrice = $('#totalPrice').html()
+      var fee = getFee()
+      $('#factPrice').html(totalPrice*amount+fee)
+  });
+  $(function(){
+    var amount = $('#amount').children('input').val()
+    var totalPrice = $('#totalPrice').html()
+      var fee = getFee()
+      $('#factPrice').html(totalPrice*amount+fee)
+  })
+
+  function getFee(){
+    var freight = $('#freight').val() ? $('#freight').val() : 0;
+    var certificate = $('#certificate').val() ? $('#certificate').val() : 0;
+    var pack = $('#pack').val() ? $('#pack').val() : 0;
+    var mount = $('#mount').val() ? $('#mount').val() : 0;
+    var other = $('#other').val() ? $('#other').val() : 0;
+    var fee = parseInt(freight) + parseInt(certificate) + parseInt(pack) + parseInt(mount) + parseInt(other);
+    return fee;
+  }
+
+    $('.submitBtn').click(function() {
+      var thisName = $(this).attr('name');
+      if (thisName == 'sub1') {
+        var msg = '此操作为到店取货，确认提交吗？';
+      }else if (thisName == 'sub0'){
+        var msg = '是否确定提交正式订单？';
+      }
+      if( confirm( msg ) ){
+        var $consignee = $('#consignee').val();
+        var $phone = $('#phone').val();
+        var $province = $('#province').val();
+        var $city = $('#city').val();
+        var $area = $('#area').val();
+        var $address = $('#address').val();
+        var $realprice = $('#realprice').val();
+        var $goodsStock = $('#goodsStock').val();
+        var $addressIndex = $('#addressIndex').val();
+        var $newAddData = $('#newAdd').attr('data');
+        if(!$addressIndex){        
+            if ( $.trim($consignee) == '' ) {
+                alert('请填写客户姓名');
+                return false;
+            }
+            if ( $.trim($province) == '' ) {
+                alert('请填写省');
+                return false;
+            }
+            if ( $.trim($city) == '' ) {
+                alert('请填写市');
+                return false;
+            }
+            if ( $.trim($area) == '' ) {
+                alert('请填写区');
+                return false;
+            }
+            if ( $.trim($address) == '' ) {
+                alert('请填写详细地址');
+                return false;
+            }
+        }       
+        if ( $.trim($phone) == '' ) {
+            alert('请填写手机号码');
+            return false;
+        }       
+        if ( $.trim($realprice) == '' ) {
+            alert('请填写实付价格');
+            return false;
+        }
+        if ( $goodsStock < 1 ) {
+            alert('库存不能小于1');
+            return false;
+        }
+        
+        $('#form').submit();
+      }else{
+        return false;
+      }
+    })
+    
+    $(document).on("change", '#province',function() {
+      var province = $(this).val();
+        var city = $('#city');
+        var area = $('#area');
+        city.html('<option value="">请选择城市</option>');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/city',{'province':province},function(result) {
+          var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择城市</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择城市</option>';
+            } else if( result.success == 2 ){
+              alert(result.notice);
+            }
+          city.html(html);
+        },'json')
+    });
+    $(document).on("change", '#city',function() {
+      var city = $(this).val();
+        var area = $('#area');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/area',{'city':city},function(result) {
+          var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择地区</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择地区</option>';
+            } else if( result.success == 2 ){
+              alert(result.notice);
+            }
+          area.html(html);
+        },'json')
+    });
+
+    // $(document).on("change", '#payway',function() {
+    //   var $way = $(this).val();
+    //     var $type = $('#paytype');
+    //     $type.html('<option value="">请选择</option>');
+    //     $.post('/push/getPayType',{'pid':$way},function(result) {
+    //       var html = '';
+    //         if(result.success == 1) {
+    //             html += '<option value="">请选择</option>';
+    //             for(var i=0;i<result.data.length;i++){
+    //                 html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+    //             }
+    //         } else {
+    //            html += '<option value="">请选择</option>';
+    //         }
+    //       $type.html(html);
+    //     },'json')
+    // });
+    // $(document).on("change", '#paytype',function() {
+    //   var $type = $(this).val();
+    //     var $bank = $('#paybank');
+    //     $bank.html('<option value="">请选择</option>');
+    //     $.post('/push/getPayBank',{'pid':$type},function(result) {
+    //       var html = '';
+    //         if(result.success == 1) {
+    //             html += '<option value="">请选择</option>';
+    //             for(var i=0;i<result.data.length;i++){
+    //                 html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+    //             }
+    //         } else {
+    //            html += '<option value="">请选择</option>';
+    //         }
+    //       $bank.html(html);
+    //     },'json')
+    // });
+    </script>

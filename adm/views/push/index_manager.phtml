@@ -1,0 +1,47 @@
+		
+	<form action="" method="get" id="submit"></form>
+        <div class="row avatar pdl15 pdr15 mt10">
+            <div class="neworder-info row">
+                <?php foreach( $this->manager as $row ):?>
+                    <?php if($row): ?>
+                        <div class="col-sm-6 col-lg-4 col-lg mt10 channel" data="<?=$row['devId']?>">
+                                <div class="avatar-wrap">
+                                        <div class="fl"><img src="<?=$row['headimgurl']?>"/></div>
+                                        <div class="fr">
+                                            <?php if($row['name']): ?>
+                                            <p class="avatar-tit">负责人<span><?=$row['name']?></span></p>
+                                            <?php else: ?>
+                                                <p class="avatar-tit">负责人<span>未指定</span></p>
+                                            <?php endif;?>
+                                                <p>渠道数量<span><?=$row['num']?></span></p>
+                                        </div>
+                                </div>
+                        </div>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </div>
+        </div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('.channel').bind({
+		click:function(){
+			var devId = $(this).attr('data');
+			var $form = $('#submit');
+			$form.append("<input type='hidden' name='devId' value='"+devId+"' />");
+			$form.append("<input type='hidden' name='showType' value='choice' />");
+			$form.submit();
+		}
+	})
+	window.onload=function(){
+		var $img = $('.avatar-wrap').children('.fl').children('img');
+		for(var i=0;i<$img.length;i++){
+			var width = $img.eq(i).parent().siblings().height() - $img.eq(i).height() + 10;
+			if(width>0){
+				$img.eq(i).css('margin-top',width/2+'px');
+			}
+		}
+	}
+</script>

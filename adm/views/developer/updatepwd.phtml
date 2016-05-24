@@ -1,0 +1,31 @@
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+<div class="col-md-10">
+    <h4>修改密码</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+
+    <form class="form-updatepwd" method="POST">
+      <label for="input-current" class="sr-only">Current Password</label>
+                   当前密码：<input type="password" name="current" id="input-current" class="form-control userpwd" placeholder="当前密码" required autofocus>        
+      <label for="input-password" class="sr-only">New Password</label>
+                 新密码：<input type="password" name="password" id="input-password" class="form-control userpwd" placeholder="新密码" required autofocus>
+      <label for="input-confirm" class="sr-only">Confirm Password</label>
+                 确认密码：<input type="password" name="confirm" id="input-confirm" class="form-control userpwd" placeholder="请再输入一次" required autofocus>
+      <button class="btn btn-md btn-primary btn-block" type="submit">提交修改</button>
+  </form>
+</div>
+
+<style>
+.form-updatepwd input, .form-updatepwd button {margin: 10px 0; width: 200px;}
+</style>
+ <script>
+    $(function() {
+    	$('.username').val('');
+        $('.userpwd').val('');
+    })
+    </script>
+

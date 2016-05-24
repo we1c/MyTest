@@ -1,0 +1,291 @@
+
+
+
+<!--加载框-->
+    <div id="runWrap">
+        <div class="rundiv">
+            <div class="runclose">×</div>
+            <h4>页面加载中</h4>
+            <div class="runbar">
+                <div></div>
+            </div>
+        </div>
+    </div>
+<!--加载框结束-->
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">平台商品管理</a>
+                        >
+                        <a href="">商品列表</a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+
+<form action="" method='get' name='search' id="search">
+            <input type="hidden" name="showType" value="<?=$this->showType?>">
+            <span id="showType" class="btn btn-primary top-search">
+                <?php if( $this->showType == 'fall' ):?>
+                    列表形式
+                <?php else:?>
+                    瀑布流形式
+                <?php endif;?>
+            </span>
+            
+            <span class="top-search linheit">批量推送：</span>
+            <select class="form-control top-search" name="cids" id="cids">
+                <option value="">请选择</option>
+                <?php foreach ( $this->dis as $v ): ?>
+                    <option value="<?=$v['id'] ?>"><?=$v['name']?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="button" id="batchPush" class="btn btn-primary top-search" value="推送">
+            <!-- <input name="keyword" value="<?=$this->keyword?>" class="form-control top-search" type="text" placeholder="名称，编码，货号" />
+                
+            <span class="block top-search btn btn-primary" id='lowSearch'>搜索</span> -->
+
+            <div class="btn-group btn-search">
+                <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                <ul class="batch-menu">
+                    <li data="1">模糊查询</li>
+                    <li data="2">按sku查询</li>
+                    <li data="3">按货号查询</li>
+                </ul>
+            </div>
+            <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+            <div class="btn-group">
+                <div class="input-group">
+                    <input name="keyword" value="<?=$this->keyword?>" class="form-control" type="text" placeholder="请输入关键词" />
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id='lowSearch'>搜索</button>
+                    </div>
+                </div>
+            </div>
+<!-- high-search -->
+                <div id="highSearch" class="btn-group">
+                    <span type="button" class="btn btn-primary">高级搜索</span>
+                    <span id="batch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </span>
+                    <div class="high-search batch-menu">
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="top-search linheit">开发进度：</span>
+                                <select class="form-control top-search" name="developPlan">
+                                    <option value="" <?php if($this->developPlan == '') echo "selected = 'selected'" ?>>全部</option>
+                                    <option value="1" <?php if($this->developPlan == 1) echo "selected = 'selected'" ?>>商品售罄</option>
+                                    <option value="2" <?php if($this->developPlan == 2) echo "selected = 'selected'" ?>>暂停销售</option>
+                                    <option value="3" <?php if($this->developPlan == 3) echo "selected = 'selected'" ?>>任务中心</option>
+                                    <option value="4" <?php if($this->developPlan == 4) echo "selected = 'selected'" ?>>审核中心</option>
+                                    <option value="5" <?php if($this->developPlan == 5) echo "selected = 'selected'" ?>>二审通过</option>
+                                    <option value="6" <?php if($this->developPlan == 6) echo "selected = 'selected'" ?>>商家上传</option>
+                                    <option value="7" <?php if($this->developPlan == 7) echo "selected = 'selected'" ?>>照片拍摄</option>
+                                    <option value="8" <?php if($this->developPlan == 8) echo "selected = 'selected'" ?>>文案丰富</option>
+                                    <option value="9" <?php if($this->developPlan == 9) echo "selected = 'selected'" ?>>等待上架</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="top-search linheit">平台价格：</span>
+                                <input name="minPrice" value="<?=$this->minPrice?>" class="form-control top-search" type="text" />
+                                <span class="top-search linheit">至</span>
+                                <input name="maxPrice" value="<?=$this->maxPrice?>" class="form-control top-search" type="text"/>
+                            </div>
+                        </div>
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary fr disguise">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!-- high-search -->
+</form>
+            <div class="setwrap  top-search">
+                <button id="export" class="btn btn-primary fr">导出商家商品</button>
+                <button id="setWindow" class="btn btn-primary  top-search">列设置</button>
+                <div class="set-window"></div>
+            </div>
+            <span class='linheit top-search'>总数：<i class='red'><?=$this->total ?></i></span>    
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            
+            <?php if( $this->showType == 'list' ): ?>
+                <?php include(dirname(__FILE__).'/index_list.phtml'); ?>
+            <?php else:?>
+                <?php include(dirname(__FILE__).'/index_fall.phtml'); ?>
+            <?php endif;?>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                    <input type="tel" value="<?=$this->page?>"/>
+                    <span class='go' total='<?=$this->total?>'>GO></span>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    //模糊搜索
+    //$('#searchType').val(1);
+    $('.btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+    //高级搜索展开按钮点击
+    $('#batch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('#batch').next('.high-search').click(function(e){
+        e.stopPropagation();
+    })
+
+    //普通搜索按钮
+    $('#lowSearch').bind({
+        click:function(){
+            $('#highSearch').children().remove();
+            $('#search').submit();
+        }
+    })
+    //页面go跳转
+    $('.go').bind({
+        click:function(){
+            var go = parseInt($(this).prev().val());
+            var total = parseInt($(this).attr('total'));
+            var $current = $(this).parent().prev().find('span');
+            var href = $current.attr('href');
+            var reg = /pages=(\d+)/;
+            var pages = href.match(reg);
+            reg = /perpage=(\d+)/;
+            var perpage = href.match(reg);
+            if( go > parseInt(pages[1]) ){
+                alert('当前一共有'+total+'条记录\n每页显示'+perpage[1]+'条\n总共有'+pages[1]+'页\n请选择合适的页码');
+            }else{
+                href = href.replace(/\bpage=\d+\b/,'page='+go);
+                window.location.href = href;
+            }
+        }
+    });
+
+    //全选
+    var checkAll = false;
+    $("#checkBox").click(function(){
+        if(!checkAll){
+            $("#table").find("tr input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $("#table").find("tr input").prop({"checked":false});
+        }
+    })
+    
+    //批量推送
+    $(document).on('click','#batchPush',function(){
+        var chks = $("#form").find("input[name='goodsId[]']");
+
+        var cids = $('#cids').val();
+        //search cids status keyword
+        if (cids == '') {
+            alert('请选择分销商');
+            return false;
+        }
+    	var bl=false;
+    	for(var i=0;i<chks.length;i++)
+    	{
+    	    if(chks[i].checked) 
+    	    {
+        	    bl = true;
+        	    break;
+    	    }
+    	} 
+    	if(!bl) {
+        	alert('最少选择一条信息');
+        	return false;
+    	}
+    	$.post('/shopmarket/batchPush',$('form').serialize(),function(result){
+    	    if( result.success == 1 ){
+                // console.log(result);
+                var info = result.data;
+                var str = '';
+                if( info.success.length > 0 ){
+                    str += '推送成功的商品ID:'+info.success.join(',')+'/r';
+                }
+                if( info.fail.length > 0 ){
+                    str += '推送商品的商品ID:'+info.fail.join(',')+'可稍后重试/n';
+                }
+                if( info.ago.length > 0 ){
+                    str += '推送重复的商品ID:'+info.ago.join(',')+'推送过的渠道，不能重复推送';
+                }
+                alert(str);
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    })
+
+    //切换页面按钮
+/*    $('#showType').bind({
+        click:function(){
+            var typeObj = $(this).parent().find("[name='showType']");
+            var typeValue = typeObj.val();
+            if( typeValue == 'list' ){
+                typeObj.val('fall');
+            }else{
+                typeObj.val('list');
+            }
+            $(this).parent().submit();
+            return false;
+        }
+    })*/
+    //关闭等待框
+    $('#runWrap').find('.runclose').click(function(){
+        $('#runWrap').hide();
+    })
+
+    $('#export').bind({
+        click:function(){
+            var $form = $('#search');
+            $form.attr('action','/shopmarket/export');
+            $form.submit();
+            $form.attr('action','');
+            return false;
+        }
+    })
+
+</script>

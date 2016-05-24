@@ -1,0 +1,372 @@
+body{
+	background: #ebebeb;
+	font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
+	color: #222;
+	font-size: 12px;
+}
+*{padding: 0px;margin: 0px;}
+.top_div{
+	background: #008ead;
+	width: 100%;
+	height: 400px;
+}
+.bottom_div{
+	background: rgb(255, 255, 255);
+	margin: -100px auto auto;
+	border: 1px solid rgb(231, 231, 231);
+	border-image: none;
+	width: 400px;
+	text-align: center;
+	position: relative;
+}
+.ipt{
+	border: 1px solid #d3d3d3;
+	padding: 10px 10px;
+	width: 290px;
+	border-radius: 4px;
+	padding-left: 35px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+.ipt:focus{
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+.u_logo{
+	background: url("/img/login/username.png") no-repeat;
+	padding: 10px 10px;
+	position: absolute;
+	top: 13px;
+	left: 40px;
+
+}
+.p_logo{
+	background: url("/img/login/password.png") no-repeat;
+	padding: 10px 10px;
+	position: absolute;
+	top: 12px;
+	left: 40px;
+}
+a{
+	text-decoration: none;
+}
+.tou{
+	background: url("/img/login/tou.png") no-repeat;
+	width: 97px;
+	height: 92px;
+	display: block;
+	margin:0 auto -5px;
+}
+.left_hand{
+	background: url("/img/login/left_hand.png") no-repeat;
+	width: 32px;
+	height: 37px;
+	position: absolute;
+	top: -38px;
+	left: 150px;
+}
+.right_hand{
+	background: url("/img/login/right_hand.png") no-repeat;
+	width: 32px;
+	height: 37px;
+	position: absolute;
+	top: -38px;
+	right: -64px;
+}
+.initial_left_hand{
+	background: url("/img/login/hand.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: 74px;
+	left: 110px;
+}
+.initial_right_hand{
+	background: url("/img/login/hand.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: 74px;
+	right: 110px;
+}
+.left_handing{
+	background: url("/img/login/left-handing.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: -24px;
+	left: 139px;
+}
+.right_handinging{
+	background: url("/img/login/right_handing.png") no-repeat;
+	width: 30px;
+	height: 20px;
+	position: absolute;
+	top: -21px;
+	left: 210px;
+}
+#header{
+	position: absolute ;
+	left: 0;
+	bottom: 100%;
+	width: 100%;
+
+}
+#form p{
+	padding: 0px 0px 10px; 
+	position: relative;
+}
+
+.erp-name{
+	color: #795656;
+    line-height: 60px;
+    letter-spacing: 2px;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 30px 0px 10px;
+}
+.bottom-btn {
+	height: 50px; 
+	line-height: 50px; 
+	margin-top: 20px; 
+	border-top-color: rgb(231, 231, 231); 
+	border-top-width: 1px; 
+	border-top-style: solid;
+}
+.bottom-btn p {
+	margin: 0px 35px 20px 45px;
+}
+.fl {
+	float: left;
+}
+.fr {
+	float:right;
+}
+#submitBtn{
+	background: rgb(0, 142, 173);
+	padding: 8px 10px;
+	border-radius: 4px;
+	border: 1px solid rgb(26, 117, 152);
+	border-image: none;
+	color: rgb(255, 255, 255);
+	font-weight: bold;
+}
+.check{
+	float: left;
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin-left: 29px;
+    border-radius: 4px;
+    border: 2px solid #9f9f9f;
+    background-position: center center;
+    margin-top: 8px;
+}
+.rember {
+	float: left;
+    margin-left: 8px;
+    margin-right: 8px;
+    color: #9f9f9f;
+    line-height: 34px;
+}
+.mt10 {
+	margin-top:10px 
+}
+/* body {
+	font-family: "宋体", "Arial Narrow", HELVETICA;
+	text-align: center;
+	margin: 0 auto;
+	padding: 0;
+	background: #FFF;
+	font-size: 12px;
+	color: #333;
+}
+
+.container-fluid {
+	padding: 0;
+}
+
+.container {
+	padding: 0;
+}
+
+div,
+form,
+ul,
+ol,
+li,
+span,
+p {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+img,
+a img {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+ul,
+ol,
+li {
+	list-style: none
+}
+
+table,
+td,
+input {
+	font-size: 12px;
+	padding: 0
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+}
+
+a {
+	outline-style: none;
+	color: #333;
+	text-decoration: none
+}
+
+a:hover {
+	color: #c00;
+	text-decoration: underline;
+}
+*
+ * main
+.container-fluid {
+	background: #F1F2F7;
+	height: 100%;
+}
+
+.login-window {
+	width: 336px;
+	height: 295px;
+	border-radius: 10px;
+	background: #FFFFFF;
+	margin: 120px auto 0;
+}
+
+.login-title {
+	height: 60px;
+	border: 1px solid #CDF2EF;
+	background: #37CBC1;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	color: #FFFFFF;
+	line-height: 60px;
+	letter-spacing: 2px;
+	font-size: 14px;
+	font-weight: 900;
+}
+
+.login-form input {
+	width: 290px;
+	height: 35px;
+	border: 2px solid #9f9f9f;
+	border-radius: 8px;
+	margin: 20px auto 0;
+	text-indent: 15px;
+}
+
+.login-form input:focus {
+	outline: none;
+}
+
+::-webkit-input-placeholder {
+	color: #9f9f9f;
+}
+
+::-moz-placeholder {
+	color: #9f9f9f;
+}
+
+:-ms-input-placeholder {
+	color: #9f9f9f;
+}
+
+.checkbox-group {
+	margin-top: 12px;
+}
+
+.checkbox-group .check {
+	float: left;
+	display: block;
+	width: 16px;
+	height: 16px;
+	margin-left: 29px;
+	border-radius: 4px;
+	border: 2px solid #9f9f9f;
+	background-position: center center;
+}
+
+.checkbox-group .rember {
+	float: left;
+	margin-left: 8px;
+	color: #9f9f9f;
+}
+
+.enter {
+	display: block;
+	border: none;
+	width: 295px;
+	height: 35px;
+	margin: 12px auto;
+	border-radius: 10px;
+	background: #f8796a;
+	line-height: 35px;
+	font-size: 14px;
+	color: #FFFFFF;
+	box-shadow: 6px 6px 18px 0px #ec8c81;
+}
+
+.enter:focus {
+	outline: none;
+}
+
+@media (max-width:370px) {
+	.login-window{
+		width: 90%;
+		margin-top: 15%;
+	}
+	.login-form input{
+		width: 90%;
+	}
+	.enter{
+		width: 90%;
+	}
+	.checkbox-group .check{
+		margin-left: 7%;
+	}
+}
+@media (max-height:350px) {
+	.login-window{
+		margin-top: 3%;
+	}
+}
+ */

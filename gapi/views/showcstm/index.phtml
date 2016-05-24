@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title><?=$this->data['name'] ?></title>
+<meta name="description" content="<?php $str=preg_replace('/<\/?[^>]+>/i', ' ', $this->data['intro'] ); $str=substr($str,0,40).'...'; echo $str; ?>" />
+<meta name="keywords" content="<?php if($this->data['attribute']) { $str=''; foreach( $this->data['attribute'] as $item ){ $str.=$item['value']['name'].',';} $str=rtrim($str,','); echo $str;} ?>" />
+<link href="/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/js/function.js"></script>
+<style>
+	.stock{
+		margin-top: 3px;
+	    font-size: 12px;
+	    color: #B7B7B7;
+	}
+	.swiper-slide {
+		overflow: hidden;
+	}
+	.swiper-slide img {
+	    width: 100%;
+	    height: auto;
+	    max-width: none;
+	}
+</style>
+</head>
+<body class="scroll">
+
+	<input type="hidden" id="goods_id" value="<?=$this->data[id]?>">
+	
+	<div style='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+		<img src="<?=$this->data['goodsImg'][0]['imgurl']?>" />
+	</div>
+
+	<div class="swiper-container">
+		<div class="swiper-wrapper" id="headimg">
+			<?php foreach( $this->data['goodsImg'] as $k => $v ):?>
+				<?php if( $k < 2 ):?>
+					<div class="swiper-slide"><img src="<?=$v['imgurl']?>" /></div>
+				<?php else:?>
+					<div class="swiper-slide"></div>
+				<?php endif;?>
+			<?php endforeach;?>
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+
+	<div class="productdetail pdrl20">
+		<div class="productdetop pdtb10 overf">
+			<div class="fl productdetopneme goods_name"><h3><?=$this->data['name'] ?></h3></div>
+			<div class="fr productdetopIco"><span class=""></span></div>
+		</div>
+		<p class="sku">SKU 编号：<span><?=$this->data['code']?></span></p>
+		<p class="stock">库存数量：<span><?=$this->data['goodsStock']?></span></p>
+		<div class="productdetailpro mt20">
+			<?=$this->data['intro'] ?>
+		</div>
+
+<!-- 商品详情  -->		
+		<div class="gooddescribe mt20">
+
+			<span class="gooddesTit">商品 ○ 信息</span>
+			<p class="english">Product information</p>
+			<ul class="gooddesul">
+				<?php if($this->data['attribute']) {?>
+			    <?php foreach ($this->data['attribute'] as $item){if($item['value']['name'] != '0' ){ $key=$item['key']['name']; if(mb_strlen($key,'utf-8')==1){?>
+			    	<li>
+						<span class="fl descripan"><em class="fl">【</em><?=$key?><em class="fr">】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }elseif(mb_strlen($key,'utf-8')==2){?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><em class="fr"><?php echo mb_substr($key,1,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }elseif(mb_strlen($key,'utf-8')==3){?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><?php echo mb_substr($key,1,1,'utf-8');?><em class="fr"><?php echo mb_substr($key,2,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }else{?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><?php echo mb_substr($key,1,2,'utf-8');?><em class="fr"><?php echo mb_substr($key,3,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }}}}?>
+			</ul>
+
+			<div class="related" style="padding-bottom:80px;">
+
+				<div class="logobottom">
+					<div class="logo">
+						<img src="/images/xhz1g.png"/>
+						<div class="logotit">
+							<p>只有一个</p>
+							<p>1ge.com</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+				<p class="center" ><a href="http://www.1ge.com">只有一个提供技术支持</a></p>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script type="text/javascript" src="/js/swiper.min.js"></script>
+<script>
+var flag = true;
+var swiper = new Swiper('.swiper-container', {
+	pagination: '.swiper-pagination',
+	paginationClickable: true,
+	loop:true,
+	speed:800,
+	onTouchStart: function(swiper,even){
+     	var offset=2;
+     	if(flag){
+     		//加载剩下的图片$.post('/goods/delGoods',{'id':id},function(result) {
+     		var id=$('#goods_id').val();
+     		$.post('/showcstm/getnextimg',{'id':id,'offset':offset},function(result){
+     			console.log(result);
+     			if(result.success ==1 ){
+     				var len=result.data.length;
+     				for(var i=0;i<len;i++){
+     					var add_img="<img src='"+result.data[i].imgurl+"' />";
+     					$('#headimg').find('.swiper-slide').eq(i+3).append(add_img);
+     					if(i==(len-1)){
+     						$('.swiper-wrapper .swiper-slide').eq(0).append(add_img);
+     					}
+     				}
+
+     				/*$('#headimg').find('img:gt(1)').each(function(i){
+     					$(this).load(function(){
+     						cut( $(this) , $('#headimg') );
+     					})
+     				})*/
+     				
+     			}
+     		},'json')
+     	}
+     	flag=false;
+    },
+})
+
+	/*function cut(img,wrap){
+		
+		var wrapHeight = wrap.height();
+		var imgHeight = img.height();
+		//console.log(wrapHeight+":"+imgHeight);
+		//console.log(img);
+		if(imgHeight > wrapHeight){
+			var marginTop = (wrapHeight - imgHeight)/2;
+			img.css('margin-top',marginTop + 'px');
+		}else if(imgHeight < wrapHeight){
+			img.css({'height':'100%','width':'auto'});
+			var wrapWidth = wrap.width();
+			var imgWidth = img.width();
+			//console.log(wrapWidth + ' ' + imgWidth)
+			var marginLeft = (wrapWidth - imgWidth)/2;
+			img.css({'margin-left':marginLeft + 'PX'});
+		}
+	}*/
+	
+	/*$(".wrap").each(function(){ 
+		console.info(this instanceof $); //false 
+		console.info($(this) instanceof $); //true 
+	})*/
+
+//analytics
+(function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-71370659-1', 'auto');
+ga('send', 'pageview');
+
+/*window.onload=function(){
+	var $img = $('#headimg').find('img');
+	$.each($img,function(i){
+		cut( $img.eq(i),$('#headimg') );
+	})
+}*/
+
+
+</script>
+
+</html>

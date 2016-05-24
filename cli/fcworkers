@@ -1,0 +1,3 @@
+#!/bin/bash
+nohup php ./worker.php > log_1 &
+nohup php ./worker.php > log_2 &

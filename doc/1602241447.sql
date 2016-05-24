@@ -1,0 +1,2 @@
+INSERT INTO `erp`.`city` (`id`, `name`, `first_letter`, `description`, `parent_id`, `sort_num`, `create_time`, `author`) VALUES ('510116', '高新区', NULL, '四川|成都|高新区', '5101', '20', '0000-00-00 00:00:00', '0');
+ALTER TABLE shop ADD category TINYINT(4) COMMENT '分组类别：1只有一个，2绣花张，3悦榕阁';

@@ -1,0 +1,381 @@
+    <div class="row childpad">
+        <label class="col-lg-1 col-md-2 control-label text-right">商品名称</label>
+        <div class="col-sm-4">
+            <input type="text" name="name" class="form-control" id="shopName" value="<?=$this->Info['name']?>" disabled>
+        </div>
+        <label class="col-lg-1 col-md-2 control-label text-right">SKU编号</label>
+        <div class="col-sm-4">
+            <input type="text" name="name" class="form-control" id="shopName" value="<?=$this->Info['code']?>" disabled>
+        </div>
+    </div>
+    <div class="row childpad">
+        <label class="col-lg-1 col-md-2 control-label text-right">平台价格</label>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <div class="input-group-addon">￥</div>
+                    <input type="text" name="price" class="form-control" value="<?php if ( $this->Info['ptimes'] ): ?><?=round($this->Info['purchPrice'] * $this->Info['ptimes']) ?><?php else: ?><?=$this->Info['purchPrice'] ?><?php endif; ?>" disabled>
+                <div class="input-group-addon">.00</div>
+            </div>
+        </div>
+        <label class="col-lg-1 col-md-2 control-label text-right">市场参考价</label>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <div class="input-group-addon">￥</div>
+                    <input type="text" name="price" class="form-control" value="<?php if ( $this->Info['mtimes'] ): ?><?=round($this->Info['purchPrice'] * $this->Info['mtimes']) ?><?php else: ?><?=$this->Info['purchPrice'] ?><?php endif; ?>" disabled>
+                <div class="input-group-addon">.00</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row childpad">
+        <label class="col-lg-1 col-md-2 control-label text-right">商品货号</label>
+        <div class="col-sm-4">
+            <input type="text" name="goodsNo" class="form-control" value="<?=$this->Info['goodsNo']?>" disabled>
+        </div>
+        <label class="col-lg-1 col-md-2 control-label text-right">库存</label>
+        <div class="col-sm-4">
+            <div class="input-group">
+                    <input type="text" name="stock" class="form-control" value="<?=$this->Info['goodsStock']?>" disabled>
+                <div class="input-group-addon">个</div>
+            </div>
+        </div>
+    </div>
+
+	<!-- <div class="form-group formCustom">
+             <label class="col-md-2 control-label" style="height:50px;line-height:50px;">是否显示价格</label>
+             <div class="col-sm-10" style="height:50px;line-height:50px;">
+                   是:<input type="radio" name="showPrice" <?php if($this->Info['showPrice'] == 1) echo "checked='checked'" ?> value="1">
+                   否:<input type="radio" name="showPrice" <?php if($this->Info['showPrice'] == 0) echo "checked='checked'" ?> value="0">
+             </div>
+    </div> -->
+
+    <div class="row childpad">
+        <label class="col-lg-1 col-md-2 control-label text-right">商品目录</label>
+        <div class="col-sm-3 classifywrap mb10" level="0">
+            <div class="classifymenu" level="0">
+                <div class="classifysearch">
+                    <input type="text" />
+                    <span><img src="/img/classifysearch.png"/></span>
+                </div>
+                <ul class="classifylist" level="0">
+                    <?php if( $this->category1 ):?>
+                    <?php foreach ($this->category1 as $v): ?>
+                        <li value="<?=$v['id'] ?>" class="<?= $v['id']==$this->Info['category1'] ? 'active':'';?>" ><?=$v['name'] ?></li>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
+                <input type="hidden" name="category1" value="<?=$this->Info['category1']?>">
+            </div>
+        </div>
+        <div class="col-sm-3 classifywrap mb10" level="1">
+            <div class="classifymenu <?=empty($this->category2)?'none':'';?>" level="1">
+                <div class="classifysearch">
+                    <input type="text" />
+                    <span><img src="/img/classifysearch.png"/></span>
+                </div>
+                <ul class="classifylist" level="1" >
+                    <?php if( $this->category2 ):?>
+                    <?php foreach ($this->category2 as $v): ?>
+                        <li value="<?=$v['id'] ?>" class="<?=$v['id']==$this->Info['category2']?'active':''?>"><?=$v['name'] ?></li>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
+                <input type="hidden" name="category2" value="<?=$this->Info['category2']?>">
+            </div>
+        </div>
+        <div class="col-sm-3 classifywrap mb10" level="2">
+            <div class="classifymenu <?=empty($this->category3)?'none':'';?>" level="2">
+                <div class="classifysearch">
+                    <input type="text" />
+                    <span><img src="/img/classifysearch.png"/></span>
+                </div>
+                <ul class="classifylist" level="2">
+                    <?php if( $this->category3 ):?>
+                    <?php foreach ($this->category3 as $v): ?>
+                        <li value="<?=$v['id'] ?>" class="<?=$v['id']==$this->Info['category3']?'active':''?>"><?=$v['name'] ?></li>
+                    <?php endforeach; ?>
+                    <?php endif;?>
+                </ul>
+                <input type="hidden" name="category3" value="<?=$this->Info['category3']?>">
+            </div>
+        </div>
+        <!-- <div class="col-sm-2 mb10">
+            <span class="btn btn-primary">添加商品目录</span>
+        </div> -->
+    </div>
+
+<script>
+    function category(obj){
+        var parent = $(obj).parent();
+        var pid = $(obj).val();
+        $(obj).addClass('active').siblings().removeClass('active');
+        var level = parseInt(parent.attr('level'));
+        var relation = new Array();
+        relation = ['category','category','getPara'];
+        parent.next().attr('value',pid);
+        $.post('/checkone/'+relation[level],{'pid':pid},function(result){
+            if( result.success == 1 ){
+                var str='';
+                if( level != 2 ){
+                    $(".classifylist:gt("+level+")").html('');
+                    $(".classifymenu:gt("+level+")").hide();
+                    var data = result.data;
+                    var len = data.length;
+                    for( var i=0;i<len;i++ ){
+                        str += '<li value="'+data[i].id+'" onclick="category(this)">'+data[i].name+'</li>';
+                    }
+                    var next = level + 1;
+                    $(".classifylist[level='"+next+"']").html(str);
+                    $(".classifymenu[level='"+next+"']").show();
+                }else{console.log(result.data);
+                    $('.addPar').parent().parent().siblings().remove();
+                    for(var i=0;i<result.data.length;i++){
+                        str += '<div class="btn-block">';
+                        str += '<div class="btn-group">';
+                        str += '参数名 ：&nbsp;<select name="key[]" class="form-control" style="display:inline;width:160px">';
+                        str += '<option value="'+result.data[i].name+'-'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                        str += '</select></div>';
+                        str += '<div class="btn-group">';
+                        str += '&nbsp;参数值 ：&nbsp;<select name="value[]" class="form-control" style="display:inline;width:160px">';
+                        str += '<option value="">请选择参数值</option>';
+                        for( var j = 0; j < result.data[i].child.length; j++) {
+                            str += '<option value="'+result.data[i].child[j].name+'-'+result.data[i].child[j].id+'">'+result.data[i].child[j].name+'</option>';
+                        }
+                        str += '</select></div></div>';
+                    }
+                   
+                    $('.addPar').parent().parent().before(str);
+                }
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    }
+
+    $('.classifywrap').find('input').keyup(function(){
+            var txt = $(this).val();
+            $(this).parent().siblings().children('li').hide();
+            $.each($(this).parent().siblings().children('li'),function(){
+                if($(this).text().indexOf(txt) >= 0){
+                    $(this).show();
+                }
+            })
+    });
+</script>
+    <div class="row childpad">
+        <label class="col-lg-1 col-md-2 control-label text-right">参数列表</label>
+        <div class="col-sm-10 parData">
+            <?php if($this->Info['attribute']): ?>
+                <?php foreach ($this->Info['attribute'] as $v): ?>
+                    <div class="btn-block">
+                        <div class="btn-group">
+                        参数名 ：
+                        <?php if ( $v['key']['id'] ): ?>
+                        <select name="key[]" class="form-control" style="display:inline;width:160px" disabled="">
+                        <option value="<?=$v['key']['name']?>-<?=$v['key']['id']?>"><?=$v['key']['name']?></option>
+                        </select>
+                        <?php else : ?>
+                        <input type="text" class="form-control" style="display:inline;width:160px" name="key[]" value="<?=$v['key']['name']?>" disabled>
+                        <?php endif; ?>
+                        </div>
+                        
+                        <div class="btn-group">
+                        参数值 ：
+                        <?php if ( $v['value']['id'] || $v['value']['name'] == '0' ): ?>
+                            <select name="value[]" class="form-control" style="display:inline;width:160px" disabled="">
+                            <option value="0" <?=$v['value']['id']==0?"selected='selected'":''?>>请选择参数值</option>
+                            <?php foreach ( $v['value']['param'] as $key=>$val ): ?>
+                                <option value="<?=$val['name']?>-<?=$val['id']?>" <?php if( $v['value']['id'] == $val['id'] ) echo "selected='selected'" ?>><?=$val['name']?>
+                                </option>
+                            <?php endforeach; ?>
+                            </select>
+                        <?php else : ?>
+                            <input type="text" class="form-control" style="display:inline;width:160px" name="value[]" value="<?=$v['value']['name']?>" disabled>
+                        <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <div class="btn-block none">
+                <div class="btn-group">
+                    <button class="btn btn-info addPar" type="button">添加参数</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+    <div class="row childpad">
+        <label class="col-lg-1 col-md-2 control-label text-right">商品描述</label>
+        <div class="col-sm-10">
+            <script id="intro" type="text/plain" name="intro" style="height:200px;" disabled><?=htmlspecialchars_decode($this->Info['intro'])?></script>
+            <div class="editWrap"></div>
+        </div>
+    </div> 
+
+	<script type="text/javascript" src="/js/test.js/jquery.dragsort-0.5.2.js"></script>
+    <div class="row childpad">
+        <label class="col-md-2 col-lg-1 control-label text-right">添加图片</label>
+        <div class="col-md-10 col-lg-10">
+            <ul id="fileUl" class="row detailsimg details-group none">
+                <li>
+                    <img class="img-thumbnail" src="/img/newimg.gif"/>
+                    <input onchange="addImg(this)" num="0" id="file" type="file" name="file[]" multiple="multiple" />
+                </li>
+            </ul>
+            <ul id="showBox" class="row detailsimg details-group">
+                <?php if( $this->Info['goodsImg'] ):?>
+                <?php foreach ($this->Info['goodsImg'] as $k => $v): ?>
+                    <li class="oldImg">
+                        <img class="img-thumbnail" src="<?=$v['imgurl']?>"/>
+                        <div class="imgdel" data="<?=$v['id']?>" hash="<?=$v['hash'] ?>" >
+                            <span onclick="delOldImg(this.parentNode)" class="fl btn btn-primary">删除</span>
+                            <span class="fr btn btn-primary" onclick="showImg(JSsiblings(this.parentNode))">查看原图</span>
+                        </div>
+                        <input type="hidden" name="imgs[]" value="<?=$v['hash'] ?>">
+                     </li>
+                 <?php endforeach; ?>
+                 <?php endif;?>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row childpad">
+<!--        <label class="col-lg-1 col-md-2 control-label text-right">详情</label>
+        <div class="col-sm-10">
+            <script id="editor" type="text/plain" name="content" style="height:220px;" disabled><?=htmlspecialchars_decode($this->Info['content'])?></script>
+            <div class="editWrap"></div>
+        </div>
+-->
+        <div class="row childpad">
+            
+            <div class="col-sm-10 col-sm-offset-1">
+                <button type="button" class="btn btn-primary" id="showtemplet">详情预览</button>
+                
+            </div>
+        </div>
+        <div class="row childpad" style="overflow:hidden">
+            
+            <div class="col-sm-10" style="visibility:hidden;position:absolute;">
+                <iframe id="frm" src="/goodsdetails/index?goods_id=<?=$this->Info['id']; ?>" width="100%" style="border:0" >
+
+                </iframe>
+            </div>
+        </div>
+
+    </div> 
+
+	<script>
+
+    //显示或隐藏详情预览
+    $('#showtemplet').click(function(obj){
+        $('#frm').parent().slideToggle(1000); 
+    })
+
+    //增加上传图片
+    function addImg(obj){
+        var num = parseInt($(obj).attr('num'));
+        var showBox = document.getElementById('showBox');
+        var fileList = obj.files;
+        for(var i=0;i<fileList.length;i++){
+            var reader = new FileReader();
+            reader.readAsDataURL(fileList[i]);
+            reader.index = i;
+            reader.num = num;
+            reader.onload = function( ){
+                showBox.innerHTML+='<li class="newImg"><img class="img-thumbnail" src="'+this.result+'"/><div num="'+this.num+'" class="imgdel" index="'+this.index+'"><span class="fl btn btn-primary" onclick="delImg(this.parentNode)">删除</span><span class="fr btn btn-primary" onclick="showImg(JSsiblings(this.parentNode))">查看原图</span><input type="hidden" name=imgSort[up'+this.num+']['+this.index+'] value="" /></div></li>';
+            };
+        }
+/*<li class="oldImg"><img onclick="showImg(this)" class="img-thumbnail" src="<?=$v['imgurl']?>"/><div class="imgdel" data="<?=$v['id']?>" hash="<?=$v['hash'] ?>" onclick="delOldImg(this)"><span class="fr btn btn-primary">删除</span></div><input type="hidden" name="imgs[<?=$k?>]" value="<?=$v['hash'] ?>"></li>*/
+        //改变当前对象的id,确保增加标签的唯一性
+        $(obj).attr('id','file'+num).attr('name','file[up'+num+'][]').hide();//
+
+        var $inp = $('<input onchange="addImg(this)" num="'+(num+1)+'" id="file" type="file" name="file[]" multiple="multiple" />');
+        $('#fileUl').children('li').eq(0).append($inp);
+    }
+    //删除新添加的上传图片
+    function deleteImg(obj){
+        if( confirm('你确定要删除吗？') ){
+            //获取删除图片的批次和索引
+            var num = $(obj).attr('num'),index = $(obj).attr('index');
+            //console.log();return;
+            //记录删除file标签的具体某个索引图片
+            $('#form').append('<input type="hidden" name="delImg[up'+num+']['+index+']" value="'+num+'-'+index+'"/>')
+            //删除页面内的显示图片
+            $(obj).parent().remove();
+        }
+    }
+    //删除已经保存的图片
+    function delOldImg(obj){
+        if( confirm('你确定要删除吗？') ){
+            var imgId = $(obj).attr('data');
+            var hash = $(obj).attr('hash');
+            $('#form').append('<input type="hidden" name="delOldImg[]" value="'+hash+'" />');
+            $(obj).parent().remove();
+            /*$.post('/goods/delOldImg',{'imgId':imgId,'hash':hash},function(result){
+                if( result.success == 1 ){
+                    alert(result.data);
+                    $(obj).parent().remove();
+                }else{
+                    alert(result.error);
+                }
+            },'json');*/
+        }
+    }
+
+    //图片排序
+    $("#showBox").dragsort({
+        dragSelectorExclude:'span, input, textarea'
+    });
+    $(function(){
+/*    	var inputElement = document.getElementById("file");
+        inputElement.addEventListener("change", handleFiles, false);
+        function handleFiles(){
+            var fileList = this.files;
+            var dd = document.getElementById('content');
+            for( var i = 0 ; i < fileList.length ; i++ ){
+                var url =window.URL.createObjectURL(fileList.item(i));
+                dd.innerHTML += "<span style='margin:5px'><img src='"+url+"' width='100px' height='100px'/></span>";
+            }
+        }*/
+    	$(document).on('click','.addPar',function() {
+        	var html = '<div class="btn-block"><div class="btn-group">';
+            html += '参数名 ：&nbsp;<input class="form-control" style="display:inline;width:160px" type="text" name="key[]">';
+            html += '</div>';
+        	html += '<div class="btn-group">';
+            html += '&nbsp;参数值 ：&nbsp;<input class="form-control" style="display:inline;width:160px" type="text" name="value[]">';
+            html += '</div></div>';
+            $(this).parent().parent().before(html);
+        });
+        
+
+        $('.gbin1-list').sortable();
+        
+
+    	$('#uploadfile').click(function() {
+  		  $('#file').trigger('click');
+        })
+
+   	 //实例化编辑器
+        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+        var ue = UE.getEditor('editor',{
+        	toolbars: [
+        	           ['fullscreen', 'source', 'undo', 'redo'],
+        	           ['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc','simpleupload','justifyleft','justifyright','justifycenter','justifyjustify']
+        	       ]
+            });
+
+    	var intro_ue = UE.getEditor('intro',{
+        	toolbars: [
+                       ['fullscreen', 'source', 'undo', 'redo'],
+                       ['selectall', 'cleardoc', 'removeformat']
+                    ]
+            });
+        
+    })
+    
+        $('.editWrap').click(function(){
+            var id = $(this).prev().attr('id');
+            UE.getEditor( id ).setDisabled('fullscreen');
+            $(this).hide();
+        })
+	</script>

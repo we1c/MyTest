@@ -1,0 +1,28 @@
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+        <h1 style="cursor:pointer;">将push表所有上架商品写入sell_plan表</h1>
+        <button id="insert" type="button" style="cursor:pointer;">开始添加</button>
+        <span id="count"></span>
+    </div>
+</div>
+<script>
+    $('#insert').click(function(){
+        if (confirm('开始添加?')) {
+            $.ajax({
+                'url':'/superadmin/insertSellPlan',
+                'type':'post',
+                'data':{require:1},
+                'dataType':'json',
+                'success':function(result){
+                    if (result.success) {
+                        $('#count').html('成功写入'+result.data+'条数据');
+                        $('#insert').remove();
+                    }else{
+                        $('#count').html('写入失败');
+                    }
+                }
+            })
+        }
+    })
+</script>
+

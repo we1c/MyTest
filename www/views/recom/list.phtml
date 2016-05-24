@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>橱窗列表</title>
+
+</head>
+<body>
+
+
+
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+
+<div class="all-elements">
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+
+    <div id="content" class="page-content">
+
+        <div class="content">
+			<div class="container">
+				<div class="productlist">
+				    <?php if($this->list): ?>
+    				    <?php foreach ($this->list as $v): ?>
+        					<div class="column productlistinfo">
+        						<div class="prostorename">店铺名称：<?=$v['shopname'] ?></div>
+        						<img src="<?=$v['img'];?>" width="80" alt="img" />
+        						<div class="productlistinfodiv">
+        							<div class="productOpert">
+        								<div class="undercarriage down downgoods" data-id="<?=$v['id'] ?>">下架</div>
+        								<span class="recommend active unrecommend" data-id="<?=$v['id'] ?>">取消推荐</span>
+        							</div>
+        							<div class="productabout">
+        								<span class="column-title column-name"><?=$v['name'] ?></span>
+        								<span class="column-id">编号：<?=$v['id'] ?></span>
+        								<em class="column-text">
+        									<span class="productprice"><?=$v['price'] ?>元</span>
+        								</em>
+        							</div>
+        						</div>
+        					</div>
+    					<?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="window-overlay">
+	<div class="window-overlaybg"></div>
+	<div class="window tagsboxdiv">
+	<form class="downform">
+		<div class="upGoodsel">
+			<a href="#" class="checkbox radio-twoCus radioCustom sellhide radio-twoCus-checked "><input type="radio" name="down" value="2" /><span>暂不出售</span></a>
+			<a href="#" class="checkbox radio-twoCus radioCustom sellhide"><input type="radio" name="down" value="3"/><span>损坏</span></a>
+			<a href="#" class="checkbox radio-twoCus radioCustom sellpricebtn"><input type="radio" name="down" value="4"/><span>已出售</span></a>
+			<div class="sellpricehide"><span>出售价格</span><input type="text" name="price" /></div>
+		</div>
+		
+		<div class="tagsbtnbox">
+		    <input type="hidden" name="goodsId" id="goodsId">
+			<span class="tagserbtn button button-turqoise " id="downform">确定</span>
+			<span class="tagserbtn button button-dark tagresetbtn">取消</span>
+		</div>
+	</form>
+	</div>
+</div>
+<!--添加标签弹层-->
+
+</body>
+</html>

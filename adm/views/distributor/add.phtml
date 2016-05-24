@@ -1,0 +1,99 @@
+<div class="wrapper">
+    <div id="main" class="scrollbar container-fluid">
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">分销商管理</a>
+                    >
+                    <a href="">添加</a>
+                </div>
+            </div>
+        </div>
+        <form method="POST" action="/distributor/add" enctype="multipart/form-data" id="form">
+        <?php include(dirname(__FILE__) . '/form.phtml')?>
+        <div class="row mt10 mb50 neworder-btn">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-9">
+                <button type="button" class="btn btn-primary" id="submitBtn">确认</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+$('#submitBtn').click(function() {
+    var $name = $('#name').val();
+    var $domain = $('#domain').val();
+    var $ctimes = $('#ctimes').val();
+    if ( $.trim($name) == '') {
+        alert('请填写名称');
+        return false;
+    }
+    if ( $.trim($domain) == '' ) {
+        alert('请填写域名');
+        return false;
+    }
+    $('#form').submit();
+})
+    $(document).on("change", '#payway',function() {
+      var $way = $(this).val();
+        var $type = $('#paytype');
+        $type.html('<option value="">请选择</option>');
+        $.post('/push/getPayType',{'pid':$way},function(result) {
+          var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择</option>';
+                var selected = '';
+                for(var i=0;i<result.data.length;i++){
+                    if ( result.data[i].id == 4 ){
+                        selected = "selected='selected'";
+                    }
+                    html += '<option value="'+result.data[i].id+'" '+selected+'>'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择</option>';
+            } else if( result.success == 2 ){
+                alert(result.notice);
+            }
+          $type.html(html);
+        },'json')
+        var $typeval = $(this).val();
+        var $bank = $('#paybank');
+        $bank.html('<option value="">请选择</option>');
+        $.post('/push/getPayBank',{'pid':$typeval},function(result) {
+          var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择</option>';
+            } else if( result.success == 2 ){
+                alert(result.notice);
+            }
+          $bank.html(html);
+        },'json')
+    });
+    $(document).on("change", '#paytype',function() {
+      var $typeval = $(this).val();
+        var $bank = $('#paybank');
+        $bank.html('<option value="">请选择</option>');
+        $.post('/push/getPayBank',{'pid':$typeval},function(result) {
+          var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择</option>';
+            } else if( result.success == 2 ){
+                alert(result.notice);
+            }
+          $bank.html(html);
+        },'json')
+    });
+</script>

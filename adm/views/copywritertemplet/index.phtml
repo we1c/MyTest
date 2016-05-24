@@ -1,0 +1,121 @@
+
+<!-- include(dirname(__FILE__) . '/../sys/dev_nav.phtml')-->
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">采购管理</a>
+                        >
+                        <a href="">文案模板</a> 
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+                <form action="" method='get'>
+                    <a class="top-search btn btn-primary" href='/copywritertemplet/add'>添加</a>
+                    <div class="btn-group btn-search">
+                        <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                        <ul class="batch-menu">
+                            <li data="1">模糊查询</li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+                    <div class="btn-group">
+                        <div class="input-group">
+                            <input class="form-control" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="请输入关键词" />
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit" id="lowSearch">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="setwrap top-search">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                <span class='linheit'>总数：<i class='red'><?=$this->total ?></i></span>
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable">
+                <thead>
+                    <tr>
+                        <td><input id="checkBox" type="checkbox" />全选</td>
+                        <td>ID</td>
+                        <td>模板名称</td>
+                        <td>创建者</td>
+                        <td>创建时间</td>
+                        <td>编辑者</td>
+                        <td>编辑时间</td>                       
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($this->copywriterTempletList):?>
+                    <?php foreach ($this->copywriterTempletList as $k=>$row): ?>
+                      <tr class="text-center">
+                        <td><input type="checkbox" /></td>
+                        <td><?=$row['id'] ?></td>
+                        <td><?=$row['name']?></td>
+                        <td><?=$row['createname']?></td>
+                        <td><?=date('Y-m-d H:i:s',$row['createtime'])?></td>
+                        <td><?=$row['editname']?></td>
+                        <td><?=date('Y-m-d H:i:s',$row['edittime'])?></td>
+                        <td width="60px">
+                          <p><a href="/copywritertemplet/edit/?id=<?=$row['id']?>" class="btn btn-primary">编辑</a></p>
+                          <p><a href="/copywritertemplet/del/?id=<?=$row['id']?>" class="btn btn-primary doDel" >删除</a></p>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+
+                    <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+<script type="text/javascript">
+    //模糊搜索
+    // $('#searchType').val(1);
+    $('.btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+    $(document).on('click','.doDel',function() {
+    	 if (!confirm('确定要删除该类目模板吗？')) {
+        	 return false;
+    	 }
+    })
+</script>

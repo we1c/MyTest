@@ -1,0 +1,59 @@
+<div class="wrapper">
+    <div id="main" class="scrollbar container-fluid">
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">角色管理</a>
+                    >
+                    <a href="">添加用户</a>
+                </div>
+            </div>
+        </div>
+        <form method="POST" action="/role/adduser" id="form">
+        <input type="hidden" name="roleid" value="<?=$this->role['id'] ?>">
+        <div class="row mt10">
+            <div class="col-lg-2">
+                <div class="leftinfo">
+                    <ul>
+                        <li class="active"><div>角色管理</div></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 neworder-info">
+                <h4 class="tit">用户</h4>
+                <hr />
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">角色名称</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="sort" name="sort" value="<?=$this->role['name'] ?>" disabled>
+                    </div>
+                </div>
+                <div class="row childpad">
+                    <label class="col-lg-1 col-md-2 control-label">用户</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="user" name="user">
+                             <option value="0">-请选择用户-</option>
+                             <?php foreach ($this->user as $v): ?>
+                                <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+                             <?php endforeach; ?>
+                         </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt10 mb50 neworder-btn">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-9">
+                <button type="button" class="btn btn-primary" id="submitBtn">确认</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+$('#submitBtn').click(function() {
+    $('#form').submit();
+})
+</script>

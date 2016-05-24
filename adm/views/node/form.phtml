@@ -1,0 +1,78 @@
+<div class="row mt10">
+    <div class="col-lg-2">
+        <div class="leftinfo">
+            <ul>
+                <li class="active"><div>节点管理</div></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-9 neworder-info">
+        <h4 class="tit">节点管理</h4>
+        <hr />
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">节点名称</label>
+            <div class="col-sm-4">
+                <input type="text" id="name" name="name" class="form-control"  placeholder="节点名称" value="<?=$this->info['name']?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">上级节点</label>
+            <div class="col-sm-4">
+                <select name="pNode" class="form-control" style="width: 100%;">
+                    <option value="0-0">顶级菜单</option>
+                    <?php foreach ($this->menus as $menu) : ?>
+                        <option value="<?=$menu['level'].'-'.$menu['id']?>" <?php if($this->info['pid'] == $menu['id']) echo "selected='selected'";?>>--<?=$menu['name']?></option>
+                        <?php foreach ($menu['son'] as $son) :?>
+                            <option value="<?=$son['level'].'-'.$son['id']?>" <?php if($this->info['pid'] == $son['id']) echo "selected='selected'";?>>----<?=$son['name']?></option>
+                        <?php endforeach;?>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">控制器</label>
+            <div class="col-sm-4">
+                <input type="text" name="con" class="form-control"  placeholder="" value="<?=$this->info['con']?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">方法</label>
+            <div class="col-sm-4">
+                <input type="text" name="act" class="form-control"  placeholder="" value="<?=$this->info['act']?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">排序</label>
+            <div class="col-sm-4">
+                <input type="text" name="sort" class="form-control"  placeholder="" value="<?=$this->info['sort']?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">菜单栏</label>
+            <div class="col-sm-4">
+                <select name="isMenu" class="form-control" style="width: 100%;">
+                    <option value="0" <?php if($this->info['isMenu'] === '0') echo "selected='selected'";?>>不显示</option>
+                    <option value="1" <?php if($this->info['isMenu'] == 1) echo "selected='selected'";?>>显示</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">状态</label>
+            <div class="col-sm-4">
+                <select name="status" class="form-control" style="width: 100%;">
+                    <option value="1" <?php if($this->info['status'] == 1) echo "selected='selected'";?>>启用</option>
+                    <option value="0" <?php if($this->info['status'] === '0') echo "selected='selected'";?>>禁用</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+</script>

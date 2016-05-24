@@ -1,0 +1,56 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+    <link href="/css/new_file.css" rel="stylesheet" media="screen">
+<div class="col-md-10 form-group">
+    <h4>编辑</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+      
+    <form method="POST" id="form">
+        <?php include(dirname(__FILE__) . '/form.phtml')?>
+ 		<div class="form-group">
+        	<button type="button" class="btn btn-primary" id="submitBtn">保存添加</button>
+        </div>
+    </form>
+</div>
+    <script>
+    $('#submitBtn').click(function() {
+        var $shop = $('#shop').val();
+        var $shopName = $('#goodsName').val();
+        var $consignee = $('#consignee').val();
+        var $phone = $('#phone').val();
+        var $province = $('#province').val();
+        var $city = $('#city').val();
+        var $area = $('#area').val();
+        var $address = $('#address').val();
+        var $goodsList = $('#goodsList').val();
+        if ( $.trim($shop) == '') {
+            alert('请选择店铺');
+            return false;
+        }
+        if ( $.trim($consignee) == '' ) {
+            alert('请填写收货人');
+            return false;
+        }
+        if ( $.trim($phone) == '' ) {
+            alert('请填写手机号');
+            return false;
+        }
+        if ( $.trim($province) == '' || $.trim($city) == '' || $.trim($area) == '' || $.trim($address) == '') {
+            alert('请填写完整的详细地址');
+            return false;
+        }
+        if ( $.trim($goodsList) == '' ) {
+            alert('请选择商品');
+            return false;
+        }
+        $('#form').submit();
+    })
+    </script>
+<style>
+.form-group {margin-bottom: 20px}
+</style>

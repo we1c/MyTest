@@ -1,0 +1,54 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+<div class="col-md-10">
+    <h4>审核</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+      
+    <form method="POST" id="form">
+        <input type="hidden" name="id" value="<?=$this->data['id']; ?>"/>
+             <table>   
+        <tr class="form-group">
+        	<td style="width:100px">
+            <label for="input-years">审核结果</label>
+			</td>
+			<td style="width:800px">           
+            <SELECT name="status" class="form-control checkStatus" style="width:120px">
+            	<OPTION value="1">直接进平台</OPTION>
+            	<OPTION value="2">审核失败</OPTION>
+            </SELECT>
+           
+        	</td>
+        </tr>
+        <?php if ( $this->data['reason'] ): ?>
+       <tr class="form-group" id="remark" style="display: none">
+         	<td>
+            <label for="input-years">失败原因</label>
+			</td>
+			<td>            
+            	<textarea style="width: 705px; height: 196px;" name="cause" class="form-control"><?=$this->data['reason'] ?></textarea>
+        	</td> 
+        </tr>
+        <?php endif; ?>
+      </table>
+ 		<div class="form-group">
+        	<button type="submit" class="btn btn-primary submitBtn">保存</button>
+        </div>
+    </form>
+
+</div>
+<script>
+  	$(function(){
+  		$(".submitBtn").click(function(){
+  		   
+  		    $('#form').submit();
+  		})
+  	})
+</script>
+<style>
+.form-group {margin-bottom: 20px}
+</style>

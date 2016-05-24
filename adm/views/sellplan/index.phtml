@@ -1,0 +1,29 @@
+
+<!-- include(dirname(__FILE__) . '/../sys/dev_nav.phtml')-->
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">销售计划管理</a>
+                        >
+                        <a href="">
+                            <?php if( $this->showType == 'list' ):?>
+                                商品列表
+                            <?php else:?>
+                                分销渠道
+                            <?php endif;?>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+            <?php if( $this->showType == 'list' ):?>
+                <?php include( realpath(dirname(__FILE__)).'/index_list.phtml' ); ?>
+            <?php else:?>
+                <?php include( realpath(dirname(__FILE__)).'/index_choice.phtml' ); ?>
+            <?php endif;?>

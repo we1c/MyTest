@@ -1,0 +1,67 @@
+<style>
+/*.active {background-color:#ccc}*/
+</style>
+<ul class="nav">
+    <li>
+        <a href="/dev/index"><img src="/img/menu0.png"><i>首页</i></a>
+        <div></div>
+        <ul><li <?=$this->_controllerName == 'Dev' ?  'class="active"' : ''?>></li></ul>
+    </li>
+    <?php $hide = array('developer-index','superadmin-index')?>
+    <?php foreach ( $this->mymenus as $key => $val ){?>
+    	<?php if( !in_array( $val['con'].'-'.$val['act'] ,$hide ) ):?>
+	        <!-- <li <?=$this->_controllerName == ucfirst($val['con']) ?  'class="active"' : ''?> >
+                <a href="/<?php echo $val['con'];?>/<?php echo $val['act'];?>">
+                    <?php echo $val['name'];?>
+                </a>
+            </li> -->
+            <li>
+                <div></div>
+                <a><img src="/img/menu<?=$val['id']?>.png"><i><?php echo $val['name'];?></i></a>
+                <ul>
+                        <p><?php echo $val['name'];?></p>
+                    <?php foreach ($val['son'] as $menu) :?>
+                        <li <?=$this->parentMenu['con'] == $menu['con'] && $this->parentMenu['act'] == $menu['act'] ?  'class="active"' : ''?>>
+                            <div></div>
+                            <a class="clearfix" href="/<?php echo $menu['con'];?>/<?php echo $menu['act'];?>">
+                                <span></span>
+                                <?=$menu['name']?>
+                            </a>
+                        </li>               
+                    <?php endforeach;?>
+                </ul>
+            </li>
+    	<?php endif;?>
+    <?php }?>
+<!-- 
+    <?php if(in_array('1',$this->_developer['role'])){?>
+        <li><a href="/superadmin/index">超级管理员</a></li>
+    <?php } ?>
+ -->
+</ul>
+
+
+
+<script>
+    
+    
+    $('.nav').children('li').children('ul').click(function(e){
+        e.stopPropagation();
+    })
+
+    $(function(){
+        var $activeLi = $('.nav').find('ul').children('li.active').parent();
+        if($activeLi.length>0){
+            $activeLi.parent().find('img').attr('src',$activeLi.parent().find('img').attr('src').replace('menu','act'));
+            $activeLi.show();
+        }
+    })
+
+    $('.nav').children('li').hover(function(){
+        $(this).find('img').attr('src',$(this).find('img').attr('src').replace('menu','act'));
+    },function(){
+        $(this).not('.active').find('img').attr('src',$(this).find('img').attr('src').replace('act','menu'));
+        var $activeLi = $('.nav').find('ul').children('li.active').parent();
+        $activeLi.parent().find('img').attr('src',$activeLi.parent().find('img').attr('src').replace('menu','act'));
+    })
+</script>

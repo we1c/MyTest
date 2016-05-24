@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>供应商列表</title>
+
+</head>
+
+<body>
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<div class="all-elements">
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+    <div id="content" class="page-content">
+
+        <div class="content">
+			<div class="container">
+				<div class="supplierlist">
+					<table cellspacing="0" class="table">
+						<tbody>
+							<tr>
+								<th>店铺</th>
+								<th class="table-title">联系人</th>
+								<th class="table-title">电话</th>
+								<th class="table-title">微信</th>
+								<th class="table-title">地区</th>
+							</tr>
+							<?php if($this->list): ?>
+    							<?php foreach ($this->list as $v): ?>
+        							<tr>
+        								<td class="table-sub-title"><a href="javascript:;"><?=$v['name'] ?></a></td>
+        								<td><a href="javascript:;"><?=$v['contact']?></a></td>
+        								<td><a href="javascript:;"><?=$v['tel'] ?></a></td>
+        								<td><a href="javascript:;"><?=$v['weixin'] ?></a></td>
+        								<td><a href="javascript:;"><?=$v['proname']['name'].$v['cityname']['name'] ?></a></td>
+        							</tr>
+    							<?php endforeach; ?>
+							<?php endif; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

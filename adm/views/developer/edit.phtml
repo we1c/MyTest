@@ -1,0 +1,242 @@
+
+<div class="wrapper">
+	<div id="main" class="container-fluid">
+		<div class="row mt10">
+			<div class="col-xs-12">
+				<div class="BreadcrumbNav white">
+					<a href="">首页</a>
+					>
+					<a href="">个人资料</a>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="user-info">
+		<form id="form" method="POST" action="/developer/edit">
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					资料完整度
+				</div>
+				<div class="col-md-6 col-xs-7 info-col info-value">
+					<div class="info-integrity"><div></div></div>
+				</div>
+				<div class="col-md-4 col-xs-2 info-col">
+					<span id="infoPercent"><?=$this->per?></span>
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					<span>*</span>姓名
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input class="form-control" id="name" name="name" type="text" value="<?=$this->_developer['name']?>" />
+					
+				</div>
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					<span></span>性别
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input value="0" name="sex" class="sex" <?php if($this->_developer['sex'] == 0) { echo 'checked="checked"'; }?> type="radio" />保密
+					<input value="1" name="sex" class="sex" <?php if ($this->_developer['sex'] == 1) { echo 'checked="checked"'; }?> type="radio" />男
+					<input value="2" name="sex" class="sex" <?php if ($this->_developer['sex'] == 2) { echo 'checked="checked"'; }?> type="radio" />女
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					省/市/县
+				</div>
+				<div class="col-md-10 col-xs-9 info-col info-value">
+					<div class="cityselect"> 
+						<select class="prov form-control" id="province" name="province">
+							<option value="0">省</option>
+            	           <?php foreach ( $this->province as $v ): ?>
+            	               <option value="<?=$v['id'] ?>" <?php if ( $this->_developer['province'] == $v['id'] ): ?>selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+						</select>
+						<select class="city form-control" id="city" name="city" >
+							<option value="0">市</option>
+            	           <?php foreach ( $this->city as $v ): ?>
+            	               <option value="<?=$v['id'] ?>" <?php if ( $this->_developer['city'] == $v['id'] ): ?>selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+						</select> 
+						<select class="dist form-control" id="area" name="area">
+							<option value="0">区/县</option>
+            	           <?php foreach ( $this->area as $v ): ?>
+            	               <option value="<?=$v['id'] ?>" <?php if ( $this->_developer['area'] == $v['id'] ): ?>selected="selected"<?php endif; ?>><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+						</select> 
+					</div>
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					详细地址
+				</div>
+				<div class="col-md-10 col-xs-9 info-col info-value">
+					<input class="form-control" type="text" name="address" value="<?=$this->_developer['address']?>" />
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					<span>*</span>手机
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input class="form-control" id="account" type="text" name="account" value="<?=$this->_developer['account']?>"/>
+					
+				</div>
+				<!--
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					<span></span>Email
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<div class="input-group">
+					    <input type="text" class="form-control" />
+					    <div class="input-group-addon">未验证</div>
+				    </div>
+				</div>
+				-->
+			</div>
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					固定电话
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input class="form-control" type="text" name="tel" value="<?=$this->_developer['tel']?>" />
+					
+				</div>
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					生日
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input id="date" class="form-control" type="text"  name="birthday" value="<?php if($this->_developer['birthday']!=0) {echo $this->_developer['birthday'];} else {echo "";}?>" readonly/>
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					<span></span>openId
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input class="form-control" type="text" name="openId" value="<?=$this->_developer['openId']?>" disabled="" />
+					
+				</div>
+				<div class="col-md-2 col-xs-3 info-col info-key text-right">
+					<span></span>创建时间
+				</div>
+				<div class="col-md-4 col-xs-9 info-col info-value">
+					<input class="form-control" type="text" name="createTime" value="<?php echo date('Y-m-d',$this->_developer['createTime'])?>" disabled="" />
+					
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-md-10 col-xs-9 info-col"></div>
+				<div class="col-md-2 col-xs-3 info-col info-value text-right">
+					<button id="submitBtn" type="button">保存修改</button>
+				</div>
+			</div>
+			<div class="row user-row">
+				<div class="col-xs-12 info-col"></div>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/js/test.js/jedate.min.js" ></script>
+<script>
+	//提交表单
+	$('#submitBtn').click(function() {
+	    var $name = $('#name').val();
+	    var $account = $('#account').val();
+	    var $pwd = $('#pwd').val();
+	    if ( $.trim($name) == '') {
+	        alert('请填写姓名');
+	        return false;
+	    }
+	    if ( $.trim($account) == '' ) {
+	        alert('请填写手机');
+	        return false;
+	    }
+	    $('#form').submit();
+	})
+
+	//修改密码
+	$('#pwdBtn').click(function(){
+		$('#changePwd').show();
+		$('#pwdClose').css('cursor','pointer');
+	})
+	
+	$('#pwdClose').click(function(){
+		$('#changePwd').hide();
+	})
+	$('#pwdCancel').click(function(){
+		$('#changePwd').hide();
+	})
+	
+	//生日
+	jeDate({
+		dateCell:"#date",//isinitVal:true,
+		format:"YYYY-MM-DD",
+		isTime:false, //isClear:false,
+		minDate:"1970-1-1 00:00:00",
+		maxDate:"2016-11-8 00:00:00"
+	})
+	// 资料完整度
+	function infoPercent(){
+		var percent = $('#infoPercent').text();
+		$('.info-integrity').children('div').width(percent);
+	}
+	infoPercent();
+	//地区三级联动
+	$(document).on("change", '#province',function() {
+        var province = $(this).val();
+        var city = $('#city');
+        var area = $('#area');
+        city.html('<option value="">请选择城市</option>');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/city',{'province':province},function(result) {
+            var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择城市</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择城市</option>';
+            } else if( result.success == 2 ){
+            	alert(result.notice);
+            }
+            city.html(html);
+        },'json')
+    });
+    $(document).on("change", '#city',function() {
+        var city = $(this).val();
+        var area = $('#area');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/area',{'city':city},function(result) {
+            var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择地区</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else {
+               html += '<option value="">请选择地区</option>';
+            }
+            area.html(html);
+        },'json')
+    });
+	//更换头像
+	function addImg(obj){
+		var showBox = document.getElementById('showBox');
+		var file = document.getElementById('file');
+		var fileList = file.files;
+		var reader = new FileReader();
+		reader.readAsDataURL(fileList[0]);
+		reader.onload = function(){
+			showBox.innerHTML='<img src="'+this.result+'"/>';
+		}
+		$(obj).remove();
+		var $inp = $('<input onchange="addImg(this)" id="file" type="file" />');
+		$('.user-file').append($inp);
+	}
+</script>

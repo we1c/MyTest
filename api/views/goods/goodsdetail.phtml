@@ -1,0 +1,75 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<title>商品详情</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/css/idangerous.swiper.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="banner">
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+		<?php foreach ($this->info['goodsImg'] as $v): ?>
+		  <div class="swiper-slide">
+			<img src="<?=$v['imgurl'] ?>" />
+		  </div>
+		<?php endforeach; ?>
+		</div>
+	</div>
+	<div class="swiper-pagination"></div>
+</div>
+<div class="mainbox">
+	<dl class="productdl bgwhite">
+		<dt><?=$this->info['name'] ?></dt>
+		<dd class="productddnote"><span class="fl proNum">货号：<?=$this->info['code'] ?></span><span class="redfont fr">￥<?=$this->info['price'] ?></span></dd>
+		<dd class="proddtxt"><?=$this->info['intro'] ?></dd>
+	</dl>
+	<ul class="productUl bgwhite">
+		<li class="borderbot">
+			<div class="produpan"><i class="prodIco prodIcotag fl"></i><span class="">标签</span></div>
+			<div class="produdiv protagsdiv">
+			<?php if($this->info['tags']): ?>
+			<?php foreach (explode(',',$this->info['tags']) as $v): ?>
+				<span class="protags"><?=$v ?></span>
+		    <?php endforeach; ?>
+		    <?php endif; ?>
+			</div>
+		</li>
+		<li class="borderbot">
+			<div class="produpan"><i class="prodIco prodIconum fl"></i><span class="">参数</span></div>
+			<div class="produdiv">
+				<ul class="produdivul">
+				<?php if($this->info['attribute']): ?>
+				<?php foreach ($this->info['attribute'] as $k=>$v): ?>
+					<li class="borderbot"><?=$k ?>：<?=$v ?></li>
+				<?php endforeach; ?>
+				<?php endif; ?>
+				</ul>
+			</div>
+		</li>
+		<li class="borderbot">
+			<div class="produpan"><i class="prodIco prodIcopri fl"></i><span class="">运费</span></div>
+			<div class="produdiv">
+				<p>￥<?=$this->info['freight'] ?></p>
+			</div>
+		</li>
+	</ul>
+</div>
+<script type="text/javascript" src="/js/jquery-1.10.0.min.js"></script>
+<script type="text/javascript" src="/js/idangerous.swiper.min.js"></script>
+<script>
+	var mySwiper = new Swiper('.swiper-container',{
+		pagination: '.swiper-pagination',
+		paginationClickable: true,
+		loop: false,
+		autoplay:2000,
+		speed:500,
+  })
+</script>
+</body>
+</html>

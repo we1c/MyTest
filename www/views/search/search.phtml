@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<head>
+<?php include(dirname(__FILE__) . '/../sys/common.phtml')?>
+<title>搜索页面</title>
+
+</head>
+
+<body>
+<div id="preloader">
+	<div id="status">
+    	<p class="center-text">
+			Loading the content...
+            <em>Loading depends on your connection speed!</em>
+        </p>
+    </div>
+</div>
+
+<div class="all-elements">
+
+   <?php include(dirname(__FILE__) . '/../sys/left_nav.phtml')?>
+
+   <div id="content" class="page-content">
+       <div class="content">
+	        <div class="container">
+            <div class="searchbox">
+					<div class="addtagputdiv">
+						<div class="seardiv">
+						    <form action="/goods/list" method="post">
+    							<input type="submit" class="searbtn" value=""/>
+    							<div class="seardivput"><input type="text" name="search" class="addtagput" id="searchtext"/></div>
+							</form>
+						</div>
+					</div>
+					<div class="tagsbox">
+					    <?php foreach ($this->list as $v): ?>
+						      <a href="javascript:;" class="tagshref searchgoods" data-id="1"><?=$v['name'] ?></a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+            </div>
+       </div>
+    </div>
+</div>
+</body>
+</html>

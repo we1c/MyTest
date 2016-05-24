@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title><?=$this->data['name'] ?></title>
+<meta name="description" content="<?php $str=preg_replace('/<\/?[^>]+>/i', ' ', $this->data['intro'] ); $str=substr($str,0,40).'...'; echo $str; ?>" />
+<meta name="keywords" content="<?php if($this->data['attribute']) { $str=''; foreach( $this->data['attribute'] as $item ){ $str.=$item['value']['name'].',';} $str=rtrim($str,','); echo $str;} ?>" />
+<link href="/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="/js/function.js"></script>
+</head>
+<body class="scroll">
+
+	<input type="hidden" id="goods_id" value="<?=$this->data[id]?>">
+	
+	<div style='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+		<img src="<?=$this->data['goodsImg'][0]['imgurl']?>" />
+	</div>
+
+	<div class="detailTop pdtb10 pdrl20 overf">
+		<div class="detailTopleft fl"><img class="fl" src="<?=$this->user['headimgurl'] ?>" /><span class="fl"><?=$this->user['nickname'] ?></span></div>
+		<div class="detailTopright fr"><a href="/order/index/"><i></i><span>订单中心</span></a></div>
+	</div>
+
+	<div class="swiper-container">
+		<div class="swiper-wrapper" id="headimg">
+			<?php if( !empty($this->data['goodsImg']) ):?>
+				<?php foreach( $this->data['goodsImg'] as $k => $v ):?>
+					<?php if( $k < 2 ):?>
+	            		<div class="swiper-slide"><img src="<?=$v['imgurl']?>" /></div>
+	            	<?php else:?>
+	            		<div class="swiper-slide"></div>
+					<?php endif;?>
+					<?php if( $k == 4 ) break;?>
+	    		<?php endforeach;?>
+    		<?php endif;?>
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+
+	<div class="productdetail pdrl20">
+		<div class="productdetop pdtb10 overf">
+			<div class="fl productdetopneme goods_name"><h3><?=$this->data['name'] ?></h3></div>
+			<div class="fr productdetopIco"><span class=""></span></div>
+		</div>
+		<p class="sku">SKU编号：<span><?=$this->data['code']?></span></p>
+		<div class="productdetailpro mt20">
+			<?=$this->data['intro'] ?>
+		</div>
+
+		<?php if ( !$this->data['showPrice'] ): ?>
+    		<div class="disbtn wechatbtn" style="display: block;">
+    			<span>跟店家议价</span>
+    		</div>
+		<?php else: ?>
+			<?php if ( $this->data['status'] == 1 ): ?>
+	    		<div class="wechatbtn wxpay">
+	    			<p class="wechattit"><img style="vertical-align:middle" src="/images/wei02.png" /><span class="">微信支付</span>
+	    			<span class="wechatpri">
+	                    <?=round( $this->data['goodsPrice'] ); ?>
+	                </span></p>
+	    		</div>
+			<?php else: ?>
+				<!--
+				<div class="wechatbtn" style="background:#ddd;">
+					<p class="wechattit" style="text-align:center;"><span class="">已售罄</span></p>
+				</div>-->
+			<?php endif; ?>
+
+    	<?php endif; ?>
+<!-- 商品详情  -->		
+		<div class="gooddescribe mt20">
+
+			<span class="gooddesTit">商品 ○ 信息</span>
+			<p class="english">Product information</p>
+			<ul class="gooddesul">
+				<?php if($this->data['attribute']) {?>
+			    <?php foreach ($this->data['attribute'] as $item){if($item['value']['name'] != '0' ){ $key=$item['key']['name']; if(mb_strlen($key,'utf-8')==1){?>
+			    	<li>
+						<span class="fl descripan"><em class="fl">【</em><?=$key?><em class="fr">】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }elseif(mb_strlen($key,'utf-8')==2){?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><em class="fr"><?php echo mb_substr($key,1,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }elseif(mb_strlen($key,'utf-8')==3){?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><?php echo mb_substr($key,1,1,'utf-8');?><em class="fr"><?php echo mb_substr($key,2,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }else{?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><?php echo mb_substr($key,1,2,'utf-8');?><em class="fr"><?php echo mb_substr($key,3,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }}}}?>
+			</ul>
+
+			<span class="gooddesTit">商品 ○ 详情</span>
+			<p class="english">Product Details</p>
+			<?php if($this->data['content']){ ?>
+    			<?=$this->data['content']?>
+    		<?php }else{?>
+    			<?php if( $this->data['goodsImg'] ){?>
+        			<?php foreach ( $this->data['goodsImg'] as $img ) { ?>
+                        <img src="<?=$img['imgurl']?>" width="100%">
+        			<?php }?>
+    			<?php }?>
+			<?php }?>
+			<div class="related" style="padding-bottom:80px;">
+
+				<!-- <span class="gooddesTit">相关 ○ 推荐</span>
+				<p class="english">Related Recommendation</p>
+				<ul>
+					<li><img src="images/11111.jpg"/></li>
+					<li><img src="images/11111.jpg"/></li>
+					<li><img src="images/11111.jpg"/></li>
+					<li><img src="images/11111.jpg"/></li>
+				</ul> -->
+				<!-- <p class="center red">勾搭一个君</p>
+				<p class="center">心动不如行动！对这款商品有疑问的亲</p>
+				<p class="center">请加微信号 <span> XXXXX</span>，窍门转：买买买</p> -->
+				<!-- <div class="logobottom">
+					<div class="logo">
+						<img src="/images/xhz1g.png"/>
+						<div class="logotit">
+							<p>只有一个</p>
+							<p>1ge.com</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div> -->
+				<!-- <p class="center" ><a href="http://www.1ge.com">只有一个提供技术支持</a></p> -->
+				<!-- <div class="clearfix"></div> -->
+			</div>
+		</div>
+
+	</div>
+<!-- 模态框（Modal） -->
+<div class="window-overlay tx callhidebox">
+	<div class="window-overlaybg"></div>
+	<div class="window">
+		<div class="windowbg"></div>
+		<div class="alertTip">
+			<div class="alerttxt overf">
+				<span class="telphone fl"></span>
+				<div class="alerttxtdiv">
+					<p>确定拨打电话 </p>
+					<p>400－809－3393 </p>
+					<p>进行沟通议价吗？</p>
+				</div>
+			</div>
+			<div class="telphonebtn">
+				<span class="albtn del fl grayalbtn">取消</span>
+				<span class="albtn fr orangealbtn"><a href="tel:4008093393">呼叫</a></span>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/js/swiper.min.js"></script>
+<script>
+var flag = true;
+var swiper = new Swiper('.swiper-container', {
+	pagination: '.swiper-pagination',
+	paginationClickable: true,
+	loop:true,
+	speed:800,
+	onTouchStart: function(swiper,even){
+     	var offset=2;
+     	var size = '800';
+     	if(flag){
+     		//加载剩下的图片$.post('/goods/delGoods',{'id':id},function(result) {
+     		var id=$('#goods_id').val();
+     		$.post('/goods/getnextimg',{'id':id,'offset':offset,'size':size},function(result){
+     			console.log(result);
+     			if(result.success ==1 ){
+     				var len=result.data.length;
+     				for(var i=0;i<len;i++){
+     					var add_img="<img src='"+result.data[i].imgurl+"' />";
+     					$('#headimg').find('.swiper-slide').eq(i+3).append(add_img);
+     					if(i==(len-1)){
+     						$('.swiper-wrapper .swiper-slide').eq(0).append(add_img);
+     					}
+     				}
+     				
+     			}
+     		},'json')
+     	}
+     	flag=false;
+    },
+})
+
+
+</script>
+<!--微信支付-->
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+wx.config({
+	debug: false,
+	appId: "<?=$this->jsdata['appId']?>", //测试号ID
+	timestamp: "<?=$this->jsdata['timestamp']?>", //时间戳
+	nonceStr: "<?=$this->jsdata['nonceStr']?>", //随机串
+	signature: "<?=$this->jsdata['signature']?>", //签名
+	jsApiList: ['chooseWXPay'] //接口列表
+});
+wx.ready(function() {
+	$(".wxpay").click(function() {
+		var $id = "<?=$this->data['id'] ?>";
+		var $gid = "<?=$this->dinfo['gid'] ?>";
+		var $cid = "<?=$this->dinfo['channel'] ?>";
+		if ( $gid != 0 && $cid != 0 ) {
+			$.post( '/goods/getDistPackage',{'gid':$gid,'channel':$cid},function( result ) {
+	            if(result.success == 1){
+	                var $orid = result.data.order;
+	                wx.chooseWXPay({
+	                	appId: result.data.appId,
+	                    timestamp: result.data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+	                    nonceStr: result.data.nonceStr, // 支付签名随机串，不长于 32 位
+	                    package: result.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+	                    signType: result.data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+	                    paySign: result.data.paySign, // 支付签名
+	                    success: function (res) {
+	                        var str = JSON.stringify(res);
+	                        // 支付成功后的回调函数
+	                        if(res.errMsg == "chooseWXPay:ok"){
+	                            $.post( '/goods/setstatus',{'oid': $orid},function( payres ) {
+	                                alert("支付成功！");
+	                                window.location.href = '/goods/bindingone';
+	                            },'json' )
+	                        }else{
+	                            $.post( '/goods/cancelOrder',{'id': $orid},function( delres ) {
+	                                alert("支付失败！");
+	                            },'json' )
+	                        }
+	                    }
+	                });
+	            }else{
+	                alert( result.error );
+	            }
+			},'json')
+		} else {
+			$.post( '/goods/getPackage',{'data':$id},function( result ) {
+	            if(result.success == 1){
+	                var $oid = result.data.order;
+	                wx.chooseWXPay({
+	                	appId: result.data.appId,
+	                    timestamp: result.data.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+	                    nonceStr: result.data.nonceStr, // 支付签名随机串，不长于 32 位
+	                    package: result.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+	                    signType: result.data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+	                    paySign: result.data.paySign, // 支付签名
+	                    success: function (res) {
+	                        var str = JSON.stringify(res);
+	                        // 支付成功后的回调函数
+	                        if(res.errMsg == "chooseWXPay:ok"){
+	                            $.post( '/goods/setstatus',{'oid': $oid},function( payres ) {
+	                                alert("支付成功！");
+	                                window.location.href = '/goods/bindingone';
+	                            },'json' )
+	                        }else{
+	                            $.post( '/goods/cancelOrder',{'id': $oid},function( delres ) {
+	                                alert("支付失败！");
+	                            },'json' )
+	                        }
+	                    }
+	                });
+	            }else{
+	                alert( result.error );
+	            }
+			},'json')
+		}
+	});
+})
+// wx.error(function (res) {
+//      alert(res.errMsg);
+// });
+</script>
+</body>
+
+<script>
+//analytics
+(function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-71370659-1', 'auto');
+ga('send', 'pageview');
+</script>
+</html>

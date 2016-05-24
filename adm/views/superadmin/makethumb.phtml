@@ -1,0 +1,28 @@
+
+
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+        <h1 id="makeThumb" style="cursor:pointer;">生成縮略圖</h1>
+        <span id="maxNum" data="<?=$this->num?>"></span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var num = 1;
+    var times = Math.ceil( ( $('#maxNum').attr('data')/200 ) );
+
+    $('#makeThumb').bind({
+        click:function(){
+            $.get('/superadmin/makeImageThumbByJs',{'num':num},function(result){
+                console.log(result);
+                if( result.success == 1 ){
+                    console.log(result.data);
+                    num++;
+                    if( num > times ) return false;
+                    $('#makeThumb').trigger('click');
+                }
+            },'json');
+        }
+    })
+</script>

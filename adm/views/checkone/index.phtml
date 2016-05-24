@@ -1,0 +1,162 @@
+
+
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">审核管理</a>
+                        >
+                        <a href="">任务中心</a> 
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+                <form action="" method='get'>
+                    <input type="hidden" name="checkStatus" value="<?=$this->checkStatus;?>" />
+                    <a class="top-search btn btn-primary" href='/checkone/add'>添加</a>
+                    <div class="btn-group btn-search">
+                        <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                        <ul class="batch-menu">
+                            <li data="1">模糊查询</li>
+                            <li data="2">按sku查询</li>
+                            <li data="3">按货号查询</li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+                    <div class="btn-group">
+                        <div class="input-group">
+                            <input class="form-control" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="请输入关键词" />
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="setwrap top-search">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                <span class='linheit'>总数：<i class='red'><?=$this->total ?></i></span>
+            </div>
+            <div class="row mt10 finance-ul">
+                <div class="col-xs-12">
+                    <ul>
+                        <li class="finance-btn <?php if ($this->checkStatus == 'wait') echo ' active '; ?> "><a href="?checkStatus=wait&keyword=<?=$this->keyword;?>&serchType=<?=$this->serchType?>"><p>待审核<span><?=$this->waitTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->checkStatus == 'lose') echo ' active '; ?> "><a href="?checkStatus=lose&keyword=<?=$this->keyword;?>&serchType=<?=$this->serchType;?>"><p>审核退回<span><?=$this->loseTotal?></span></p></a></li>
+                        <div class="clearfix"></div>
+                    </ul> 
+                </div>                
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable">
+                <thead>
+                    <tr>
+                        <td><input id="checkBox" type="checkbox" />全选</td>
+                        <td class="none">ID</td>
+                        <td>缩略图</td>
+                        <td>商品名称</td>
+                        <td>商品参数</td>
+                        <td>SKU编号</td>
+                        <td class="none">货号</td>
+                        <td>进货价格</td>
+                        <td>提交人</td>
+                        <td>审核状态</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($this->list):?>
+                    <?php foreach ($this->list as $k=>$row): ?>
+                      <tr class="text-center">
+                        <td><input type="checkbox" /></td>
+                        <td class="none"><?=$row['id'] ?></td>
+                        <td>
+                            <img onclick='showImg(this)' src="<?=$row['thumb']?>" width="100px" height="80px">
+                        </td>
+                        <td><?=$row['name']?></td>
+                        <td>
+                        <?php if ( json_decode($row['oldAttribute'],true) ): ?>
+                        <?php foreach(json_decode($row['oldAttribute'],true) as $v): ?>
+                            <?php if($v['value']['name']!='0'):?>
+                                <p>
+                                    <?=$v['key']['name']?>:
+                                    <span><?=$v['value']['name']?></span>
+                                </p>
+                            <?php endif;?>
+                        <?php endforeach;?>
+                        <?php endif; ?>
+                        </td>
+                        <td><?=$row['code']?></td>
+                        <td class="none"><?=$row['goodsNo']?></td>
+                        <td><?=round( $row['purchPrice'] )?></td>
+                        <td><?=$row['uploaderName']?></td>
+                        <td><?php if ( $row['reason'] && $row['twoTime'] ): ?><span class="btn btn-danger">审核失败</span><?php else : ?><span class="btn btn-warning">待审核</span><?php endif; ?></td>
+                        <td width="60px">
+                          <p><a href="/checkone/edit/?id=<?=$row['id']?>" class="btn btn-primary">编辑</a></p>
+                          <p><a href="javascript:;" data="<?=$row['id'] ?>" class="btn btn-primary doDel">删除</a></p>
+                        </td>
+                      </tr>
+                    <?php endforeach; ?>
+                    <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+<script type="text/javascript">
+    //模糊搜索
+    // $('#searchType').val(1);
+    $('.btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+    $(document).on('click','.doDel',function() {
+    	 if (confirm('确定要删除该审核记录以及商品信息吗？')) {
+        	 var $this = $(this);
+        	 var $gid = $this.attr('data');
+        	 $.post('/checktwo/del',{gid:$gid},function(result) {
+     		    if (result.success == 1) {
+         		    alert('删除成功');
+         		    $this.parent().parent().parent().remove();
+     		    } else if( result.success == 0 ){
+         		    alert(result.error);
+     		    }else if( result.success == 2 ){
+                    alert( result.notice );
+                }
+ 		    },'json')
+    	 }
+    })
+</script>

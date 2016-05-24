@@ -1,0 +1,268 @@
+<div id="checkedGroup" class="row mt10">
+    <div class="col-lg-2">
+        <div class="leftinfo">
+            <ul>
+                <?php foreach ($this->menu as $key => $row): ?>
+                    <li <?php if($key==0) echo "class='active'";?>>
+                        <div><?=$row['name']?></div>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-9 neworder-info">
+        <h4 class="tit">角色</h4>
+        <hr />
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">角色名称</label>
+            <div class="col-sm-4">
+                <input type="text" name="name" class="form-control" id="input-title" placeholder="名称" value="<?=$this->info['name']?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">排序</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="sort" value="<?=$this->info['sort'] ?>">
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">上级部门</label>
+            <div class="col-sm-4">
+                <select id="pid" name="pid" class="form-control" style="width: 100%;">
+                    <option value="0">新部门</option>
+                    <?php foreach ($this->role as $row) : ?>
+                        <option value="<?=$row['id']?>" <?php if($this->info['pid'] == $row['id']) echo "selected='selected'";?>><?=$row['name']?></option>
+                        <?php foreach ($row['son'] as $rowSon) : ?>
+                            <option value="<?=$rowSon['id']?>" <?php if($this->info['pid'] == $rowSon['id']) echo "selected='selected'";?>>--<?=$rowSon['name']?></option>
+                        <?php endforeach;?>
+                    <?php endforeach;?>
+                </select>
+            </div>
+        </div>
+
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">状态</label>
+            <div class="col-sm-4">
+                <select name="status" class="form-control" style="width: 100%;">
+                    <option value="1" <?php if($this->info['status'] == 1) echo "selected='selected'";?>>启用</option>
+                    <option value="0" <?php if($this->info['status'] === '0') echo "selected='selected'";?>>禁用</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <?php for ($i=0; $i < count($this->menu); $i++) { ?>
+        <div class="col-lg-9 node_modul neworder-info node <?php if($i != 0) echo 'none';?>">
+            <div class="row childpad">
+                <label class="col-lg-1 col-md-2 control-label">权限</label>
+                <div class="col-sm-10" >
+                    <div class="checkbox-group checkBox <?php if ( !in_array($this->menu[$i]['id'],$this->parentRole)) echo "disable_input"; ?>" >
+                        <input name="permission[]" value="<?=$this->menu[$i]['id']?>" type="checkbox" index="<?=$i?>" <?php if ( in_array($this->menu[$i]['id'],$this->myNode)) echo "checked='checked'";if ( !in_array($this->menu[$i]['id'],$this->parentRole)) echo "disabled"; ?>>
+                        <?=$this->menu[$i]['name']?>
+                    </div>
+                    <?php foreach ($this->menu[$i]['son'] as $k => $v) {?>
+                        <div class="ml10">
+                            <div class="checkbox-group level2 <?php if ( !in_array($v['id'],$this->parentRole)) echo "disable_input"; ?>">
+                                <input type="checkbox" name="permission[]" value="<?=$v['id']?>" index="<?=$k?>" <?php if ( in_array($v['id'],$this->myNode)) echo "checked='checked'";if ( !in_array($v['id'],$this->parentRole)) echo "disabled"; ?>> 
+                                <span><?=$v['name']?></span>
+                            </div>
+                            <table class="table ml10 none">
+                                <?php $num = 4; for($j=0;$j<ceil(count($v['son'])/$num);$j++){?>
+                                    <tr>
+                                        <?php for ($m=0; $m <$num ; $m++) { if ($v['son'][($j*$num)+$m]){?>
+                                            <td style="text-align: left">
+                                                <div class="checkbox-group role-check <?php if ( !in_array($v['son'][($j*$num)+$m]['id'],$this->parentRole)) echo "disable_input"; ?>">
+                                                <input type="checkbox" name="permission[]" value="<?=$v['son'][($j*$num)+$m]['id']?>" <?php if ( in_array($v['son'][($j*$num)+$m]['id'],$this->myNode)) echo "checked='checked'";if ( !in_array($v['son'][($j*$num)+$m]['id'],$this->parentRole)) echo "disabled"; ?>> 
+                                                <span><?=$v['son'][($j*$num)+$m]['name']?></span>
+                                                </div>
+                                            </td>
+                                        <?php }}?>
+                                    </tr>
+                                <?php }?>
+                            </table>
+                        </div>
+                    <?php };?>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
+</div>
+<script>
+    //信息切换
+    var $liList = $('.leftinfo ul li');
+    $('.leftinfo ul :first').addClass('active');
+    var $info = $('#main').find('.node');
+    $liList.click(function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        for(var i=0;i<$info.length;i++){
+            $info.eq(i).addClass('none');
+        }
+        $info.eq($(this).index()).removeClass('none')
+    })
+    
+    //全选
+    //一级选
+    var $checkAll = $(".node_modul .checkBox");
+    $checkAll.children('input').click(function(e){
+        e.stopPropagation();
+        if($(this).is(':checked')){
+            $(this).parent().parent().find("input").prop({"checked":true});
+            $(this).parent().parent().find(".disable_input").children('input').prop({"checked":false});
+        }else{
+            $(this).parent().parent().find("input").prop({"checked":false});
+        }
+    })
+    $checkAll.click(function(){
+        if(!$(this).hasClass('disable_input')){
+            if($(this).children('input').is(':checked')){
+                $(this).children('input').prop('checked',false);
+                $(this).parent().find("input").prop({"checked":false});
+            }else {
+                $(this).children('input').prop('checked',true);
+                $(this).parent().find("input").prop({"checked":true});
+                $(this).parent().find(".disable_input").children('input').prop({"checked":false});
+            }
+        }
+        
+    })
+
+
+    //三级选
+    $('.role-check').click(function(){
+        if(!$(this).hasClass('disable_input')){
+            var $td = $(this).parent().parent().parent().find('input');
+            var $sec = $(this).parent().parent().parent().parent().prev().find('input');
+            var $secList = $(this).parent().parent().parent().parent().parent().parent().find('.level2');
+            if($(this).children('input').is(':checked')){
+                $(this).children('input').prop('checked',false);
+                for(var i=0;i<$td.length;i++){
+                    if($td.eq(i).is(':checked')){
+                        $sec.prop({"checked":true});
+                        $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":true});
+                        break;
+                    }else {
+                        $sec.prop({"checked":false});
+                        for(var j=0;j<$secList.length;j++){
+                            if($secList.eq(j).children('input').is(':checked')){
+                                $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":true});
+                                break;
+                            }else {
+                                $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":false});
+                            }
+                        }
+                    }
+                }
+            }else {
+                $(this).children('input').prop('checked',true);
+                $sec.prop({"checked":true});
+                $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":true});
+            }
+        }
+    })
+    $('.role-check').children('input').click(function(e){
+        e.stopPropagation();
+        var _this = $(this).parent();
+        var $td = _this.parent().parent().parent().find('input');
+        var $sec = _this.parent().parent().parent().parent().prev().find('input');
+        var $secList = _this.parent().parent().parent().parent().parent().parent().find('.level2');
+        if(!$(this).is(':checked')){
+            for(var i=0;i<$td.length;i++){
+                if($td.eq(i).is(':checked')){
+                    $sec.prop({"checked":true});
+                    $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":true});
+                    break;
+                }else {
+                    $sec.prop({"checked":false});
+                    for(var j=0;j<$secList.length;j++){
+                        if($secList.eq(j).children('input').is(':checked')){
+                            $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":true});
+                            break;
+                        }else {
+                            $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":false});
+                        }
+                    }
+                }
+            }
+        }else {
+            $sec.prop({"checked":true});
+            $sec.parent().parent().parent().children('.checkBox').find('input').prop({"checked":true});
+        }
+    })
+
+
+/*    $('.level2').click(function(){
+        if(!$(this).hasClass('disable_input')){
+            var $lv2List = $(this).parent().parent().find('.level2').children('input');
+            var $parent = $(this).parent().parent().children('.checkBox').children('input');
+            if($(this).children('input').is(':checked')){
+                $(this).children('input').prop('checked',false);
+                $(this).next().find("input").prop({"checked":false});
+                for(var i=0;i<$lv2List.length;i++){
+                    if($lv2List.eq(i).is(':checked')){
+                        $parent.prop({"checked":true});
+                        break;
+                    }else {
+                        $parent.prop({"checked":false});
+                    }
+                }
+            }else {
+                $(this).children('input').prop('checked',true);
+                $(this).next().find("input").prop({"checked":true});
+                $(this).next().find(".disable_input").children('input').prop({"checked":false});
+                $parent.prop({"checked":true});
+            }
+        }
+    })*/
+
+
+    //点击收起三级选
+
+    $('.level2').click(function(){
+        $(this).next().toggle();
+    })
+    
+
+    //二级选
+    $('.level2').children('input').click(function(e){
+        e.stopPropagation();
+        var _this = $(this).parent();
+        var $lv2List = _this.parent().parent().find('.level2').children('input');
+        var $parent = _this.parent().parent().children('.checkBox').children('input');
+        if(!$(this).is(':checked')){
+            _this.next().find("input").prop({"checked":false});
+            for(var i=0;i<$lv2List.length;i++){
+                if($lv2List.eq(i).is(':checked')){
+                    $parent.prop({"checked":true});
+                    break;
+                }else {
+                    $parent.prop({"checked":false});
+                }
+            }
+        }else {
+            _this.next().find("input").prop({"checked":true});
+            _this.next().find(".disable_input").children('input').prop({"checked":false});
+            $parent.prop({"checked":true});
+        }
+    })
+
+    
+    $('#pid').change(function(){
+        $('.node_modul input').prop('checked',false);
+        var pid = $(this).val();
+        $.post('/role/getParentRole',{'pid':pid},function(result){
+            $('.node_modul input').attr('disabled',true);
+            $('.node_modul input').parent().addClass('disable_input');
+            for (var i = 0; i < result.data.length; i++) {
+                $('.node_modul input[value='+result.data[i]+']').removeAttr('disabled');
+                $('.node_modul input[value='+result.data[i]+']').parent().removeClass('disable_input');
+            }
+
+        },'json')
+    })
+
+
+
+</script>

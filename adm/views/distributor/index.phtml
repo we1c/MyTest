@@ -1,0 +1,177 @@
+
+
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">销售管理</a>
+                        >
+                        <a href="">分销商管理</a> 
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+                <form action="" method='get'>
+                        <a class="top-search btn btn-primary" href='/distributor/add'>添加</a>
+                        <input class="form-control top-search" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="姓名" />
+                        <span class="block linheit top-search">状态：</span>
+                        <select name="status" class="block form-control top-search">
+                            <option value="0" <?php if($this->status != 1) echo "selected = 'selected'" ?> >正常</option>
+                            <option value="1" <?php if($this->status == 1) echo "selected = 'selected'" ?> >已删除</option>
+                        </select>
+                        <button class="block top-search btn btn-primary" type="submit">搜索</button>
+                </form>
+                <?php if(!$this->status): ?>
+                    <a class="top-search btn btn-primary" href='/distributor/index?status=1'>已删供应商</a>
+                <?php else : ?>
+                    <a class="top-search btn btn-primary" href='/distributor/index'>正常供应商</a>
+                <?php endif;?>
+                <div class="setwrap top-search">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                <span class='linheit'>总数：<i class='red'><?=$this->total ?></i></span>
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>头像</td>
+                        <td>姓名</td>
+                        <td>域名</td>
+                        <td>授信额度</td>
+                        <td>负责人</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($this->list):?>
+			  		<?php foreach ($this->list as $row): ?>
+				  		<tr>
+				  			<td><?=$row['id']?></td>
+                            <td><img src="<?=$row['headimgurl']?>"></td>
+				  			<td><?=$row['name']?></td>
+				  			<td><?=$row['domain']?></td>
+                            <td class="limit">
+                                <?php if ( $row['clearing_type'] == 1 ) {
+                                    echo "先款后货";
+                                }else{
+                                    echo $row['used_limit'].'/'.$row['credit_limit'];
+                                }?>
+                            </td>
+				  			<td><?=$row['devName']?></td>
+				  		<td  data="<?=$row['id']?>">
+                            <?php if(!$this->status): ?>
+                                <div class="btn-group btn-search">
+                                    <span class="btn btn-default">请选择<span class="caret"></span></span>
+                                    <ul class="batch-menu">
+                                        <a class="del" ><li><img src="/img/shanchu.png">删除</li></a>
+                                        <a href="/distributor/edit/?id=<?=$row['id']?>&keyword=<?=$this->keyword?>&perpage=<?=$this->perpage?>&status=<?=$this->status?>&page=<?=$this->page?>"><li><img src="/img/bianji.png">编辑</li></a>
+                                        <a class="reset"><li><img src="/img/xiugai.png">重置额度</li></a>
+                                    </ul>
+                                </div>
+                            <?php else: ?>
+                                <a class="open" data="<?=$row['id']?>"><span class="btn btn-default"><img src="/img/qiyong.png">启用</span></a>
+                            <?php endif; ?>
+
+                            <!-- <div class="btn-group btn-search">
+                                <span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+                                <ul class="batch-menu">
+                                    <?php if(!$this->status): ?>
+                                        <a href="/distributor/edit/?id=<?=$row['id']?>&keyword=<?=$this->keyword?>&perpage=<?=$this->perpage?>&status=<?=$this->status?>&page=<?=$this->page?>"><li><img src="/img/bianji.png">编辑</li></a>
+                                        <a class="del" data="<?=$row['id']?>"><li><img src="/img/shanchu.png">删除</li></a>
+                                    <?php else: ?>
+                                          <a class="open" data="<?=$row['id']?>"><li><img src="/img/jinyong.png">启用</li></a>
+                                    <?php endif; ?>
+                                </ul>
+                            </div> -->
+                            </td>
+				  		</tr>
+			  		<?php endforeach; ?>
+			  		<?php endif;?>
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>25</li>
+                            <li>30</li>
+                            <li>35</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+<script>
+    $('.del').click(function(){
+        if ( confirm('确定要删除吗？') ) {
+            var $thisTr = $(this).parents('tr');
+            var id = $thisTr.children().last().attr('data');
+            $.post('/distributor/del',{'id':id},function(result){
+                if (result.success == 1){
+                    $thisTr.hide();
+                    alert('删除成功');
+                }else if( result.success == 0 ){
+                    alert('删除失败');
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json')
+        }   
+    })
+    $('.open').click(function(){
+        if (confirm('确定要启用吗？') ) {
+            var id = $(this).attr('data');
+            var $thisTr = $(this).parents('tr');
+            $.post('/distributor/open',{'id':id},function(result){
+                if (result.success == 1){
+                    $thisTr.hide();
+                    alert('启用成功');
+                }else if( result.success == 0 ){
+                    alert('启用失败');
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json')            
+        }
+    })
+
+    $('.reset').click(function(){
+        if ( confirm('确定要重置吗？') ){
+            var $thisTd = $(this).parents('td');
+            var id = $thisTd.attr('data');
+            $.post('/distributor/resetLimit', {'id': id}, function( result ) {
+                if (result.success == 1){
+                    $thisTd.siblings('.limit').html(result.data[1]);
+                    alert(result.data[0]);
+                }else if( result.success == 0 ){
+                    alert(result.error);
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json');
+        }
+    })
+</script>

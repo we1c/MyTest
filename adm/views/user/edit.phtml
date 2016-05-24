@@ -1,0 +1,25 @@
+
+<nav class="col-md-2 hidden-print dev-sidebar">
+    <?php include(dirname(__FILE__) . '/../sys/dev_nav.phtml')?>
+</nav>
+<div class="col-md-10">
+    <h4>编辑</h4>
+    <hr>
+    <?php if ($this->error): ?>
+    <div class="alert alert-warning" role="alert"><?=$this->error?></div>
+    <?php endif; ?>
+      
+    <form method="POST">
+        <input type="hidden" name="Uid" value="<?=$this->data['Id']; ?>"/>
+        <?php include(dirname(__FILE__) . '/form.phtml')?>
+ 		<div class="form-group">
+        	<button type="submit" class="btn btn-primary">保存修改</button>
+        </div>
+    </form>
+
+
+</div>
+
+<style>
+.form-group {margin-bottom: 20px}
+</style>

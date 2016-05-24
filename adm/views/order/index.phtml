@@ -1,0 +1,1511 @@
+
+<script type="text/javascript" src="../upload/js/jquery.uploadify.min.js"></script>
+<div class="modal price">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">请输入数量</h4>
+            </div>
+            <form method="post" id="orderForm">
+                <input type="hidden" name="orderId" id="orderId">
+                <div class="modal-body body2">
+                    <div class="col-xs-6 col-xs-offset-2">
+                        <div class="inp-tit text-center">原实付价格</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" id="formPrice" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-xs-offset-2 mt10">
+                        <div class="inp-tit text-center">实付价格</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" name="orderPrice" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <span class="btn btn-default" data-dismiss="modal">取消</span>
+                    <button id="btnSubmit" type="button" class="btn btn-primary" data="" >确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal addReback">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span>退货退款</span>
+            </div>
+            <form method="post" id="rebackForm">
+                <input type="hidden" name="orderId" id="rebackOrderId">
+                <input type="hidden" name="rebackGoodsId" id="rebackGoodsId">
+                <input type="hidden" name="ordersGoodsId" id="ordersGoodsId">
+                <input type="hidden" name="rebackNum" id="rebackNum">
+                <input type="hidden" name="accountStatus" id="accountStatus">
+                <div class="modal-body body2">
+                    <div class="col-xs-6">
+                        <div class="inp-tit text-center">店铺</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" id="shopName" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 mt10">
+                        <div class="inp-tit text-center">退款时间</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input name="rebackTime" id="indate" class="top-search form-control" type="text" placeholder="请输入日期" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 mt10">
+                        <div class="inp-tit text-center">退款原因</div>
+                        <div class="inp-inp">
+                            <div>
+                                <select class="form-control" type="text" name="reason" >
+                                    <option type="text" >请选择</option>
+                                    <option type="text" value="1" >商品质量</option>
+                                    <option type="text" value="2" >图物不符</option>
+                                    <option type="text" value="3" >客人不喜欢</option>
+                                    <option type="text" value="4" >发错地址</option>
+                                    <option type="text" value="5" >发错货</option>
+                                    <option type="text" value="6" >未及时发货</option>
+                                    <option type="text" value="7" >供货商无货</option>
+                                    <option type="text" value="8" >文案有误</option>
+                                </select>                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 mt10">
+                        <div class="inp-tit text-center">下单人</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" id="orderOperator" name="sales" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 mt10">
+                        <div class="inp-tit text-center">订单编号</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" id="rebackOrderCode" readonly />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 mt10">
+                        <table class="table text-center">
+                            <tr>
+                                <td>商品SKU</td>
+                                <td>数量</td>
+                                <td>退款金额</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td id="rebackGoodsSku"></td>
+                                <td><input class="form-control width50p" type="text" value="" id="rebackGoodsNum" name="rebackGoodsNum"></td>
+                                <td><input class="form-control width80p" type="text" value="" id="rebackPrice" name="rebackPrice"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                 
+                </div>
+
+                <div class="modal-footer">
+                    <span class="btn btn-default" data-dismiss="modal">取消</span>
+                    <button id="btnSubmitReback" type="button" class="btn btn-primary" data="" >确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">销售管理</a>
+                        >
+                        <a href="">订单管理</a> 
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-sm-12">
+            <form action="" method='get' id="headForm">
+                <div class="btn-group top-search">
+                    <span type="button" class="btn btn-primary">批量处理</span>
+                    <span id="batch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </span>
+                    <ul class="batch-menu">
+                        <li class="" id="batchNormal">批量通过</li>
+                        <li class="" id="batchExport">批量导出</li>
+                    </ul>
+                </div>
+                
+                <div class="btn-group btn-search">
+                    <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                    <ul class="batch-menu">
+                        <li data="1">模糊查询</li>
+                        <li data="2">按sku查询</li>
+                        <li data="3">按货号查询</li>
+                        <li data="4">按订单号查询</li>
+                    </ul>
+                </div>
+                <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+                <input type="hidden" name="topLevel" value="<?=$this->topLevel;?>" />
+                <input type="hidden" name="orderType" value="<?=$this->orderType;?>" />
+                <input type="hidden" name="showType" value="<?=$this->showType;?>" />
+                <div class="btn-group">
+                    <div class="input-group">
+                        <input class="block form-control" type="text"  value="<?=$this->keyword?>" name="keyword" placeholder="请输入关键词" />
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id='lowSearch'>搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- high-search -->
+                <div id="highSearch" class="btn-group fl top-search">
+                    <span type="button" class="btn btn-primary">高级搜索</span>
+                    <span id="highbatch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </span>
+                    <div class="high-search batch-menu">
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="block linheit top-search">订单状态：</span>
+                                <select name="showType1" class="block form-control top-search">
+                                    <option value="" <?php if($this->showType == '') echo "selected = 'selected'" ?>>全部</option>
+                                    <option value="cancel" <?php if($this->showType == 'cancel') echo "selected = 'selected'" ?>>已取消</option>
+                                    <option value="take" <?php if($this->showType == 'take') echo "selected = 'selected'" ?>>已签收</option>
+                                    <option value="waitTake" <?php if($this->showType == 'waitTake') echo "selected = 'selected'" ?>>待签收</option>
+                                    <option value="waitDeliver" <?php if($this->showType == 'waitDeliver') echo "selected = 'selected'" ?>>待发货</option>
+                                    <option value="waitPay" <?php if($this->showType == 'waitPay') echo "selected = 'selected'" ?>>待付款</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="block linheit top-search">退货状态：</span>
+                                <select name="showType2" class="block form-control top-search">
+                                    <option value="" <?php if($this->showType === '') echo "selected = 'selected'" ?>>全部</option>
+                                    <option value="reback" <?php if($this->showType == 'reback') echo "selected = 'selected'" ?>>已退货</option>
+                                    <option value="" <?php if($this->showType != 'reback') echo "selected = 'selected'" ?>>未退货</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="block linheit top-search">分销渠道：</span>
+                                <select name="dist" class="block form-control top-search">
+                                    <option value="" <?php if($this->showType == '') echo "selected = 'selected'" ?>>全部</option>
+                                    <?php foreach ( $this->dis as $v ): ?>
+                                        <option value="<?=$v['id'] ?>" <?php if($this->dist == $v['id']) echo "selected = 'selected'" ?>><?=$v['name'] ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="block linheit top-search">下单时间：</span>
+                                <input name="starttime" id="indate1" class="top-search form-control" type="text" placeholder="请输入日期" value="<?=$this->starttime?>" readonly/>
+                                <span class="block linheit top-search"> - </span>
+                                <input name="endtime" id="indate2" class="top-search form-control" type="text"  placeholder="请输入日期" value="<?=$this->endtime?>" readonly/>
+                            </div>
+                        </div>
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary fr disguise">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- high-search -->
+            </form>
+
+                <div class="setwrap">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window">
+                    
+                    </div>
+                </div>
+<!--                <span class="linheit top-search">数量：<i class='red'><?=$this->total;?></i></span>
+                <span class="linheit top-search">金额：<i class='red'><?=$this->price;?></i></span>-->
+            </div>
+            <!-- 一级标签 -->
+            <div class="row mt10 checkTab-ul">
+                    <div class="col-xs-12">
+                            <ul>
+                                    <a href="?keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&time=<?=$this->time;?>&topLevel=pingtai&orderType="><li class="checkTab-btn <?php if($this->topLevel=='pingtai' || !$this->topLevel) echo 'active' ?>" id="stocking"><p>平台商品<span class="hidden">0</span></p></li></a>
+                                    <a href="?keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&time=<?=$this->time;?>&topLevel=taobao&orderType=4"><li class="checkTab-btn <?php if($this->topLevel=='taobao') echo 'active' ?>"id="showing"><p>代销商品<span class="hidden">0</span></p></li></a>
+                                    <div class="clearfix"></div></a>
+                            </ul>
+                    </div>
+            </div>
+                <!-- 二级标签 -->
+            <div class="row mt10 finance-ul">
+                <div class="col-xs-12">
+                    <ul>
+                        <li class="finance-btn <?php if ($this->showType == 'waitCheck') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=waitCheck&status=8&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>待审核<span><?=$this->total['waitCheck']['totalNum']?></span></p></a></li>
+                        <?php if( $this->topLevel == 'taobao' ): ?>
+                            <li class="finance-btn <?php if ( $this->showType == 'waitBuy') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=waitBuy&status=4&isBuyer=0&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>待采购<span><?=$this->total['waitBuy']['totalNum']?></span></p></a></li>
+                        <?php endif; ?>
+                        <li class="finance-btn <?php if ($this->showType == 'waitDeliver') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=waitDeliver&status=4&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>待发货<span><?=$this->total['waitDeliver']['totalNum']?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->showType == 'waitTake') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=waitTake&status=3&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>待签收<span><?=$this->total['waitTake']['totalNum']?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->showType == 'take') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=take&status=2&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>已签收<span><?=$this->total['take']['totalNum']?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->showType == 'brush') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=brush&status=7&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>到店取货<span><?=$this->total['brush']['totalNum']?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->showType == 'cancel') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=cancel&status=1&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>已取消<span><?=$this->total['cancel']['totalNum']?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->showType == 'reback') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=reback&reback=reback&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>退货<span><?=$this->total['reback']['totalNum']?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->showType == 'deleteStore') echo ' active '; ?> "><a href="?topLevel=<?=$this->topLevel;?>&showType=deleteStore&status=6&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>&dist=<?=$this->dist;?>&orderType=<?=$this->orderType?>"><p>订单回收站<span><?=$this->total['deleteStore']['totalNum']?></span></p></a></li>
+                        <!--<li class="finance-btn <?= $this->orderType ? 'active' : ''; ?> " ><a href="?topLevel=<?=$this->topLevel;?>&status=&dist=32&orderType=4&keyword=<?=$this->keyword;?>&starttime=<?=$this->starttime;?>&endtime=<?=$this->endtime;?>"><p>淘宝订单<span><?=$this->totalTaoBao?></span></p></a></li>-->
+                        <?php if($this->topLevel == 'taobao'): ?>
+                            <span class="btn-primary fr btn" id="orderImportBtn">订单导入</span>
+                        <?php endif; ?>
+                        <div class="clearfix"></div>
+                    </ul>
+                </div>                
+            </div>
+        </div>
+        <div class="row tablescroll">
+
+                <table class="tablewidth scrollTable" id="table">
+                    <thead>
+                        <tr>
+                            <td><input id="checkBox" type="checkbox" />全选</td>
+                            <td>订单来源</td>
+                            <td>订单编号</td>
+                            <td>图片</td>
+                            <td>下单时间</td>
+                            <td>商品</td>
+                            <td>SKU编码</td>
+                            <td class="none">货号</td>                           
+                            <?php if($this->showType == 'reback'): ?>
+                            <td>退款金额</td>
+                            <?php else: ?>
+                                <td>实付价格</td>
+                            <?php endif; ?>
+                            <td>渠道</td>
+                            <td class="none">发货时间</td>
+                            <td>状态</td>
+                            <td class="none">退货状态</td>
+                            <td>下单人</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="order-data">
+                            <td colspan="20"><span>今天<i>▲</i></span></td>
+                        </tr>
+                        <?php if($this->todaylist):?>
+                        <?php foreach ($this->todaylist as $row): ?>
+                            <tr class="text-center">
+                                <input type="hidden" class="goodsNum" value="<?=$row['goods_number']?>"/>
+                                <input type="hidden" class="shopName" value="<?=$row['shopName']?>"/>
+                                <input type="hidden" class="goodsId" value="<?=$row['goodsId']?>"/>
+                                <input type="hidden" class="ordersGoodsId" value="<?=$row['ordersGoodsId']?>"/>
+                                <input type="hidden" class="rebackNum" value="<?=$row['rebackInfo']['rebackNum']?>"/>
+                                <input type="hidden" class="accountStatus" value="<?=$row['account_status']?>"/>
+                                <td><input type="checkbox" name="checkIds[]" value="<?=$row['id']?>" /></td>
+                                <?php if ( $this->showType == 'waitCheck' ) {
+                                    if ( $row['priceAnomaly'] ) {
+                                        echo "<td>价格异常</td>";
+                                    }
+                                    if ( $row['beyond_limit'] ) {
+                                        echo "<td>授信超限</td>";
+                                    }
+                                }?>
+                                <td>
+                                    <?php 
+                                    if ( $row['isBrush'] ) {
+                                        echo "到店取货";
+                                    }else{
+                                        if ( $row['sellType'] == 0 ) {
+                                            echo "平台下单";
+                                        }elseif ( $row['sellType'] == 4 ){ 
+                                            echo "app下单";
+                                        }elseif ( $row['sellType'] == 5 ) { 
+                                            echo "微信下单";
+                                        }
+                                    }?> 
+                                </td>
+                                <td class="orderCode"><?=$row['orderCode']?></td>
+                                <td>
+                                    <img onclick='showImg(this)' src="<?=$row['imageurl'];?>" width="80px" height="60px">
+                                </td>
+                                <td><?php if( $row['payTime'] ) echo date('y-m-d H:i',$row['payTime']); else echo '';?></td>
+                                <td class="rebackGoodsName"><?=$row['name']?></td>
+                                <td class="rebackGoodsSku"><?=$row['code']?></td>
+                                <td class="rebackGoodsNo none"><?=$row['goodsNo']?></td>
+                                <td class="orderPrice"><?=$row['goods_pay_price'];?></td>
+                                <?php if($this->showType == 'reback'): ?>
+                                <td><?=$row['rebackInfo']['rebackPrice'];?></td>
+                                <?php endif; ?>
+                                <td><?=$row['cname'] ? $row['cname'] :'无';?></td>
+                                <td class="none"><?php if( $row['deliverTime'] ) echo date('y-m-d H:i',$row['deliverTime']); else echo '';?></td>
+                                <td width="60px" class="orderstatus"><?=$row['payStatus']?></td>
+                                <td width="60px" class="rebackstatus none"><?php if ($row['reback'] == 1) echo '此单已退'; ?></td>
+                                <td class="orderOperator"><?=$row['operator']?></td>
+                                <td data="<?=$row['id']?>">
+                                    <div class="order_menu">
+                                    <span toggle='yes' data="<?=$row['id']?>" class="btn-orderDetails btn btn-default"><img src="/img/eye.png"/><i>预览</i></span>
+                                    <?php if( $this->showType != 'waitBuy' && $this->showType != 'reback' ):?>
+                                    <div class="btn-group btn-search">
+                                        <?php if ($row['c_devId'] == $this->_developer['id'] || in_array('1',$this->_developer['role']) || in_array('6',$this->_developer['role']) ) :?>
+                                            <span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+                                            <ul class="batch-menu">
+                                            <?php if($this->showType != 'waitCheck') :?>
+                                                <?php if($this->showType != 'deleteStore' && $this->showType != 'cancel'): ?>
+                                                    <a class="edit1"><li><img src="/img/xiugai.png">修改价格</li></a>
+                                                <?php endif; ?>                                                
+                                                <?php if($this->showType == 'deleteStore'): ?>
+                                                    <a class="delOrder" data="<?=$row['id']?>"><li><img src="/img/shanchu.png">删除订单</li></a>
+                                                <?php else: ?>
+                                                    <a href="/order/del?id=<?=$row['id']?>"><li><img src="/img/shanchu.png">删除订单</li></a>
+                                                <?php endif; ?>
+                                                <?php if($this->showType != 'deleteStore' && $this->showType != 'cancel'): ?>
+                                                    <a class="cancelOrder" data="<?=$row['id']?>"><li><img src="/img/jinyong.png">取消订单</li></a>
+                                                <?php endif; ?>   
+                                                <?php if($this->showType == 'cancel' || $this->showType == 'deleteStore'): ?>
+                                                <a class="activeOrder" data="<?=$row['id']?>" showType="<?=$this->showType?>"><li><img src="/img/active.png">激活订单</li></a>
+                                                <?php endif; ?>
+                                                <?php if($this->showType != 'reback'): ?>
+                                                <a class="rebackOrder" data="<?=$row['id']?>"><li><img src="/img/reback.png">退货退款</li></a>
+                                                <?php endif; ?>
+                                            <?php else : ?>
+                                                <a class="checkOrder"><li><img src="/img/bianji.png">通过审核</li></a>
+                                            <?php endif;?>
+                                            </ul>
+                                        <?php endif;?>
+                                    </div>
+                                    <?php endif;?>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php endif;?>
+                        <tr class="order-data">
+                            <td colspan="20"><span>更早<i>▲</i></span></td>
+                        </tr>
+                        <?php if($this->earlylist):?>
+                        <?php foreach ($this->earlylist as $row): ?>                        
+                            <tr class="text-center">
+                                <input type="hidden" class="goodsNum" value="<?=$row['goods_number']?>"/>
+                                <input type="hidden" class="shopName" value="<?=$row['shopName']?>"/>
+                                <input type="hidden" class="goodsId" value="<?=$row['goodsId']?>"/>
+                                <input type="hidden" class="ordersGoodsId" value="<?=$row['ordersGoodsId']?>"/>
+                                <input type="hidden" class="rebackNum" value="<?=$row['rebackInfo']['rebackNum']?>"/>
+                                <input type="hidden" class="accountStatus" value="<?=$row['account_status']?>"/>
+                                <td>
+                                    <input type="checkbox" name="checkIds[]" value="<?=$row['id']?>" />
+                                </td>
+                                <?php if ( $this->showType == 'waitCheck' ) {
+                                    if ( $row['priceAnomaly'] ) {
+                                        echo "<td>价格异常</td>";
+                                    }
+                                    if ( $row['beyond_limit'] ) {
+                                        echo "<td>授信超限</td>";
+                                    }
+                                }?>
+                                <td>
+                                    <?php 
+                                    if ( $row['isBrush'] ) {
+                                        echo "到店取货";
+                                    }else{
+                                        if ( $row['sellType'] == 0 ) {
+                                            echo "平台下单";
+                                        }elseif ( $row['sellType'] == 4 ){ 
+                                            echo "app下单";
+                                        }elseif ( $row['sellType'] == 5 ) { 
+                                            echo "微信下单";
+                                        }
+                                    }?> 
+                                </td>
+                                <td class="orderCode"><?=$row['orderCode']?></td>
+                                <td>
+                                    <img onclick='showImg(this)' src="<?=$row['imageurl'];?>" width="80px" height="60px">
+                                </td>
+                                <td><?php if( $row['payTime'] ) echo date('y-m-d H:i',$row['payTime']); else echo '';?></td>
+                                <td class="rebackGoodsName"><?=$row['name']?></td>
+                                <td class="rebackGoodsSku"><?=$row['code']?></td>
+                                <td class="rebackGoodsNo"><?=$row['goodsNo']?></td>
+                                <?php if($this->showType != 'reback'): ?>
+                                <td class="orderPrice"><?=$row['goods_pay_price'];?></td>
+                                <?php endif; ?>
+                                <?php if($this->showType == 'reback'): ?>
+                                <td><?=$row['rebackInfo']['rebackPrice'];?></td>
+                                <?php endif; ?>
+                                <td><?=$row['cname'] ? $row['cname'] :'无';?></td>
+                                <td><?php if( $row['deliverTime'] ) echo date('y-m-d H:i',$row['deliverTime']); else echo '';?></td>
+                                <td width="60px" class="orderstatus"><?=$row['payStatus']?></td>
+                                <td width="60px" class="rebackstatus"><?php if ($row['reback'] == 1) echo '此单已退'; ?></td>
+                                <td class="orderOperator"><?=$row['operator']?></td>
+                                <td data="<?=$row['id']?>">
+                                    <div class="order_menu">
+                                    <span toggle='yes' data="<?=$row['id']?>" class="btn-orderDetails btn btn-default"><img src="/img/eye.png"/><i>预览</i></span>
+                                    <?php if( $this->showType != 'waitBuy' && $this->showType != 'reback' ):?>
+                                    <div class="btn-group btn-search">
+                                        <?php if ($row['c_devId'] == $this->_developer['id'] || in_array('1',$this->_developer['role']) || in_array('6',$this->_developer['role']) ) :?>
+                                            <span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+                                            <ul class="batch-menu">
+                                            <?php if($this->showType != 'waitCheck') :?>
+                                                <?php if($this->showType != 'deleteStore' && $this->showType != 'cancel'): ?>
+                                                    <a class="edit1"><li><img src="/img/xiugai.png">修改价格</li></a>
+                                                <?php endif; ?>                                                
+                                                <?php if($this->showType == 'deleteStore'): ?>
+                                                    <a class="delOrder" data="<?=$row['id']?>"><li><img src="/img/shanchu.png">删除订单</li></a>
+                                                <?php else: ?>
+                                                    <a href="/order/del?id=<?=$row['id']?>"><li><img src="/img/shanchu.png">删除订单</li></a>
+                                                <?php endif; ?>
+                                                <?php if($this->showType != 'deleteStore' && $this->showType != 'cancel'): ?>
+                                                    <a class="cancelOrder" data="<?=$row['id']?>"><li><img src="/img/jinyong.png">取消订单</li></a>
+                                                <?php endif; ?>   
+                                                <?php if($this->showType == 'cancel' || $this->showType == 'deleteStore'): ?>
+                                                <a class="activeOrder" data="<?=$row['id']?>" showType="<?=$this->showType?>"><li><img src="/img/active.png">激活订单</li></a>
+                                                <?php endif; ?>
+                                                <?php if($this->showType != 'reback'): ?>
+                                                <a class="rebackOrder" data="<?=$row['id']?>"><li><img src="/img/reback.png">退货退款</li></a>
+                                                <?php endif; ?>
+                                            <?php else : ?>
+                                                <a class="checkOrder"><li><img src="/img/bianji.png">通过审核</li></a>
+                                            <?php endif;?>
+                                            </ul>
+                                        <?php endif;?>
+                                    </div>
+                                    <?php endif;?>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <?php endif;?>
+
+                        <tr class="none" id="orderDetail">
+                            <td colspan="16">
+                                <div class="row nomargin mb10">
+                                    <div class="order-details">
+                                        <span class="btn active">客户信息</span>
+                                        <span class="btn">商品信息</span>
+                                        <span class="btn">交易信息</span>
+                                        <span class="btn">备注信息</span>
+                                        <span class="btn">运单信息</span>
+                                    </div>
+                                </div>
+                                <div class="order-info">
+                                <div class="row nomargin">
+                                    <form name="fome1" method="POST" action="/order/edit">
+                                    <input class="orderId" type="hidden" name="id" value="">
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">收货人</span>
+                                                <div class="form-group"><input name="consignee" value="" class="form-control" id="consignee"  /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">手机号</span>
+                                                <div class="form-group"><input name="phone" class="form-control" id="phone"  value=""  /></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">收货地址</span>
+                                                <select name="province" class="form-control" id="province" ></select>
+                                                <select name="city" class="form-control" id="city" ></select>
+                                                <select name="area" class="form-control" id="area" ></select>
+                                                <div class="form-group"><input name="address" class="form-control form-width" value="" id="address"  /></div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row mb10">
+                                            <input value="确定" type="submit" class="btn btn-primary" name="sub1"/>
+                                            <span onclick="hideOrderDetail()" class="hideOrderInfo btn btn-primary">取消</span>
+                                        </div>
+                                    </form>
+                                    </div>
+                                    <div class="row none nomargin">
+                                        <form name="fome2" method="POST" action="/order/edit">
+                                        <input class="orderId" type="hidden" name="id" value="">
+                                        <div class="row">
+                                            <table>
+                                                <tr>
+                                                    <td>商品图</td>
+                                                    <td>商品名称</td>
+                                                    <!--<td>商品参数</td>-->
+                                                    <td>货号</td>
+                                                    <td>SKU编码</td>
+                                                    <td>优惠</td>
+                                                    <td>平台价格</td>
+                                                    <td>数量</td>
+                                                    <td>实付价格</td>
+                                                    <!--<td>操作</td>-->
+                                                </tr>
+                                                <tr>
+                                                    <td id="goodsImg"><img src=""/></td>
+                                                    <td id="goodsName"></td>
+                                                    <!--<td id="attribute"></td>-->
+                                                    <td id="goodsNo"></td>
+                                                    <td id="code"></td>
+                                                    <td>0</td>
+                                                    <td id="pPrice"></td>
+                                                    <td id="number"></td>
+                                                    <td id="orderPrice"></td>
+                                                    <!--<td id="reback"></td>-->
+                                                </tr>
+                                            </table>
+
+                                        </div>
+                                        <!--<div class="row mb10">
+                                            <input value="确定" type="submit" class="btn btn-primary" name="sub2"/>
+                                            <span onclick="hideOrderDetail()" class="hideOrderInfo btn btn-primary">取消</span>
+                                        </div>-->
+                                    </form>
+                                    </div>
+                                    <div class="row none nomargin">
+                                        <form name="fome3" method="POST" action="/order/edit">
+                                        <input class="orderId" type="hidden" name="id" value="">
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">订单编号</span>
+                                                <div class="form-group"><input id="orderCode" name="orderCode" class="form-control" type="text" value="<?=$this->info['orderCode']?>" disabled/></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">统一运费</span>
+                                                <div class="form-group"><input id="freight" name="freight" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">证书费用</span>
+                                                <div class="form-group"><input id="price_certificate" name="price_certificate" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">包装费用</span>
+                                                <div class="form-group"><input id="price_pack" name="price_pack" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">装裱费用</span>
+                                                <div class="form-group"><input id="price_mount" name="price_mount" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">其他费用</span>
+                                                <div class="form-group"><input id="price_other" name="price_other" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">付款方式</span>
+                                                <select name="payway" id="payway" class="form-control" disabled=""></select>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">付款类型</span>
+                                                <select name="paytype" id="paytype" class="form-control" disabled=""></select>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">支付账号</span>
+                                                <div class="form-group"><input class="form-control" type="text" value=""  disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">支付时间</span>
+                                                <div class="form-group"><input id="payTime" name="payTime" class="form-control" type="text" value="<?php if( $row['payTime'] ) echo date('y-m-d H:i',$row['payTime']); else echo '';?>"  disabled/></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">收款账号</span>
+                                                <select style="width:260px" name="paybank" id="paybank" class="form-control" disabled="">
+                                               </select>
+                                            </div>
+                                        </div>
+                                        <!--
+                                        <div class="row mb10">
+                                            <input value="确定" type="submit" class="btn btn-primary" name="sub3" />
+                                            <span onclick="hideOrderDetail()" class="hideOrderInfo btn btn-primary">取消</span>
+                                        </div>
+                                        -->
+                                    </form>
+                                    </div>
+                                    <div class="row none nomargin">
+                                        <form name="fome4" method="POST" action="/order/edit">
+                                        <input class="orderId" type="hidden" name="id" value="">
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">买家备注</span>
+                                                <div class="form-group form-width"><textarea id="remark" name="remark"></textarea></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">卖家备注</span>
+                                                <div class="form-group form-width"><textarea id="sellerremark" name="sellerremark" ></textarea></div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb10">
+                                            <input value="确定" type="submit" class="btn btn-primary" name="sub4" />
+                                            <span onclick="hideOrderDetail()" class="hideOrderInfo btn btn-primary">取消</span>
+                                        </div>
+                                    </form>
+                                    </div>
+                                    <div class="row none nomargin">
+                                        <form name="fome5" method="POST" action="/order/deliver">
+                                        <input class="orderId" type="hidden" name="id" value="">
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">快递公司</span>
+                                                <select id="express" name="express" class="form-control" disabled="">
+                                                </select>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">运单编号</span>
+                                                <div class="form-group">
+                                                <input id="expressNum" name="expressNum" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <span class="btn btn-primary fl queryBtn">查询</span>
+                                        </div>
+                                            <div class="row text-left" >
+                                               <!--  <iframe id="orderinfo" name="kuaidi100"  src="" width="544" height="270" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe> -->
+                                            
+                                            </div>
+
+                                            <div class="row logistics-table">
+                                            <div class="col-xs-8">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>时间</td>
+                                                            <td>信息</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="orderinfo">
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td colspan="2" id="orderPage">
+                                                                <!-- <span class="active">1</span>
+                                                                <span>2</span> -->
+                                                            </td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+
+<!--
+                                        <div class="row">
+                                            <div class="form-group mr20">
+                                                <span class="form-group">实付运费</span>
+                                                <div class="form-group"><input id="real_freight" name="real_freight" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">实付证书费用</span>
+                                                <div class="form-group"><input id="real_certificate" name="real_certificate" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">实付包装费用</span>
+                                                <div class="form-group"><input id="real_pack" name="real_pack" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">实付装裱费用</span>
+                                                <div class="form-group"><input id="real_mount" name="real_mount" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                            <div class="form-group mr20">
+                                                <span class="form-group">实付其他费用</span>
+                                                <div class="form-group"><input id="real_other" name="real_other" class="form-control" type="text" value="" disabled="" /></div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb10">
+                                            <input id="sub5" value="发货" type="submit" class="btn btn-primary" name="sub5" />
+                                            <span onclick="hideOrderDetail()" class="hideOrderInfo btn btn-primary">取消</span>
+                                        </div>-->
+                                    </div>
+                                    </form>
+                                </div>
+                                
+                            </td>
+                        </tr>
+                        </form>
+                    </tbody>
+                </table>
+    
+            </div>
+        <!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>30</li>
+                            <li>50</li>
+                            <li>100</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+
+    <form action="/import/dispatch" id="upload" method="post" enctype="multipart/form-data">
+        <input id="action" type="hidden" name="action" value="orderInsert">      
+        <input id="record" type="hidden" name="" value="" />
+    </form>
+    <div id="importOrder" class="import-order modal-content none">
+        <div class="container-fluid">
+            <div class="modal-header">
+                <button type="button" class="close"><span>&times;</span></button>
+                <h4 class="modal-title">订单导入</h4>
+                <p>提示信息</p>
+            </div>
+            <div class="row info-col">
+                <div class="col-lg-12">
+                    <div class="inp-tit">模板类型</div>
+                    <div class="inp-inp">
+                        <div>
+                            <div class="order_menu fl">
+                                <span class="btn-orderDetails btn btn-default active">标准模板</span>
+                                <span class="btn btn-default dropdown-toggle">自制模板</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row info-col">
+                <div class="col-lg-10">
+                    <div class="inp-tit">平台类型</div>
+                    <div class="inp-inp">
+                        <div>
+                            <select class="form-control">
+                                <option>订单管理</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row info-col">
+                <div class="col-lg-10">
+                    <div class="inp-tit">模板</div>
+                    <div class="inp-inp">
+                        <div>
+                            <select class="form-control">
+                                <option>淘宝订单</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row info-col">
+                <div class="col-lg-10">
+                    <div class="inp-tit">上传模板文件</div>
+                    <div class="inp-inp">
+                        <div>
+                            <input type="file" id="file_upload_excel" class="update" name="fileName"/>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row info-col">
+                <div class="col-xs-12 text-right">
+                    <button class="btn btn-primary" id="uploadOrder">上传</button>
+                    <span id="importCancel" class="btn btn-cancel">取消</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    </div>
+</div>
+<script type="text/javascript" src="/js/test.js/jedate.min.js" ></script>
+<script>
+    $('#batchExport').bind({
+        click:function(){
+            var $form = $('#headForm');
+            $form.attr('action','/order/exporttext');
+            $form.submit();
+            $form.attr('action','');
+            return false;
+        }
+    });
+    $('#batchNormal').bind({
+        click:function(){
+            var $input = $("[name^=checkIds]:checked");
+            var status = '<?=$this->showType?>';
+            if( status != 'waitCheck' ){
+                alert('当前状态没有此操作');
+                return false;
+            }
+            if( $input.length == 0 ){
+                alert('请至少选择一个商品');
+                return false;
+            }
+            $.post('/order/batchPriceAnomaly',$input.serialize(),function(result){
+                console.log(result);
+                if( result.success == 1 ){
+                    alert(result.data);
+                    location.reload();
+                }else if( result.success == 2 ){
+                    alert(result.notice);
+                }else{
+                    alert(result.error);
+                }
+            },'json');
+
+        }
+    })
+</script>
+<script type="text/javascript">
+    //导入订单
+     $(function() {
+        $('#orderImportBtn').click(function(){
+            $('#importOrder').removeClass('none');
+            $('#file_upload_excel,#file_upload_excel-button').css('width','100%');
+            $('#importOrder .input-group').css('zIndex','-1');
+            $('#SWFUpload_0').attr('width','260');
+        })
+        $('#file_upload_excel').uploadify({
+            'multi'    : false,
+            'swf'      : '../upload/uploadify.swf',
+            'uploader' : '../upload/uploadify.php',
+            'fileSizeLimit': '5120KB',
+            'buttonText': '<div class="input-group"><input type="text" class="form-control inpwidth100"><div class="input-group-addon">浏览</div></div>', 
+            'fileExt' : '*.xls; *.xlsx',
+            'queueID'  : 'excel_file_queue',
+            'onUploadSuccess' : function(file, data, response) {
+                if(data==2){
+                  $('#getvalsname1').html(file.name + '上传失败');
+                  alert("上传失败");
+                }else if(data){
+					var strs=data.split("||");
+					$("#record").attr('name','files['+strs[0]+']');
+					$("#record").val(file.name);
+               }
+            }
+    	});
+        $('#uploadOrder').click(function(){
+            var content = $('#record').val();
+            if( content ){
+                $.post($('#upload').attr('action'),$("#upload").serialize(),function(result){
+                    if( result.success==1 ){
+                        $('#record').val('');
+                        alert(result.data);
+                    }else{
+                        alert( result.error );
+                    }
+                },'json');
+            }else{
+                alert('请选择上传文件');
+            }
+        });
+        $('#importCancel').click(function(){
+            $('#importOrder').addClass('none');
+        });
+        $('#importOrder .close').click(function(){
+            $('#importOrder').addClass('none');
+        })
+	})
+    //模糊搜索
+    // $('#searchType').val(1);
+    $('.tabhead .btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.tabhead .btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.tabhead .btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+    //地址下拉
+    /*$("#city").citySelect({
+        nodata:"none",
+        required:false
+    });*/
+    //高级搜索展开按钮点击
+    $('#highbatch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('#highbatch').next('.high-search').click(function(e){
+        e.stopPropagation();
+    })
+    $('#batch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    
+    //普通搜索按钮
+    $('#lowSearch').bind({
+        click:function(){
+            $('#highSearch').children().remove();
+            $(this).parent().submit();
+        }
+    })
+    //全选
+    var checkAll = false;
+    $("#checkBox").click(function(){
+        if(!checkAll){
+            $("#table").find("tr input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $("#table").find("tr input").prop({"checked":false});
+        }
+    })
+    var resultData;
+    $(document).on('click','.queryBtn',function() {
+        var express = $('#express option:selected').text();
+        var expressNum = $('#expressNum').val();
+        var id = $(this).parent().prev().val()
+        var stateText = $(this).parents('#orderDetail').prev().find('td.orderstatus');
+
+        if(express != '' && expressNum != '')
+        {
+            $.post('/order/getexpress', {'express':express,'expressNum':expressNum, 'id':id}, function(result)
+            {
+                if(result.success == 1)
+                {
+                    if(result.data['State'] == 3){
+                        stateText.text('已签收');
+                    }
+                    var page = Math.ceil((result.data['Traces'].length - 1) / 6);
+                    var pageMax = result.data['Traces'].length;
+                    var pageEnd = result.data['Traces'].length-6;
+                    resultData = result.data["Traces"];
+
+                    var orderPage = $('#orderPage');
+                    orderPage.empty();
+                    for(var i = 1;i<=page;i++){
+                        if(i == 1)
+                        {
+                            orderPage.append('<span class="active" onclick="expressPage(' + i + ', ' + pageEnd * i + ', ' + '$(this))">' + i + '</span> ');
+                        }
+                        else
+                        {
+                            orderPage.append('<span onclick="expressPage(' + i + ', ' + pageEnd * i + ', ' + '$(this))">' + i + '</span> ');
+                        }
+                    }
+
+                     $("#orderinfo").empty();
+                     for(var i=result.data['Traces'].length-1;i>=pageEnd;i--)
+                     {
+                        $("#orderinfo").append('<tr><td>' + 
+                            result.data['Traces'][i]['AcceptTime'] + 
+                            '</td><td style="text-align: left;">' + 
+                            result.data['Traces'][i]['AcceptStation'] + 
+                            '</td></tr>');
+                     }
+                }
+                else if( result.success == 0 )
+                {
+                    alert(result.error);
+                }
+                else if( result.success == 2 )
+                {
+                    alert(result.notice);
+                }
+            }, 'json')
+        }
+        else
+        {
+            alert('没有运单编号，无法查询');
+        }
+        
+    });
+
+    function expressPage(pageIndex, pageEnd, ts)
+    {
+        ts.siblings('span').removeClass('active');
+        ts.addClass('active');
+        var pageStart = resultData.length - 1;
+        var pageEnd = 6 * pageIndex;
+        pageEnd = (pageStart - pageEnd)<=0?0:resultData.length - pageEnd;
+        if(pageIndex > 1) pageStart = pageStart - (pageIndex - 1) * 6;
+
+        $("#orderinfo").empty();
+         for(var i=pageStart;i>=pageEnd;i--)
+         {
+            $("#orderinfo").append('<tr><td>' + 
+                resultData[i]['AcceptTime'] + 
+                '</td><td style="text-align: left;">' + 
+                resultData[i]['AcceptStation'] + 
+                '</td></tr>');
+         }
+    }
+
+    var $btn = $('#table tbody').find('.btn-orderDetails');
+    
+    $btn.bind('click',function(){
+        showOrderInfo($(this));
+        $('#orderPage').empty();
+        $("#orderinfo").empty();
+        var id = $(this).attr('data');
+        var province = $('#province');
+        var city = $('#city');
+        var area = $('#area');
+        var payway = $('#payway');
+        var paytype = $('#paytype');
+        var paybank = $('#paybank');
+        var express = $('#express');
+        $.post('/order/detail',{'id':id},function(result) {
+            var provinceHtml = '<option value="">省</option>';
+            var cityHtml = '<option value="">市</option>';
+            var areaHtml = '<option value="">区/县</option>';
+            var paywayHtml = '<option value="">请选择</option>';
+            var paytypeHtml = '<option value="">请选择</option>';
+            var paybankHtml = '<option value="">请选择</option>';
+            var expressHtml = '<option value="">请选择</option>';
+            var attributeHtml = '';
+            if(result.success == 1) {
+                //客户信息
+                $(".orderId").val(result.data['id']);//id
+                $("#deliver").val(result.data['deliverWay']);//快递
+                $("#freight").val(result.data['price']['price_freight']);//运费
+                console.log(result.data)
+                $("#price_certificate").val(result.data['price']['price_certificate']);//证书
+                $("#price_pack").val(result.data['price']['price_pack']);//包装
+                $("#price_mount").val(result.data['price']['price_mount']);//装裱
+                $("#price_other").val(result.data['price']['price_other']);//其他
+                $("#realprice").val(result.data['order']['price']);//金额
+                $("#consignee").val(result.data['uname']);//收货人
+                $("#phone").val(result.data['tel']);//手机号
+               
+                for(var i=0;i<result.data['opt']['province'].length;i++){
+                    if(result.data['opt']['province'][i].id == result.data['order']['province']){
+                        provinceHtml += '<option value="'+result.data['opt']['province'][i].id+'" selected="selected" >'+result.data['opt']['province'][i].name+'</option>';
+                    }else{
+                        provinceHtml += '<option value="'+result.data['opt']['province'][i].id+'">'+result.data['opt']['province'][i].name+'</option>';
+                    }
+                }
+                province.html(provinceHtml);
+                for(var i=0;i<result.data['opt']['city'].length;i++){
+                    if(result.data['opt']['city'][i].id == result.data['order']['city']){
+                        cityHtml += '<option value="'+result.data['opt']['city'][i].id+'" selected="selected" >'+result.data['opt']['city'][i].name+'</option>';
+                    }else{
+                        cityHtml += '<option value="'+result.data['opt']['city'][i].id+'">'+result.data['opt']['city'][i].name+'</option>';
+                    }
+                }
+                city.html(cityHtml);
+                for(var i=0;i<result.data['opt']['area'].length;i++){
+                    if(result.data['opt']['area'][i].id == result.data['order']['area']){
+                        areaHtml += '<option value="'+result.data['opt']['area'][i].id+'" selected="selected" >'+result.data['opt']['area'][i].name+'</option>';
+                    }else{
+                        areaHtml += '<option value="'+result.data['opt']['area'][i].id+'">'+result.data['opt']['area'][i].name+'</option>';
+                    }
+                }
+                area.html(areaHtml);
+                $("#address").val(result.data['address']);//收货地址
+                //商品信息
+                $("#goodsImg img").attr("src",result.data['goodsImg'])//商品图
+                $("#goodsName").html(result.data['goodsName']);//商品名称
+                $("#goodsNo").html(result.data['goodsNo']);//货号
+                $("#code").html(result.data['order']['code']);//SKU
+                $("#orderPrice").html(result.data['orderPrice']);//实付价格
+                $("#pPrice").html(Math.ceil(result.data['order']['purchPrice']*result.data['order']['ptimes']));//平台价格
+                $("#number").html(result.data['number']);//实付价格
+//                if (result.data['reback'] == 1) {
+//                    $('#reback').html('已退');
+//                }else{
+//                    $('#reback').html("<a href='javascript:;' data='"+result.data['id']+"' class='reback'>退货</a>");
+//                };
+                if (result.data['attribute']){
+                    for (var i = 0;i<result.data['attribute'].length; i++) {
+                        attributeHtml += "<p>"+result.data['attribute'][i]['key']['name']+":"+result.data['attribute'][i]['value']['name']+"<p>";
+                    };
+                    $('#attribute').html(attributeHtml);
+                }
+                $("#orderCode").val(result.data['orderCode']);//订单编号
+                for(var i=0;i<result.data['opt']['payway'].length;i++){
+                    if(result.data['opt']['payway'][i].id == result.data['order']['payw']){
+                        paywayHtml += '<option value="'+result.data['opt']['payway'][i].id+'" selected="selected" >'+result.data['opt']['payway'][i].name+'</option>';
+                    }else{
+                        paywayHtml += '<option value="'+result.data['opt']['payway'][i].id+'">'+result.data['opt']['payway'][i].name+'</option>';
+                    }
+                }
+                payway.html(paywayHtml);
+                for(var i=0;i<result.data['opt']['paytype'].length;i++){
+                    if (result.data['order']['payw'] != 0) {
+                        if(result.data['opt']['paytype'][i].id == result.data['order']['payType']){
+                            paytypeHtml += '<option value="'+result.data['opt']['paytype'][i].id+'" selected="selected" >'+result.data['opt']['paytype'][i].name+'</option>';
+                        }else{
+                            paytypeHtml += '<option value="'+result.data['opt']['paytype'][i].id+'">'+result.data['opt']['paytype'][i].name+'</option>';
+                        }
+                    }
+                }
+                paytype.html(paytypeHtml);
+                for(var i=0;i<result.data['opt']['paybank'].length;i++){
+                    if (result.data['opt']['paybank'][i].tid == result.data['order']['payType'] && result.data['order']['payType'] != 0) {
+                        if(result.data['opt']['paybank'][i].bid == result.data['order']['payBank']){
+                            paybankHtml += '<option value="'+result.data['opt']['paybank'][i].bid+'" selected="selected" >'+result.data['opt']['paybank'][i].name+':'+result.data['opt']['paybank'][i].bank+'</option>';
+                        }else{
+                            paybankHtml += '<option value="'+result.data['opt']['paybank'][i].bid+'">'+result.data['opt']['paybank'][i].name+':'+result.data['opt']['paybank'][i].bank+'</option>';
+                        }
+                    }
+                }
+                paybank.html(paybankHtml);
+
+
+
+                function getLocalTime(nS) {     
+                   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
+                }
+                $("#payTime").val(getLocalTime(result.data['payTime']));//支付时间
+                //备注信息
+                $("#remark").val(result.data['remark']);
+                $("#sellerremark").val(result.data['sellerremark']);
+                //运单信息
+                for(var i=0;i<result.data['opt']['express'].length;i++){
+                    if(result.data['opt']['express'][i].id == result.data['express']['expressId']){
+                        expressHtml += '<option value="'+result.data['opt']['express'][i].id+'" selected="selected" >'+result.data['opt']['express'][i].name+'</option>';
+                    }else{
+                        expressHtml += '<option value="'+result.data['opt']['express'][i].id+'">'+result.data['opt']['express'][i].name+'</option>';
+                    }
+                }
+                express.html(expressHtml);
+                $("#expressNum").val(result.data['express']['number']);
+                $("#real_freight").val(result.data['price']['real_freight']);
+                $("#real_certificate").val(result.data['price']['real_certificate']);
+                $("#real_pack").val(result.data['price']['real_pack']);
+                $("#real_mount").val(result.data['price']['real_mount']);
+                $("#real_other").val(result.data['price']['real_other']);
+                if (result.data['isTake'] == 2 || result.data['isDel'] == 1) {
+                    $("#sub5").attr("disabled","disabled");
+                }else{
+                    $('#sub5').attr("disabled",false);
+                };
+            }else if( result.success == 0 ){
+                alert("获取信息失败");
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    });
+
+
+
+    function hideOrderDetail(){
+        $('#orderDetail').prev().removeClass('active').find('.btn-orderDetails').attr('toggle','yes');
+        $('#orderDetail').remove();
+    }
+    
+//日期
+jeDate({
+    dateCell:"#indate",//isinitVal:true,
+    format:"YYYY-MM-DD",
+    isTime:false, //isClear:false,
+    minDate:"1970-1-1 00:00:00"
+})
+jeDate({
+    dateCell:"#indate1",//isinitVal:true,
+    format:"YYYY-MM-DD",
+    isTime:false, //isClear:false,
+    minDate:"1970-1-1 00:00:00"
+})
+jeDate({
+    dateCell:"#indate2",//isinitVal:true,
+    format:"YYYY-MM-DD",
+    isTime:false, //isClear:false,
+    minDate:"1970-1-1 00:00:00"
+})
+    
+//时间分类  
+var $datalist = $('#table tbody .order-data').find('span');
+    $datalist.click(function(){
+        var start = $(this).parent().parent().index();
+        var end = 0;
+        var $child;
+        for(var i=0;i<$datalist.length;i++){
+            if($datalist.eq(i).parent().parent().index()==start && i<($datalist.length-1)){
+                end = $datalist.eq(i+1).parent().parent().index();
+                $child = $('#table tbody').children('tr:lt('+end+'):gt('+start+')');
+            }else if($datalist.eq(i).parent().parent().index()==start){
+                $child = $('#table tbody').children('tr:gt('+start+')'); 
+            }
+        }
+        
+        $child.toggle();
+        if($child.css('display')=='none'){
+            $(this).children().text('▼');
+        }else{
+            $(this).children().text('▲');
+        }
+        
+    })
+    
+
+    $(document).on('keyup', '#realPrice', function() {
+        var $purprice = $('#purPrice').val();
+        var $realprice = $(this).val();
+        if ( !$realprice ) {
+            var $total = 0;
+            $('.gMoney').text( 0 );
+        } else {
+            var $total = $realprice - $purprice;
+            $('.gMoney').text( $realprice );
+        }
+        })
+    $('#submitBtn').click(function() {
+        var $realprice = $('#realPrice').val();
+        
+        if ( $.trim($realprice) == '' ) {
+            alert('请填写实付价格');
+            return false;
+        }
+        
+        $('#form').submit();
+    })
+    
+    $(document).on("change", '#province',function() {
+        var province = $(this).val();
+        var city = $('#city');
+        var area = $('#area');
+        city.html('<option value="">请选择城市</option>');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/city',{'province':province},function(result) {
+            var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择城市</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择城市</option>';
+            } else if( result.success == 2 ){
+                alert(result.notice);
+            }
+            city.html(html);
+        },'json')
+    });
+    $(document).on("change", '#city',function() {
+        var city = $(this).val();
+        var area = $('#area');
+        area.html('<option value="">请选择地区</option>');
+        $.post('/push/area',{'city':city},function(result) {
+            var html = '';
+            if(result.success == 1) {
+                html += '<option value="">请选择地区</option>';
+                for(var i=0;i<result.data.length;i++){
+                    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                }
+            } else if( result.success == 0 ){
+               html += '<option value="">请选择地区</option>';
+            } else if( result.success == 2 ){
+                alert(result.notice);
+            }
+            area.html(html);
+        },'json')
+    });
+    $(document).on("change", '#payway',function() {
+        var $way = $(this).val();
+        var $type = $('#paytype');
+        $type.html('<option value="">请选择</option>');
+        if ($way) {
+            $.post('/order/getPayType',{'pid':$way},function(result) {
+                var html = '<option value="">请选择</option>';
+                if(result.success == 1) {
+                    for(var i=0;i<result.data.length;i++){
+                        html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                    }
+                } else if( result.success == 2 ){
+                   alert(result.notice);
+                }
+                $type.html(html);
+            },'json')
+        }else{
+
+        };
+    });
+    $(document).on("change", '#paytype',function() {
+        var $type = $(this).val();
+        var $bank = $('#paybank');
+        $bank.html('<option value="">请选择</option>');
+        if ($type) {
+            $.post('/order/getPayBank',{'pid':$type},function(result) {
+                console.log(result);
+                var html = '<option value="">请选择</option>';
+                if(result.success == 1) {
+                    for(var i=0;i<result.data.length;i++){
+                        html += '<option value="'+result.data[i].bid+'">'+result.data[i].name+':'+result.data[i].bank+'</option>';
+                    }
+                } else if( result.success == 2 ){
+                   alert(result.notice);
+                }
+                $bank.html(html);
+            },'json')
+        }
+    });
+    
+    //确定退货
+    $(document).on('click','#btnSubmitReback',function() {
+        if ( confirm('确定要退货吗？') ) {
+            var $this = $(this);
+            var id = $('#orderDetail').prev().find('.btn-orderDetails').attr('data');
+
+            $.post('/order/reback',$('#rebackForm').serialize(),function(result) {
+                if ( result.success == 1 ) {
+                    console.log(result);
+                    alert('退货成功');
+                    $('#orderDetail').prev().find('.rebackstatus').text('此单已退');
+                    $this.parent().html('已退');
+                } else if( result.success == 0 ){
+                    alert(result.error);
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json')
+        }        
+    })
+    $('.cancelOrder').click(function() {
+        if(window.confirm('你确定要取消该订单吗？')){
+            var $orderId = $(this).attr('data');
+            var $orderstatus = $(this).parent().parent().parent().parent().parent().find(".orderstatus");
+             $.post('/order/cancel',{'id':$orderId},function(result){
+                if (result.success == 1) {
+                    alert('成功');
+                    console.log($orderstatus);
+                    $orderstatus.html("已取消");
+                } else if( result.success == 0 ){
+                    alert("操作失败");
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+             },'json')
+          }else{
+             return false;
+         }
+    })
+
+    $('.activeOrder').click(function() {
+        if(window.confirm('你确定要激活该订单吗？')){
+            var $orderId = $(this).attr('data');
+            var $showType = $(this).attr('showType');
+            var $orderstatus = $(this).parent().parent().parent().parent().parent().find(".orderstatus");
+             $.post('/order/active',{'id':$orderId,'showType':$showType},function(result){
+                if (result.success == 1) {
+                    alert('成功');
+                    $orderstatus.html("已激活");
+                } else if( result.success == 0 ){
+                    alert("操作失败");
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+             },'json')
+          }else{
+             return false;
+         }
+    })
+    //物理删除订单
+    $('.delOrder').click(function() {
+        if(window.confirm('你确定要删除该订单吗？')){
+            var $orderId = $(this).attr('data');
+            var $orderstatus = $(this).parent().parent().parent().parent().parent().find(".orderstatus");
+            console.log('hiii');
+            location.href = "/order/del?id="+$orderId+"&trueDel=1";
+          }else{
+             return false;
+         }
+    })
+
+    //审核价格异常订单
+    $('.checkOrder').click(function() {
+        if(window.confirm('你确定要通过该订单吗？')){
+            var thisTr = $(this).parents('tr');
+            var $orderId = thisTr.children().last().attr('data');
+            $.post('/order/priceAnomaly', {'id': $orderId}, function( result ) {
+                if (result.success == 1) {
+                    alert('成功');
+                    thisTr.hide();
+                } else if( result.success == 0 ){
+                    alert("操作失败");
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json');
+        }
+    })
+
+$("a[class^='edit']").click(function(){
+    $('.price').show();
+    $('.modal-dialog').css('margin-top','150px');
+    var thisTr = $(this).parents('tr');
+    var orderId = thisTr.children().last().attr('data');
+    var orderPrice = thisTr.find('.orderPrice').text();
+    var orderCode = thisTr.find('.orderCode').text();
+    $('#orderId').val(orderId);
+    $('.modal-dialog').find('h4').text(orderCode);
+    $('#btnSubmit').attr('data','editOrderPrice');
+    $('.modal-dialog').find('#formPrice').val(orderPrice);
+
+})
+
+//弹出退货
+$(".rebackOrder").click(function(){
+    $('.addReback').show();
+    var thisTr = $(this).parents('tr');
+    var orderId = thisTr.children().last().attr('data');
+    var orderPrice = thisTr.find('.orderPrice').text();
+    var orderCode = thisTr.find('.orderCode').text();
+    var goodsSku = thisTr.find('.rebackGoodsSku').text();
+    var orderOperator = thisTr.find('.orderOperator').text();
+    var goodsNum = thisTr.find('.goodsNum').val();
+    var shopName = thisTr.find('.shopName').val();
+    var goodsId = thisTr.find('.goodsId').val();
+    var ordersGoodsId = thisTr.find('.ordersGoodsId').val();
+    var rebackNum = thisTr.find('.rebackNum').val();
+    var accountStatus = thisTr.find('.accountStatus').val();
+    $('#rebackOrderCode').val(orderCode);
+    $('#orderOperator').val(orderOperator);
+    $('#rebackGoodsSku').text(goodsSku);
+    $('#rebackGoodsNum').val(goodsNum);
+    $('#rebackPrice').val(orderPrice);
+    $('#shopName').val(shopName);
+    $('#rebackOrderId').val(orderId);
+    $('#rebackGoodsId').val(goodsId);
+    $('#ordersGoodsId').val(ordersGoodsId);
+    $('#rebackNum').val(rebackNum);
+    $('#accountStatus').val(accountStatus);
+})
+$('.modal').find('.close').click(function(){
+    $('.modal').hide();
+})
+$('.modal').find('.btn-default').click(function(){
+    $('.modal').hide();
+})
+//修改价格
+$('#btnSubmit').bind({
+    click:function(){
+        $('.price').hide();
+        var action = $(this).attr('data');
+        $.post('/order/'+action,$('#orderForm').serialize(),function(result){
+            if (result.success == 1) {
+                var thisTd = $("td[data='"+result.data[1]+"']");
+                thisTd.siblings('.orderPrice').text(result.data[0]);
+                $('#orderPrice').text(result.data[0]);
+                alert('操作成功');
+            }else if( result.success == 0 ){
+                alert(result.error);
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    }
+})
+
+</script>

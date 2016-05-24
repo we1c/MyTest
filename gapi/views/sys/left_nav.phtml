@@ -1,0 +1,43 @@
+    <div class="content-header">
+        <a href="#" class="deploy-sidebar"></a>
+        <img class="logo" src="/images/misc/logo.png" width="92" alt="img">
+        <a href="/search/search" class="deploy-contact"></a>
+        <div class="clear"></div>
+    </div>
+<div id="sidebar" class="page-sidebar">
+        <div class="page-sidebar-scroll">
+            
+			<p class="sidebar-title">导航</p>
+            <div class="sidebar-decoration"></div>
+
+            <div class="sidebar-navigation">
+            	<a href="/goods/list" class="sidebar-icon sidebar-1"></a>
+                <a href="/order/list" class="sidebar-icon sidebar-2"></a>
+                <div class="clear"></div>
+                <a href="/goods/upload" class="sidebar-icon sidebar-3"></a>
+                <a href="#" class="close-sidebar sidebar-icon sidebar-4"></a>
+                <a href="/customer/list" class="sidebar-icon sidebar-5"></a>
+                <div class="clear"></div>
+                <a href="/recom/list" class="sidebar-icon sidebar-6"></a>
+                <a href="javascript:;" class="sidebar-icon sidebar-7"></a>
+<!--                 <a href="/blog/index" class="sidebar-icon sidebar-7"></a> -->
+            </div>
+            
+			<div class="sidebar-decoration"></div>
+			<p class="sidebar-title">其他</p>
+            <div class="sidebar-decoration"></div> 
+            <div class="page-notifications confirmation-notification">
+            	<a href="/goods/stock"><h4>库存</h4></a>
+			</div>
+			<?php if($this->user['role'] == 2): ?>
+                <div class="page-notifications alert-notification">
+                	<a href="/shop/manager"><h4>供应商管理</h4></a>
+                </div>
+                <div class="page-notifications information-notification">
+                	<a href="/shop/add"><h4>添加供应商</h4></a>
+                </div>
+            <?php endif; ?>
+            <div class="sidebar-decoration"></div>
+           <p class="sidebar-copyright uppercase center-text">Copyright 2013<br> All rights reserved</p>
+        </div>
+    </div>

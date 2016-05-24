@@ -1,0 +1,14 @@
+     <table>   
+        <tr class="form-group">
+        	<td style="width:100px">
+            <label for="input-years">状态</label>
+			</td>
+			<td style="width:800px">           
+                <SELECT name="State" class="form-control" style="width:300px">
+                	<OPTION value="0" <?php if ($this->data['State']==0) { echo 'selected'; }?>>普通用户</OPTION>
+                	<OPTION value="1" <?php if ($this->data['State']==1) { echo 'selected'; }?>>内部用户</OPTION>
+                </SELECT>
+        	</td>
+        </tr>
+       
+      </table>

@@ -1,0 +1,177 @@
+<script>
+
+//上传文件点击
+$(document).on("click", "#file_a", function () {
+    $("#file").trigger("click");
+    return false ;
+});
+
+//上传文件post
+$(document).on("change","#file",function(){
+    //空对象然后添加
+    var fd = new FormData();
+    fd.append("file", $(":file")[0].files[0]); //jQuery 方式
+    //jQuery 方式发送请求
+    $.ajax({
+      type:"post",
+      url:"/shop/uploadheadimg",
+      data: fd,
+      dataType:"json",
+      processData: false,
+      contentType: false
+    }).done(function(res){  
+        var imghtml = '<a id="file_a"><img alt="店铺头像" src="'+res.data.headimgurl+'" style="width: 100px;height:100px;"></a> <input type="hidden" name="headimgurl" value="'+res.data.path+'"> ';  
+        $("#addproduct").html(imghtml);
+    });
+    return false;
+});   
+</script>
+<div class="row mt10">
+    <div class="col-lg-2">
+        <div class="leftinfo">
+            <ul>
+                <li class="active"><div>添加-分销商</div></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-9 neworder-info">
+        <h4 class="tit">分销商</h4>
+        <hr />
+        <input type="hidden" name="keyword" value="<?=$this->keyword?>">
+        <input type="hidden" name="perpage" value="<?=$this->perpage?>">
+        <input type="hidden" name="status" value="<?=$this->status?>">
+        <input type="hidden" name="page" value="<?=$this->page?>">
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">店铺logo</label>
+            <div class="col-sm-4">
+                <div class="btn-group">
+                    <label class="checkbox">
+                    <div id="addproduct">
+                    <a id="file_a" class="btn btn-primary"><img alt="店铺头像" src="<?=$this->info['headimgurl']?>" style="width: 100px;height:100px;"></a>
+                    <input name='headimgurl' type="hidden" value='<?=$this->info['hash']?>'>
+                    </div>
+                    <input type="file" name="file" id="file" style="display: none;"/>
+                    </label>    
+                </div>
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">名称</label>
+            <div class="col-sm-4">
+                <input type="text" name="name" id="name" class="form-control" value="<?=$this->info['name'] ?>" placeholder="分销商昵称" />
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">域名</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="domain" name="domain"  value="<?=$this->info['domain'] ?>" placeholder="如：demo.com" />
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">负责人</label>
+            <div class="col-sm-4">
+                <select class="form-control" name="devId" style="width:100%">
+                    <option value="0">-请选择-</option>
+                    <?php if( $this->dev ):?>
+                    <?php foreach( $this->dev as $row ):?>
+                        <option value="<?=$row['id']?>" <?=$row['id']==$this->info['devId']?"selected='selected'":''?>><?=$row['name']?></option>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                </select>
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">付款方式</label>
+            <div class="col-sm-4">
+                <select name="payway" id="payway" class="form-control" style="width:100%;display:inline">
+                    <option value="">请选择</option>
+                    <?php if ( $this->payway ): ?>
+                    <?php foreach ( $this->payway as $v ): ?>
+                    <option value="<?=$v['id'] ?>" <?php if($this->info['payway'] ==$v['id']) echo "selected='selected'";?> ><?=$v['name'] ?></option>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-md-2 col-lg-1 control-label">付款类型</label>
+            <div class="col-sm-4">
+                <select name="paytype" id="paytype" class="form-control" style="width:100%;display:inline">
+                    <option value="">请选择</option>
+                    <?php if ( $this->paytype ): ?>
+                    <?php foreach ( $this->paytype as $v ): ?>
+                    <option value="<?=$v['id'] ?>" ><?=$v['name'] ?></option>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+                
+            </div>
+            <label class="col-md-6 control-label">下单时可更改付款类型</label>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">收款账号</label>
+            <div class="col-sm-4">
+                <select name="paybank" id="paybank" class="form-control" style="width:100%;display:inline">
+                    <option value="">请选择</option>
+                    <?php if($this->paybank): ?>
+                        <option value="<?=$this->paybank['id']; ?>" selected='selected' ><?=$this->paybank['name'] ?></option>
+                    <?php endif; ?>
+                </select>
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">结算方式</label>
+            <div class="col-sm-4">
+                <select name="clearing_type" id="clearing_type" class="form-control" style="width:100%;display:inline">
+                    <option value="1" <?php if ($this->info['clearing_type'] == 1 ) echo "selected='selected'";?>>先款后货</option>
+                    <option value="2" <?php if ($this->info['clearing_type'] == 2 ) echo "selected='selected'";?>>先货后款</option>
+                </select>
+            </div>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">授信额度</label>
+            <div class="col-sm-4">
+                <input type="text" name="credit_limit" id="credit_limit" class="form-control" value="<?=$this->info['credit_limit'] ?>" placeholder="先款后货可以不填" />
+            </div>
+            <label class="col-md-6 control-label">先款后货可以不填</label>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">默认倍数</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" value="" id="default" placeholder="如：2.5" />
+            </div>
+            <span id="set" class="btn btn-primary">设置</span>
+        </div>
+        <div class="row childpad">
+            <label class="col-lg-1 col-md-2 control-label">渠道倍数</label>
+            <div class="col-md-10 col-lg-11 ctimes">
+                <table id="table" class="table">
+
+                    <?php $num = 4; for ($i=0; $i < ceil(count($this->shop)/$num) ; $i++) { ?>
+                        
+                        <tr>
+                            <?php for ($j=0; $j <$num ; $j++) { if ($this->shop[($i*$num)+$j]) {?>
+                                <td><?=$this->shop[($i*$num)+$j]['scode']?></td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control inpwidth100" name="ctimes[<?=$this->shop[($i*$num)+$j]['id']?>]" value="<?=$this->cTimes[$this->shop[($i*$num)+$j]['id']]?>" />
+                                        <div class="input-group-addon">倍</div>
+                                    </div>
+                                </td>
+                            <?php }}?>
+                        </tr>
+
+                    <?php }?>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $("#set").bind({
+        click:function(){
+            $("#table input").val($(this).prev().find("input").val());
+        }
+    });
+</script>

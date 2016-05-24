@@ -1,0 +1,622 @@
+
+
+<div class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">请输入数量</h4>
+            </div>
+            <form method="post" id="stockForm">
+                <input type="hidden" name="goodsId" id="goodsId">
+                <div class="modal-body body1">
+                    <div class="col-xs-6 col-xs-offset-2">
+                        <div class="inp-tit text-center">数量</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" name="number" />
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="modal-body body2">
+                    <div class="col-xs-6 col-xs-offset-2">
+                        <div class="inp-tit text-center">原价</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" id="goodsPrice" disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-xs-offset-2">
+                        <div class="inp-tit text-center">现价</div>
+                        <div class="inp-inp">
+                            <div>
+                                <input class="form-control" type="text" name="purchPrice" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <span class="btn btn-default" data-dismiss="modal">取消</span>
+                    <button id="btnSubmit" type="button" class="btn btn-primary" data="" >确定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+            <div class="row mt10">
+                <div class="col-xs-12">
+                    <div class="BreadcrumbNav white">
+                        <a href="">首页</a>
+                        >
+                        <a href="">采购管理</a>
+                        >
+                        <a href="">商品管理</a> 
+                    </div>
+                </div>
+            </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+                <form action="" method='get' id="search">
+                        <!--<a class="top-search btn btn-primary" href='/goods/add'>添加</a>-->
+                        <input type="hidden" name="showList" value="<?=$this->active;?>">
+
+                        <div class="btn-group btn-search">
+                            <span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+                            <ul class="batch-menu">
+                                <li data="1">模糊查询</li>
+                                <li data="2">按sku查询</li>
+                                <li data="3">按货号查询</li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+                        <div class="btn-group">
+                            <div class="input-group">
+                                <input class="form-control" style="width:150px" type="text" name="keyword" value="<?=$this->keyword?>" placeholder="请输入关键词" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" id="lowSearch">搜索</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="btn-group">
+                        <span type="button" class="btn btn-primary">导出商品</span>
+                        <span id="batch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </span>
+                        <ul class="batch-menu">
+                            <li id="exportAllGoods">导出所有商品</li>
+                            <li id="exportPlat">导出平台商品(无图片)</li>
+                            <li id="exportPlatImg" onclick="exportPlatImg()">导出平台商品(有图片)</li>
+                        </ul>
+                    </div>
+                    <!-- high-search -->
+                <div id="highSearch" class="btn-group">
+                    <span type="button" class="btn btn-primary">高级搜索</span>
+                    <span id="highbatch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </span>
+                    <div class="high-search batch-menu">
+
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                               <span class="top-search linheit">审核状态：</span>
+                                    <select class="form-control top-search" name="checkResult">
+                                        <option value="">全部</option>
+                                        <option value="0" <?php if($this->checkResult == 0) echo "selected = 'selected'" ?>>未审核</option>
+                                        <option value="1" <?php if($this->checkResult == 1) echo "selected = 'selected'" ?>>审核通过</option>
+                                        <option value="2" <?php if($this->checkResult == 2) echo "selected = 'selected'" ?>>无文案通过</option>
+                                    </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <span class="top-search linheit">平台价格：</span>
+                                <input name="minPrice" value="<?=$this->minPrice?>" class="form-control top-search" type="text" />
+                                <span class="top-search linheit">至</span>
+                                <input name="maxPrice" value="<?=$this->maxPrice?>" class="form-control top-search" type="text"/>
+                            </div>
+                        </div>
+                        <div class="row mt10">
+                            <div class="col-xs-12">
+                                <button class="btn btn-primary fr disguise">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- high-search -->
+                </form>
+
+                <div class="setwrap top-search">
+                    <button id="setWindow" class="btn btn-primary">列设置</button>
+                    <div class="set-window"></div>
+                </div>
+                <span class='linheit'>总数：<i class='red'><?=$this->allTotal ?></i></span>
+            </div>
+            <div class="row mt10 finance-ul">
+                <div class="col-xs-12">
+                    <ul>
+                        <li class="finance-btn <?php if ($this->active == 'all') echo ' active '; ?> "><a href="?showList=all&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>全部<span><?=$this->allTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'recommend') echo ' active '; ?> "><a href="?showList=recommend&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>推荐商品<span><?=$this->recommendTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'upload') echo ' active '; ?> "><a href="?showList=upload&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>商家上传<span><?=$this->uploadTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'platf') echo ' active '; ?> "><a href="?showList=platf&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>正常销售<span><?=$this->platfTotal?></span></p></a></li>
+                        <li class="finance-btn <?php if ($this->active == 'stop') echo ' active '; ?> "><a href="?showList=stop&keyword=<?=$this->keyword;?>&checkResult=<?=$this->checkResult;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>"><p>停止销售<span><?=$this->stopTotal?></span></p></a></li>
+                        <div class="clearfix"></div>
+                    </ul> 
+                </div>
+                
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table id="table" class="scrollTable">
+                <thead>
+                    <tr>
+                        <td><input id="checkBox" type="checkbox" />全选</td>
+                        <td class="none">ID</td>
+                        <td class="none">商品推荐</td>
+                        <td>缩略图</td>
+                        <td>商品名称</td>
+                        <td>SKU编号</td>
+                        <td class="none">货号</td>
+                        <td>库存</td>
+                        <td>进货价格</td>
+                        <td>平台价格</td>
+                        <td class="none">市场价格</td>
+                        <td>状态</td>
+                        <td class="none">是否分销</td>
+                        <td>创建者</td>
+                        <td>编辑者</td>
+                        <td>推送渠道</td>
+                        <td>编辑时间</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($this->list):?>
+                    <?php foreach ($this->list as $row): ?>
+                        <tr class="text-center">
+                            <td><input type="checkbox" /></td>
+                            <td class="none"><?=$row['id']?></td>
+                            <td class="recommendStatus none">
+                                <?php if($row['recommend'] == 1) :?>是<?php else :?>否<?php endif?>
+                            </td>
+                            <td>
+                                <img onclick='showImg(this)' src="<?=$row['thumb']?>" width="100px" height="80px">
+                            </td>
+                            <td class="goodsName"><?=$row['name']?></td>
+                            <td><?=$row['code']?></td>
+                            <td class="none"><?=$row['goodsNo']?></td>
+                            <td class="goodsStock"><?=$row['goodsStock']?></td>
+                            <td class="goodsPrice"><?=$row['purchPrice']?></td>
+                            <td><?=round( $row['purchPrice']*$row['ptimes'] )?></td>
+                            <td class="none"><?php if ( $row['price'] != 0 ) echo round($row['price']); else echo round($row['purchPrice'] * $row['mtimes']); ?></td>
+                            <td class="goodsStatus">
+                                <?php 
+                                    switch ($row['status']) {
+                                        case 1: echo '上架';break;
+                                        case 2: echo '售罄';break;
+                                        case 3: echo '停售';break;
+                                        case 4: echo '其他';break;
+                                        case 5: echo '删除';break;
+                                    } 
+                                ?>
+                            </td>
+                            <td class="none">
+                                <?php if($row['isChannel'] == 0) :?>是<?php else :?>否<?php endif?>
+                            </td>
+                            <td><?=$row['uploader']?></td>
+                            <td><?=$row['editor']?></td>
+                            <td>
+                            <?php if($row['cname']): ?>
+                                <?php foreach($row['cname'] as $v): ?>
+                                    <p><?=$v['name']?></p>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>无</p>
+                            <?php endif;?>
+                            </td>
+                            <td><?=date('Y-m-d H:i:s',$row['updateTime'])?></td>
+                            <td width="80px" data="<?=$row['id']?>">
+                                <div class="btn-group btn-search">
+                                    <span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+                                    <ul class="batch-menu">
+                                        <?php if($row['recommend'] == 0) : ?>
+                                            <li class="recommend"><a><img src="/img/tuijian.png">推荐</a></li>
+                                            <li class="none unrecommend"><a><img src="/img/quxiaotuijian.png">取消推荐</a></li>
+                                        <?php else: ?>
+                                            <li class="none recommend"><a><img src="/img/tuijian.png">推荐</a></li>
+                                            <li class="unrecommend"><a><img src="/img/quxiaotuijian.png">取消推荐</a></li>
+                                        <?php endif; ?>
+
+                                        <?php if($row['status'] == 1) : ?>
+                                            <li class="pause"><a><img src="/img/shouqin.png">停售</a></li>
+                                            <li class="changeStock1"><a><img src="/img/shouchu.png">售出</a></li>
+                                            <li class="none restore"><a><img src="/img/shangjia.png">上架</a></li>
+                                        <?php elseif ( $row['status'] ==2 ): ?>
+                                            <li class="pause"><a><img src="/img/shouqin.png">停售</a></li>
+                                            <li class="changeStock1 none"><a><img src="/img/shouchu.png">售出</a></li>
+                                            <li class="none restore"><a><img src="/img/shangjia.png">上架</a></li>
+                                        <?php elseif ( $row['status'] == 3 ): ?>
+                                            <li class="none pause"><a><img src="/img/shouqin.png">停售</a></li>
+                                            <li class="none changeStock1"><a><img src="/img/shouchu.png">售出</a></li>
+                                            <li class="restore"><a><img src="/img/shangjia.png">上架</a></li>
+                                        <?php endif; ?>                               
+                                            <li class="changeStock2"><a><img src="/img/buhuo.png">补货</a></li>
+                                            <li class="changeStock3"><a><img src="/img/xiugai.png">修改价格</a></li>
+                                            <a href="/goods/edit/?keyword=<?=$this->keyword?>&status=<?=$this->status?>&id=<?=$row['id']?>&page=<?=$this->page?>"><li><img src="/img/bianji.png">编辑</li></a>
+                                            <li class="delGoods"><a><img src="/img/shanchu.png">删除</a></li>
+                                        <?php if ( $row['check'] == 0 && $row['platform'] == 1 && $row['isChannel'] == 0): ?>
+                                            <li class="apply"><a><img src="/img/fenxiao.png">申请分销</a></li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
+                                    <!--<span data="<?=$row['id']?>" class="btn btn-default comment"><img src="/img/bianji.png">评论</span>-->
+                                
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+<script type="text/javascript">
+    //模糊搜索
+    //$('#searchType').val(1);
+    $('.tabhead .btn-search').children('.btn').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('.tabhead .btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+        $('#searchType').val($(this).attr('data'));
+        $('.tabhead .btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+    })
+
+    //批量按钮
+    $('#batch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+
+    //全选
+    var checkAll = false;
+    $("#checkBox").click(function(){
+        if(!checkAll){
+            $("#table").find("tr input").prop({"checked":true});
+            checkAll = true;
+        }else if(checkAll) {
+            checkAll = false;
+            $("#table").find("tr input").prop({"checked":false});
+        }
+    })
+    //高级搜索展开按钮点击
+    $('#highbatch').click(function(e){
+        e.stopPropagation();
+        $(this).next().toggle();
+    })
+    $('#highbatch').next('.high-search').click(function(e){
+        e.stopPropagation();
+    })
+    //普通搜索按钮
+    $('#lowSearch').click(function(e){
+        $('#highSearch').children().remove();
+    })
+    //导出平台商品有图片
+var num,n,t,times,size,expObj,keyword,status;
+var work=true;
+function exportPlatImg(){
+    if(work){
+        work =false;
+        $.post('/goods/expcount',$('#search').serialize(),function(result){
+            if(result.success==1){
+                if(result.data==0){
+                    alert('商品数量为 0 ');
+                    work =true;
+                }else{
+                    num=result.data;
+                    size=100;
+                    n=Math.ceil(num/size);
+                    times=1;
+                    _doexportg();
+                }
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json');
+    }else{
+        alert('努力加载中...请稍后再试！');
+        return;
+    }
+}
+
+function _doexportg(){
+    var form   = $("<form>");//定义一个form表单
+    var input1 = $("<input>");
+    var input2 = $("<input>");
+    var input3 = $("<input>");
+    var input4 = $("<input>");
+    form.attr({"style":"display:none","target":"","method":"post","action":"/goods/exportgImg"});
+    
+    input1.attr({"type":"hidden","name":"times","value":times});
+    input2.attr({"type":"hidden","name":"size","value":size});
+    input3.attr({"type":"hidden","name":"keyword","value":keyword});
+    input4.attr({"type":"hidden","name":"status","value":status});
+    $("body").append(form);//将表单放置在web中
+    form.append( input1 , input2 , input3 , input4 );
+    form.submit();//表单提交 
+    times++;
+    if(times>n){
+        clearTimeout(t);
+        work=true;
+        return false;
+    }
+    t=setTimeout(_doexportg,6000);
+}
+    //导出平台商品无图片
+    $('#exportPlat').bind({
+        click:function(){
+            var $search = $('#search');
+            $search.attr('action','/goods/exportg');
+            $search.submit();
+            $search.attr('action','');
+            $('#batch').next().hide();
+            return false;
+        }
+    });
+
+    //导出所有商品
+    $('#exportAllGoods').bind({
+        click:function(){
+            var $search = $('#search');
+            $search.attr('action','/goods/exportallgoods');
+            $search.submit();
+            $search.attr('action','');
+            $('#batch').next().hide();
+            return false;
+        }
+    })
+
+$(document).on('click','.downGoods',function() {
+    var $this = $(this);
+    var id = $(this).attr('data');
+    $.post('/goods/downGoods',{'id':id},function(result) {
+        if ( result.success == 1 ) {
+            alert('下架成功');
+            $this.parent().parent().find('.goodsStatus').text('售罄');
+            //$this.text('上架');
+            $this.parent().prepend('<a href="/goods/change/?id=<?=$row["id"]?>&status=2&keyword=<?=$this->keyword?>">上架</a>');
+            $this.remove()
+        } else if( result.success == 0 ){
+            alert(result.error);
+        } else if( result.success == 2 ){
+            alert(result.notice);
+        }
+    },'json')
+})
+$(document).on('click','.delGoods',function() {
+    if ( confirm('确定要删除该商品吗？') ) {
+        var thisTd = $(this).parents('td');
+        var id = thisTd.attr('data');
+        $.post('/goods/delGoods',{'id':id},function(result) {
+            if ( result.success == 1 ) {
+                alert('删除成功');
+                $this.parent().parent().remove();
+            } else if( result.success == 0 ){
+                alert(result.error);
+            } else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    }
+})
+$('.apply').bind({
+    click:function(){
+        if ( confirm('确定要申请分销吗？') ) {
+            var thisTd = $(this).parents('td');
+            var id = thisTd.attr('data');
+            $.post('/goods/apply',{'id':id},function(result) {
+                if ( result.success == 1 ) {
+                    alert('申请成功');
+                    window.location.reload();
+                } else if( result.success == 0 ){
+                    alert(result.error);
+                } else if( result.success == 2 ){
+                    alert(result.notice);
+                }
+            },'json')
+        }
+    }
+})
+
+//推荐
+$('.recommend').bind({
+    click:function(){
+        if ( confirm('确定要推荐该商品吗？') ) {
+            var thisTd = $(this).parents('td');
+            var id = thisTd.attr('data');
+            var thisA = $(this);
+            var recommendStatus = thisTd.siblings('td.recommendStatus');
+            $.post('/goods/recommend',{'id':id},function(result){
+                if (result.success == 1) {
+                    thisA.attr('class','none').next().attr('class','');
+                    recommendStatus.html('是');
+                    alert('推荐成功');
+                }else if(result.success == 0){
+                    alert('推荐失败');
+                }else if(result.success == 2){
+                    alert(result.notice);
+                }
+            },'json')
+        }    
+    }
+})
+
+//取消推荐
+$('.unrecommend').bind({
+    click:function(){
+        if ( confirm('确定要取消推荐该商品吗？') ) {
+            var thisTd = $(this).parents('td');
+            var id = thisTd.attr('data');
+            var thisA = $(this);
+            var recommendStatus = thisTd.siblings('td.recommendStatus');
+            $.post('/goods/unrecommend',{'id':id},function(result){
+                if (result.success == 1) {
+                    thisA.attr('class','none').prev().attr('class','');
+                    recommendStatus.html('否');
+                    alert('取消成功');
+                }else if(result.success == 0){
+                    alert('取消失败');
+                }else if(result.success == 2){
+                    alert(result.notice);
+                }
+            },'json')
+        }    
+    }
+})
+
+//停售
+$('.pause').bind({
+    click:function(){
+        var thisTd = $(this).parents('td');
+        var id = thisTd.attr('data');
+        var thisA = thisTd.find('.pause');
+        var goodsStatus = thisTd.siblings('td.goodsStatus');
+        $.post('/goods/pause',{'id':id},function(result){
+            if (result.success == 1) {
+                thisA.attr('class','none');
+                thisA.next().attr('class','none');
+                thisA.next().next().attr('class','');
+                goodsStatus.html('停售');
+                alert('操作成功');
+            }else if( result.success == 0 ){
+                alert('操作失败');
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    }
+})
+
+//上架
+$('.restore').bind({
+    click:function(){
+        var thisTd = $(this).parents('td');
+        var id = thisTd.attr('data');
+        var thisA = thisTd.find('.restore');
+        var goodsStatus = thisTd.siblings('td.goodsStatus');
+        $.post('/goods/restore',{'id':id},function(result){
+            if (result.success == 1) {
+                thisA.attr('class','none');
+                thisA.prev().attr('class','');
+                thisA.prev().prev().attr('class','');
+                goodsStatus.html('上架');
+                alert('操作成功');
+            }else if( result.success == 0 ){
+                alert(result.error);
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    }
+})
+
+$('#btnSubmit').bind({
+    click:function(){
+        $('.modal').hide();
+        var action = $(this).attr('data');
+        $.post('/goods/'+action,$('#stockForm').serialize(),function(result){
+            if (result.success == 1) {
+                var thisTd = $("td[data='"+result.data[1]+"']");
+                if (result.data[0] == 1) {
+                    thisTd.siblings('td.goodsStatus').html('上架');
+                    thisTd.find('a.changeStock1').parent().attr('class','');
+                    thisTd.siblings('td.goodsStock').html(result.data[2]);
+                }else if(result.data[0] == 3){
+                    thisTd.siblings('td.goodsStatus').html('售罄');
+                    thisTd.find('a.changeStock1').parent().attr('class','none');
+                    thisTd.siblings('td.goodsStock').html(result.data[2]);
+                }else if(result.data[0] == 5){
+                    thisTd.siblings('td.goodsPrice').html(result.data[2]);
+                }else{
+                    thisTd.siblings('td.goodsStock').html(result.data[2]);
+                }
+
+                alert('操作成功');
+            }else if( result.success == 0 ){
+                alert('操作失败');
+            }else if( result.success == 2 ){
+                alert(result.notice);
+            }
+        },'json')
+    }
+})
+
+//售出补货改价弹框
+$("li[class^='changeStock']").click(function(){
+    $('.modal').show();
+    var thisTd = $(this).parent().parent().parent();
+    var goodsId = thisTd.attr('data');
+    var goodsName = thisTd.siblings('.goodsName').text();
+    var goodsPrice = thisTd.siblings('.goodsPrice').text();
+    var $dialog = $('.modal-dialog');
+    $('#goodsId').val(goodsId);
+    $dialog.css('margin-top','150px');
+    $dialog.find('h4').text(goodsName);
+    if ( $(this).attr('class') == 'changeStock1' ) {
+        $('#btnSubmit').attr('data','delStock');
+        $dialog.find('.body1').removeClass('none');
+        $dialog.find('.body2').addClass('none');
+    }else if( $(this).attr('class') == 'changeStock2' ){
+        $('#btnSubmit').attr('data','addStock');
+        $dialog.find('.body1').removeClass('none');
+        $dialog.find('.body2').addClass('none');
+    }else if( $(this).attr('class') == 'changeStock3' ){
+        $('#btnSubmit').attr('data','editPrice');
+        $dialog.find('.body2').removeClass('none');
+        $dialog.find('.body1').addClass('none');
+        $dialog.find('#goodsPrice').val(goodsPrice);
+    }
+})
+$('.modal').find('.close').click(function(){
+    $('.modal').hide();
+})
+$('.modal').find('.btn-default').click(function(){
+    $('.modal').hide();
+})
+</script>

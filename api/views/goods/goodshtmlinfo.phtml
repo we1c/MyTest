@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title><?=$this->info['name']?></title>
+<meta name="description" content="<?=$this->info['intro']?>" />
+<meta name="keywords" content="<?php if($this->info['attribute']){ $str=''; ?><?php foreach ($this->info['attribute'] as $item){?><?php $str.=$item['value']['name'].','; ?><?php  }$str=rtrim($str,','); echo $str; }?>" />
+<link href="/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery-1.10.0.min.js"></script>
+<script type="text/javascript" src="/js/function.js"></script>
+</head>
+<body class="scroll">
+
+	<div class="swiper-container">
+		<div class="swiper-wrapper" id="headimg">
+		    <?php if($this->info['goodsImg']){?>
+<!--		    <?php foreach ($this->info['goodsImg'] as $img1){?>
+			<div class="swiper-slide"><img src="<?=$img1['imgurl']?>" /></div>
+			<?php }?>
+-->				
+				<div class="swiper-slide"><img src="<?=$this->info['goodsImg'][0][imgurl]?>" /></div>
+				<div class="swiper-slide"><img src="<?=$this->info['goodsImg'][1][imgurl]?>" /></div>
+				<div class="swiper-slide"></div>
+				<div class="swiper-slide"></div>
+				<div class="swiper-slide"></div>
+
+			<?php }?>
+
+		</div>
+		<div class="swiper-pagination"></div>
+	</div>
+	<div class="productdetail pdrl20">
+		<div class="productdetop pdtb10 overf">
+			<div class="fl productdetopneme goods_name"><h2><?=$this->info['name']?></h2></div>
+			<div class="fr productdetopIco"><span class=""></span></div>
+		</div>
+		<p class="sku">SKU编号：<span><?=$this->info['code']?></span></p>
+		<div class="productdetailpro mt20">
+			<?=$this->info['intro'] ?>
+		</div>
+<!-- 商品详情  -->
+		<div class="gooddescribe mt20">
+			<span class="gooddesTit">商品 ○ 信息</span>
+			<p class="english">Product information</p>
+			<ul class="gooddesul">
+
+			    <?php if($this->info['attribute']) {?>
+			    <?php foreach ($this->info['attribute'] as $item){if($item['value']['name']!='0'){ $key=$item['key']['name']; if(mb_strlen($key,'utf-8')==1){?>
+			    	<li>
+						<span class="fl descripan"><em class="fl">【</em><?=$key?><em class="fr">】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }elseif(mb_strlen($key,'utf-8')==2){?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><em class="fr"><?php echo mb_substr($key,1,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }elseif(mb_strlen($key,'utf-8')==3){?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><?php echo mb_substr($key,1,1,'utf-8');?><em class="fr"><?php echo mb_substr($key,2,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }else{?>
+					<li>
+						<span class="fl descripan"><em class="fl">【<?php echo mb_substr($key,0,1,'utf-8');?></em><?php echo mb_substr($key,1,2,'utf-8');?><em class="fr"><?php echo mb_substr($key,3,1,'utf-8');?>】</em></span>
+						<div class="descridiv">
+							<p><?=$item['value']['name']?></p>
+						</div>
+					</li>
+				<?php }}}}?>
+			</ul>
+			<span class="gooddesTit">商品 ○ 详情</span>
+			<p class="english">Product Details</p>
+			<?php if($this->info['content']){ ?>
+			<?=$this->info['content']?>
+			<?php }else{?>
+			<?php if($this->info['goodsImg']){?>
+			<?php foreach ($this->info['goodsImg'] as $img){?>
+			<img alt="" src="<?=$img['imgurl']?>" width="100%">
+			<?php }?>
+			<?php }?>
+			<?php }?>
+
+			<div class="related">
+				<div class="logobottom">
+					<div class="logo">
+						<img src="/images/dot02.png"/>
+						<div class="logotit">
+							<p>只有一个</p>
+							<p>1ge.com</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="clearfix"></div>
+				</div>
+				<p class="center"><a href="http://www.1ge.com">只有一个提供技术支持</a></p>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	<input type="hidden" id="goods_id" value="<?=$this->info[id]?>">	
+
+	<script type="text/javascript" src="/js/swiper.min.js"></script>
+	<!--<script>
+	var swiper = new Swiper('.swiper-container', {
+		pagination: '.swiper-pagination',
+		paginationClickable: true
+	});
+	</script>-->
+<script>
+var flag = true;
+var swiper = new Swiper('.swiper-container', {
+	pagination: '.swiper-pagination',
+	paginationClickable: true,
+	loop:true,
+	speed:800,
+	onTouchStart: function(swiper,even){
+     	var offset=2;
+     	if(flag){
+     		//加载剩下的图片$.post('/goods/delGoods',{'id':id},function(result) {
+     		var id=$('#goods_id').val();
+     		$.post('/goods/getnextimg',{'id':id,'offset':offset},function(result){
+     			if(result.success ==1 ){
+     				var len=result.data.length;
+     				for(var i=0;i<len;i++){
+     					var add_img="<img src='"+result.data[i].imgurl+"' />";
+     					$('#headimg').find('.swiper-slide').eq(i+3).append(add_img);
+     				}
+     				
+     			}
+     		},'json')
+     	}
+     	flag=false;
+    },
+    
+})
+
+ $(window).scroll(function(){
+ //下拉商品详情
+    if($(window).scrollTop() + $(window).height() == $(document).height()){
+		$(".gooddescribe").show();
+		$(".wechatbtn").show();
+		$(".goonline").hide();
+		$(".disbtn").hide();
+//上拉收起
+	}else if($(window).scrollTop() == 0){
+		$(".gooddescribe").show();
+		$(".wechatbtn").hide();
+		$(".goonline").show();
+		$(".disbtn").show();
+	}
+})
+
+ window.onload=function(){
+ 	$(".gooddescribe").show();
+ }
+</script>
+
+</body>
+
+<script>
+//analytics
+(function(i, s, o, g, r, a, m) {
+	i['GoogleAnalyticsObject'] = r;
+	i[r] = i[r] || function() {
+		(i[r].q = i[r].q || []).push(arguments)
+	}, i[r].l = 1 * new Date();
+	a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+	a.async = 1;
+	a.src = g;
+	m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-71370659-1', 'auto');
+ga('send', 'pageview');
+</script>
+</html>

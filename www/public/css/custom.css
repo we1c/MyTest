@@ -1,0 +1,154 @@
+@charset "utf-8";
+/* CSS Document */
+*,h1,h2,h3,h4,h5,h6{font-family:"微软雅黑" !important;}
+body { font-family:"微软雅黑";}
+.graybg { background:#f5f5f5;}
+.productInfo { width:30%; margin-right:5%; position:relative; margin-bottom:20px;}
+.delprobtn { position:absolute; top:3px; right:3px; width:20px; height:20px; background: url(../images/gallery/icons.png) -12px -12px; cursor:pointer;}
+.productInfo:nth-child(3n){margin-right: 0%!important;}
+.productInfo .responsive-image { margin:0px; }
+.addproduct {  background:#f5f5f5;}
+.addproduct .addproductbtn {background:  url(../images/ui/plus.png) center center no-repeat; display:block; padding:50% 48.5%; background-size:30% 30%; border:1px solid #d1d1d1;}
+.pricebox { padding:15px;}
+.addboxNav { border-bottom:1px solid #e3e3e3; margin-bottom:15px;}
+.addboxNav .addboxNavIco { float:left;background:  url(../images/ui/plus.png) center center no-repeat;background-size:100% 100%; width:16px; height:16px; margin:2px 8px 0 3px; }
+.pricebox { margin-bottom:10px;}
+.addboxNav .addboxNavTit { font-size:14px;}
+.priceInfo { width:33%; float:left;}
+.priceInfo span { float:left;color:#3d3d3d; text-align:center;line-height:30px; width:45px;}
+.priceInfodiv { margin-left:45px;}
+.priceInfo input { border:1px solid #b3b3b3; float:left; padding:8px 5px; border-radius:2px; width:100%;}
+.proInfo { width:100%; clear:none;}
+.proInfotag { margin-top:10px;}
+.proInfotag .protag { float:left; padding:0 15px 0 5px; background:#e8eeea; margin-right:10px; text-align:left; position:relative; width:auto; margin-bottom:10px;}
+.proInfotag .protagbox { float:left;}
+.proInfotag .protag .protaganme {text-align:center;}
+.proInfotag .deltags { position:absolute; right:3px; top:3px;  width: 10px;  height: 10px;  background: url(../images/ui/close.png) 0px 0px; background-size:100% 100%; cursor:pointer}
+.proInfotag .addprotag {background:#e8eeea url(../images/ui/plus.png) center center no-repeat; background-size: 30% 40%; width:42px;height:30px;cursor:pointer;}
+.tuijian .tuijianNav .addboxNavTit{ float:left; margin:0px;}
+.big-notification { margin-bottom:5px;}
+.aboutCont { border:1px solid #b3b3b3; border-radius:2px; padding:5px;}
+.aboutCont textarea{ width:100%; height:40px;}
+.editsavebtn {width:100%;}
+
+.window-overlay {left: 0;  overflow-y: auto;  position: fixed;  top: 0;  width: 100%; z-index:9999999;background-color: rgba(0,0,0,.6); height:100%;display:none;}
+.window-overlaybg {height:100%;position: fixed; ;left: 0; width: 100%;}
+.window{margin: 80px 20px 50px;position: relative; z-index:999999; background:#fff; border-radius:5px;}
+.tagsboxdiv {background:#fff;border-radius:3px;padding:20px 12px;}
+.tagsbox {overflow:hidden;}
+.addtagputdiv { margin-bottom:5px;}
+.addtagput { border: 1px solid #b3b3b3; padding: 8px 5px;  border-radius: 3px; width:98%; display:block; margin:0 auto;}
+.tagsbox a {float:left; margin:0 2px 2px 0px;}
+.tagsbox .tagshref { background:#e8eeea; padding:5px 10px; color:#3e3e3e;}
+.tagsbox .tagshref.active { color:#3e3e3e; background:#f4dcbe;}
+.tagsbtnbox { overflow:hidden; margin-top:10px;}
+.tagsbtnbox .tagserbtn { overflow:hidden; width:47%; padding:7px 0; text-align:center; color:#fff;}
+.tagsbtnbox .tagsubmitbtn {float:left;}
+.tagsbtnbox .tagresetbtn {float:right;}
+
+/**参数设置**/
+.parameNav .addparameNavTit { float:left;}
+.parameNav .addparameNavIco {background:  url(../images/ui/plus.png) center center no-repeat;background-size:100% 100%; width:16px; height:16px; float:right; margin:3px 3px 0 0;}
+.parameTitput { background:transparent; color:#fff;}
+.parameTxt {background:transparent; color:#fff;}
+.big-notification:nth-child(4n+1){background:#c0392b;}/**红色**/
+.big-notification:nth-child(4n-2){background:#27ae60;}/**绿色**/
+.big-notification:nth-child(4n-1){background:#f39c12;}/**黄色**/
+.big-notification:nth-child(4n){background:#2980b9;}/**蓝色**/
+/**商品列表**/
+.productlist { margin-top:0px; padding-bottom:50px}
+.productlistinfo {border-bottom:1px solid #e0e0e0; margin-top:20px; }
+.productlistinfo .prostorename { margin-bottom:10px;}
+.productlistinfo img { margin-right:10px;}
+.productlistinfo .productprice { color:#bd0c00; font-size:16px;}
+.productlistinfo .column-title { font-size:16px; margin-bottom:5px; line-height:22px; font-weight:normal;}
+.productlistinfo .undercarriage { float:right; color:#bbbbbb; font-weight:normal; padding-left:20px; font-size:14px;  margin-bottom:5px; margin-right:5px;}
+.productlistinfo .undercarriage.down{ background:url(../images/ui/downpro.png) left 3px no-repeat; background-size:30% 75%;}
+.productlistinfo .undercarriage.up {background:url(../images/ui/uppro.png) left 1px no-repeat; background-size:30% 75%;}
+.productlistinfo .productOpert { float:right; width:70px;}
+.productlistinfo .productOpert .recommend { display:inline-block;text-align:center; float:right; margin-top:30px; cursor:pointer;background:#ccc;margin-right:3px; width:60px;padding:5px 0;}
+.productlistinfo .productOpert .recommend.active {background-color:#c0392b;color:#FFFFFF;}
+.productlistinfo .productabout .column-id { display:block; font-size:14px; line-height:23px;}
+.productlistinfo .productabout .column-text { margin-top:10px; display:block}
+/**订单列表**/
+.orderlistinfo { margin-top:10px;}
+.orderlistinfoTop { overflow:hidden;}
+.orderlistinfoTop h4 { font-weight:normal; font-size:16px; display:block;}
+.orderlistinfoTop .orderpirce { float:right; color:#494949; font-size:16px; margin-left:15px;}
+.orderlistinfodiv img { float:left; margin-right:12px; margin-top:6px; margin-bottom:0px;}
+.orderlistinfodiv .orderlistinfoul{ margin-left:92px;}
+.orderlistinfoul > li,.orderlistinfoul{list-style:none; margin:0px;}
+.orderlistinfoul > li { margin-bottom:0px;}
+.orderlistinfoul > li .orderIco { float:left; width:16px; height:16px; background:#ddd; margin-right:5px; margin-top:3px;}
+.orderlistinfoul > li .orderIco.orderuserico {background: url(../images/user.png) left center no-repeat;background-size:100% 100%}
+.orderlistinfoul > li .orderIco.orderchatico {background: url(../images/speechbubble.png) left center no-repeat;background-size:100% 100%}
+.orderlistinfoul > li .orderIco.ordertelrico {background: url(../images/iphone4.png) left center no-repeat;background-size:100% 100%}
+.orderlistinfoul > li .orderIco.orderadressrico {background: url(../images/marker.png) left center no-repeat;background-size:100% 100%}
+
+.orderlistinfoul > li .orderIco.orderpriceico {background: url(../images/price.png) left center no-repeat;background-size:100% 100%;margin-top:1px;}
+.orderlistinfoul > li .orderdivpro { margin-left:25px;}
+.orderlistinfoul > li .orderdivpro p { margin-bottom:0px;}
+.orderstatus { text-align:right; color:#e56b16; font-size:14px; margin-bottom:5px; margin-top:2px;}
+.orderlistinfoul > li.amountli .orderdivpro .amountlinav{ float:left;}
+.orderlistinfoul > li.amountli .orderdivpro .amountprice { color:#bd0c00; font-size:16px;float:left; margin-top:1px;}
+.sendgoodlist { margin-top:20px; margin-bottom:160px}
+.sendgoodlist .orderlistinfoul > li { margin-bottom:2px;}
+.sendgoodCompany {margin-top:60px;}
+.sendselectCom { background:#f5f5f5;  height:40px;}
+.sendselectCom select { background:transparent; width:100%; height:40px;padding:0 10px;font-size:14px;}
+.sendgoodId { margin-bottom:50px;}
+.sendgoodIddiv p{ background:#f5f5f5; width:100%; height:40px; line-height:40px; padding:0 10px; font-size:14px;}
+
+.deploy-contact{  background: url(../images/magnifier2.png) center center no-repeat; background-size:40% 40%;}
+
+/**搜索页面**/
+.searchbox { margin-top:20px;margin-bottom:790px;}
+.searchbox .seardiv {border: 1px solid #b3b3b3; height:40px; border-radius:2px;}
+.searchbox .seardiv .seardivput {display:block;margin:0 35px 0 0; }
+.searchbox .seardiv .addtagput{  width:100%; border:none; padding:11px 5px;}
+.searchbox .seardiv .searbtn {float:right; width:20px; height:20px; background: url(../images/magnifier3.png) center center no-repeat; background-size:100% 100%; margin:9px 10px 0 0 }
+/**客户列表**/
+.customerInfo { padding-bottom:15px; margin-top:15px; border-bottom:1px solid #e0e0e0}
+
+.page-notifications {height:63px;}
+.page-notifications h4{ line-height:45px; margin-top:0px; margin-bottom:0px;}
+
+.radio-twoCus{background-image:url(../images/ui/radio2.png);background-size:16px 18px;background-repeat:no-repeat;padding-left:30px;background-position:0px 1px;	margin-bottom:10px;}
+.radio-twoCus input { display:none;}
+.radio-twoCus-checked{background-image:url(../images/ui/radio2c.png);}
+.styles a { margin:0 12px;}
+.sellpricehide { display:none;}
+.sellpricehide span { float:left; margin-right:10px; line-height:30px;}
+.sellpricehide input { border:1px solid #ddd; padding:8px 5px; border-radius:2px;}
+
+.supplierlist { margin-top:20px;}
+.table tr td{ padding:14px 2px;}
+.table tr td a { color: #555;}
+.table tr td:first-child { padding-left:2px; text-align:center;}
+.addSuppliers  { padding-bottom:480px;}
+.addSuppliers .addSuppliNav{ margin-top:20px; }
+.addSuppul .addSuppul { margin:20px auto 50px;list-style:none; }
+.addSuppul li { list-style:none; border-bottom:1px dashed #ccc; margin:0px; overflow:hidden;}
+.addSuppul .suplitit { float:left; width:60px; text-align:right;line-height:40px;}
+.addSuppul .suplidiv { margin-left:70px; padding-top:9px;}
+.addSuppul .suplidiv p {line-height:23px; margin:0px;}
+.addSuppul .suplidiv p input { padding:3px 0px; /**color:#666**/}
+.addSuppul .suplidiv .addressselect select { border:1px solid #ccc; padding:3px;}
+
+/**登录页面**/
+.loginlogo {text-align:center; font-size:18px; font-weight:bold; text-align:center; margin-top:80px;}
+.loginul { margin-top:100px; margin-bottom:100px}
+.loginul .suplitit { float:left; width:90px; }
+.loginul .suplitit .loginIco { float:left; width:20px; height:20px;margin-top:10px;}
+.loginul .suplitit .loginuserIco{background:url(../images/user.png) left center no-repeat; background-size:100% 100%;}
+.loginul .suplitit .loginpwdIco {background:url(../images/locked2.png) left center no-repeat; background-size:100% 100%;}
+.loginul .suplitit span { text-align:right; float:right; width:60px;font-size:14px;}
+
+
+
+
+
+
+
+
+

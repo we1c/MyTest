@@ -1,0 +1,1 @@
+ALTER TABLE shop ADD principal VARCHAR(50) DEFAULT '' COMMENT '负责人';

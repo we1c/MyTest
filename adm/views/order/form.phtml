@@ -1,0 +1,170 @@
+      <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">订单信息</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+			  <label class="checkbox">
+                                             店铺名称： <select name="shop" class="form-control" id="shop" style="width:120px;display:inline">
+            	           <option value="">请选择店铺</option>
+                           <?php foreach ( $this->shop as $v ): ?>
+            	           <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+            	       </select><br><br>
+                                             付款方式： <select name="paytype" class="form-control" style="width:100px;display:inline">
+            	           <option value="1" selected="selected">微信</option>
+            	           <option value="2">支付宝</option>
+            	           <option value="3">其它</option>
+            	       </select><br><br>
+                                             提货方式： <select name="deliver" class="form-control" style="width:100px;display:inline">
+            	           <option value="1" selected="selected">快递</option>
+            	           <option value="2">自取</option>
+            	      </select><br><br>
+                                             买家备注： <input name="remark" class="form-control" style="width:200px;display:inline"/>
+               </label>
+            </div>
+		</div>
+	 </div>
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">客户信息</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+			  <label class="checkbox">
+                                                收  货  人 ： <input name="consignee" class="form-control" id="consignee" style="width:200px;display:inline"/><br><br>
+                                                手  机  号 ：  <input name="phone" class="form-control" id="phone" style="width:200px;display:inline"/><br><br>
+                                                详细地址： <select name="province" class="form-control" id="province" style="width:120px;display:inline">
+            	           <option value="">省</option>
+            	           <?php foreach ( $this->province as $v ): ?>
+            	               <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+            	           <?php endforeach; ?>
+            	       </select>
+            	       <select name="city" class="form-control" id="city" style="width:120px;display:inline">
+        	               <option value="">市</option>
+            	       </select>
+            	       <select name="area" class="form-control" id="area" style="width:120px;display:inline">
+            	           <option value="">区/县</option>
+            	       </select>
+            	       <input name="address" class="form-control" id="address" style="width:200px;display:inline"/>
+            	       </label>
+            </div>
+		</div>
+	 </div>
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">商品信息</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+			  <label class="checkbox">
+			                                         选择商品：
+			    <select name="goods" class="form-control" id="goodsList" style="width:200px;display:inline">
+			      <option value="">请选择商品</option>
+			      <?php foreach ( $this->goods as $v ): ?>
+			          <option value="<?=$v['id'] ?>"><?=$v['name'] ?></option>
+			      <?php endforeach; ?>
+			    </select>
+			    </label>
+            	<table class="form-group formCustom" id="goodsInfo">
+            	   <tr class="form-group">
+            	       <td style="width:200px;">商品图</td>
+            	       <td style="width:200px;">SKU编码</td>
+            	       <td style="width:200px;">商品名称</td>
+            	       <td style="width:200px;">店铺名称</td>
+            	       <td style="width:200px;">平台价</td>
+            	   </tr>
+            	</table>
+            </div>
+		</div>
+	 </div>
+     <div class="form-group formCustom">
+		<label class="col-md-2 control-label" style="height:50px;line-height:50px;">合计</label>
+		<div class="col-sm-10">
+            <div class="btn-group">
+                 <div>
+			         <label class="checkbox">
+                                                                             共计 <span style="color: red" class="gNum">0</span> 件商品&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                             商品总金额 <span style="color: red" class="gTotal">0</span> 元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                                                             实付 <span style="color: red" class="gMoney">0</span> 元
+            	     </label>
+                 </div>
+            </div>
+		</div>
+	 </div>
+	 <script type="text/javascript">
+	    $(document).on('change','#shop',function() {
+	        $.post('/order/getGoods',{'id':$(this).val()},function(result) {
+		        var html = '';
+			    if ( result.data.length < 1 ) {
+				    html += '<option value="">该店铺下没有商品</option>';
+			    } else {
+				    html += '<option value="">请选择商品</option>';
+    		        for ( var i = 0; i < result.data.length; i++ ) {
+    		            html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+    			    }
+			    }
+	            $('#goodsList').html(html);
+		        },'json')
+		    })
+	    $(document).on('change','#goodsList',function() {
+	        $.post('/order/getGoodsInfo',{'id':$(this).val()},function(result) {
+	            var html = '<tr>';
+		        html += '<td style="width:200px;"><img src="'+result.data.goodsImg[0].imgurl+'"  style="width:80px;height:60px"></td>';
+		        html += '<td style="width:200px;">'+result.data.code+'</td>';
+	     	    html += '<td style="width:200px;">'+result.data.name+'</td>';
+	     	    html += '<td style="width:200px;">'+result.data.shop_name+'</td>';
+	     	    html += '<td style="width:200px;">'+result.data.purchPrice+'</td>';
+	     	    html += '<td style="width:50px;" class="btn btn-primary delBtn">删除</td>';
+	     	    html += '<input type="hidden" name="goodsId[]" value="'+result.data.id+'">';
+	     	    html += '</tr>';
+	            $('#goodsInfo').append(html);
+	            var gNum = parseInt($('.gNum').text()) + 1;
+	            var gTotal = (parseInt( $('.gTotal').text() ) + parseInt(result.data.purchPrice));
+// 	            var gDis = parseInt( $('#discount').val() );
+	            var gMoney = gTotal;
+	            $('.gNum').text( gNum );
+	            $('.gTotal').text( gTotal );
+// 	            $('.gDis').text( gDis );
+	            $('.gMoney').text( gMoney );
+		        },'json')
+		    })
+        $(document).on('click','.delBtn',function() {
+            $(this).parent().remove();
+            })
+            
+            $(document).on("change", '#province',function() {
+            	var province = $(this).val();
+                var city = $('#city');
+                var area = $('#area');
+                city.html('<option value="">请选择城市</option>');
+                area.html('<option value="">请选择地区</option>');
+                $.post('/order/city',{'province':province},function(result) {
+                	var html = '';
+                    if(result.success == 1) {
+                       	html += '<option value="">请选择城市</option>';
+                      	for(var i=0;i<result.data.length;i++){
+                      	    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                      	}
+                    } else if( result.success == 0 ){
+                       html += '<option value="">请选择城市</option>';
+                    } else if( result.success == 2 ){
+                      alert(result.notice);
+                    }
+                	city.html(html);
+                },'json')
+            });
+            $(document).on("change", '#city',function() {
+            	var city = $(this).val();
+                var area = $('#area');
+                area.html('<option value="">请选择地区</option>');
+                $.post('/order/area',{'city':city},function(result) {
+                	var html = '';
+                    if(result.success == 1) {
+                       	html += '<option value="">请选择地区</option>';
+                      	for(var i=0;i<result.data.length;i++){
+                      	    html += '<option value="'+result.data[i].id+'">'+result.data[i].name+'</option>';
+                      	}
+                    } else if( result.success == 0 ){
+                       html += '<option value="">请选择地区</option>';
+                    } else if( result.success == 2 ){
+                      alert(result.notice);
+                    }
+                	area.html(html);
+                },'json')
+            });
+	 </script>

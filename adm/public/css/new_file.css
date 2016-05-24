@@ -1,0 +1,133 @@
+
+
+
+
+
+#chose {
+	cursor: pointer;
+	background: blue;
+	color: white;
+	width: 70px;
+	text-align: center;
+}
+
+
+/*添加商品窗口*/
+#addNewWindow {
+	display: none;
+	position: fixed;
+	left: 25%;
+	top: 25%;
+	width: 726px;
+	height: 454px;
+	background: white;
+	border: 1px solid #ccc;
+}
+
+#addNewWindow .close-btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#addNewWindow .window-top {
+	height: 37px;
+	border-bottom: 2px solid blue;
+	text-indent: 10px;
+	font-size: 14px;
+	line-height: 37px;
+	text-align: left;
+}
+
+#addNewWindow .window-table {
+	width: 700px;
+	height: 345px;
+	margin: 7px 12px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#addNewWindow .window-search {
+	border: 1px solid #ccc;
+	width: 202px;
+	height: 26px;
+	margin-bottom: 8px;
+}
+
+#addNewWindow .window-inp {
+	width: 170px;
+	height: 24px;
+	border: 0;
+}
+
+#addNewWindow .window-searchImg {
+	display: block;
+	width: 32px;
+	height: 26px;
+	float: right;
+}
+
+#addNewWindow .window-tabNav {
+	border: 1px solid #ccc;
+	width: 698px;
+}
+
+#addNewWindow table {
+	border-collapse:collapse;
+	text-indent: 5px;
+	font-size: 12px;
+}
+
+#addNewWindow table tr {
+	height: 44px;
+	border-bottom: 2px solid #ddd;
+}
+
+#addNewWindow table thead {
+	height: 28px;
+	background: #F7F7F7;
+}
+
+#addNewWindow table td:nth-of-type(1) {
+	width: 42px;
+}
+
+#addNewWindow table td:nth-of-type(2) {
+	width: 182px;
+}
+
+#addNewWindow table td:nth-of-type(3) {
+	width: 184px;
+}
+
+#addNewWindow table td:nth-of-type(4) {
+	width: 177px;
+}
+
+#addNewWindow table td:nth-of-type(5) {
+	width: 100px;
+}
+
+
+#addNewWindow .window-bottom {
+	margin: 0 15px;
+	background: #F7F7F7;
+}
+#addNewWindow .window-bottom span {
+	cursor: pointer;
+	display: block;
+	width: 45px;
+	height: 20px;
+	border: 1px solid #ccc;
+	font-size: 12px;
+	font-family: "微软雅黑";
+	text-align: center;
+	line-height: 20px;
+	float: left;
+}
+#addNewWindow .window-bottom span:nth-of-type(1) {
+	background: blue;
+	color: white;
+}

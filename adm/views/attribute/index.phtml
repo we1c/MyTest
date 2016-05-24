@@ -1,0 +1,192 @@
+
+
+<div class="wrapper">
+    <div id="main" class="container-fluid">
+<!-- BreadNav -->
+        <div class="row mt10">
+            <div class="col-xs-12">
+                <div class="BreadcrumbNav white">
+                    <a href="">首页</a>
+                    >
+                    <a href="">采购管理</a>
+                    >
+                    <a href="">属性管理</a> 
+                </div>
+            </div>
+        </div>
+        <div class="row mt10">
+<!-- search -->            
+            <div class="tabhead col-xs-12">
+                <div class="setwrap top-search">
+                    <button id="addAttr" class="btn btn-primary">添加属性</button>
+                </div>
+            </div>
+        </div>
+<!-- content-list -->
+        <div class="row tablescroll">
+            <table class="table scrollTable attrTable">
+                <thead>
+                    <tr>
+                        <td width="10%">所属分类</td>
+                        <td>属性名称</td>
+                        <td>属性类型</td>
+                        <td>录入方式</td>
+                        <td>关键属性</td>
+                        <td>销售属性</td>
+                        <td>状态</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr class="none"></tr>
+                    <?php if($this->list):?>
+                    <?php foreach ($this->list as $cat => $info): ?>
+                    	<?php $curCount = count($info['attrs']);?>
+                    	<?php foreach( $info['attrs'] as $k => $attr ):?>
+	                        <tr class="text-center attr_p" cat_id="<?=$cat?>" attr_id="<?=$attr['attr_id']?>" style="cursor: pointer;" >
+	                        	<?php if( $k == 0 ):?>
+	                            	<td cat_id="<?=$cat?>" rowspan="<?=$curCount*2;?>" ><?=$info['cat_path']?></td>
+	                        	<?php endif;?>
+	                            <td><?=$attr['attr_name']?></td>
+	                            <td>
+	                            	<?php
+	                            		switch ( $attr['attr_type'] ) {
+	                            			case 0:
+	                            				echo "唯一属性";
+	                            				break;
+	                            			case 1:
+	                            				echo "单选属性";
+	                            				break;
+	                            		}
+	                            	?>
+	                            </td>
+	                            <td>
+									<?php
+										switch( $attr['input_type'] ){
+											case 0:
+												echo "手工录入";
+												break;
+											case 1:
+												echo "下拉选择";
+												break;
+										}
+									?>
+	                            </td>
+	                            <td>
+	                            	<?php
+	                            		switch ( $attr['is_key_attr'] ) {
+	                            			case 0:
+	                            				echo "否";
+	                            				break;
+	                            			case 1:
+	                            				echo "是";
+	                            				break;
+	                            		}
+	                            	?>
+	                            </td>
+	                            <td>
+	                            	<?php
+	                            		switch ( $attr['is_sale_attr'] ) {
+	                            			case 0:
+	                            				echo "否";
+	                            				break;
+	                            			case 1:
+	                            				echo "是";
+	                            				break;
+	                            		}
+	                            	?>
+	                            </td>
+	                            <td>
+	                            	<?php
+	                            		switch ( $attr['status'] ) {
+	                            			case 0:
+	                            				echo "<span style='color:red;'>禁用</span>";
+	                            				break;
+	                            			case 1:
+	                            				echo "正常";
+	                            				break;
+	                            		}
+	                            	?>
+	                            </td>
+	                            <td>
+	                            	<a id="edit" href="/attribute/edit?attr_id=<?=$attr['attr_id']?>">编辑</a>
+	                            </td>
+	                        </tr>
+	                        <tr class="">
+	                        	<td class="attr_td" colspan="20" style="padding: 0;margin:0;">
+	                        		<div class="none">
+	                        			<ul>
+	                        				
+	                        			</ul>
+	                        		</div>
+	                        	</td>
+	                        </tr>
+                    	<?php endforeach;?>
+                    <?php endforeach; ?>
+                    <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+<!-- page -->
+        <div class="row center mb10">
+            <div class="pagenav">
+                <div id="Pagination" class="flickr">
+                    <?=$this->pagebar;?>
+                </div>
+                <div class="page-count">
+                    <div>
+                        每页显示<span id="perpage"><?=$this->perpage?></span>条
+                        <ul id="pageCountSelect">
+                            <li>-- 请选择 --</li>
+                            <li>50</li>
+                            <li>100</li>
+                            <li>200</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- page-end -->
+    </div>
+</div>
+
+<script>
+	$('#addAttr').click(function(){
+		location.href = '/attribute/add';
+	})
+
+	$('.attr_p').bind({
+		click:function(){
+			var $div = $(this).next().find('div');
+			if( $div.find('li').length ){
+				if( $div.hasClass('none') ){
+					$div.removeClass('none');
+				}else{
+					$div.addClass('none');
+				}
+			}else{
+				var cat_id = $(this).attr('cat_id');
+				var attr_id = $(this).attr('attr_id');
+				$.post('/attribute/getAttrChild',{'cat_id':cat_id,'attr_id':attr_id},function(result){
+					if( result.success == 1 ){
+						var data = result.data;
+						var str = '';
+						while( data.length ){
+							var cur = data.shift();
+							str += '<li>'+cur.values+'</li>';
+						}
+						$div.find('ul').html(str);
+						$div.removeClass('none');
+					}
+				},'json');
+			}
+		}
+	})
+	//给单个小级别单位阻止冒泡
+	$("td[rowspan]").click(function(e){
+		e.stopPropagation();
+	})
+	$('#edit').click(function(e){
+		e.stopPropagation();
+	});
+</script>

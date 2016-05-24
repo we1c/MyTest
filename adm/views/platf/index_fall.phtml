@@ -1,0 +1,284 @@
+
+<div id="wrap" class="waterfall">
+
+<form id="form">
+	<?php if( $this->list ): ?>
+	<?php foreach($this->list as $row): ?>
+		<div class="falldiv">
+			<div class="falldivbtn">
+				<span class="fl" onclick="pushOne(this)">推送</span>
+				<div class="fr">
+					<p class="fl" data="<?=$row['id']?>" onclick="showDetail(this,'btn')">详情</p>
+					<span class="fr likebtn" goodsId='<?=$row['id']?>'></span>
+				</div>
+			</div>
+			<img src="<?=$row['thumb']?>" data="<?=$row['id']?>" onclick="showDetail(this,'img')"/>
+			<div class="fallcontent">
+				<h3><?=$row['name']?></h3>
+				<p>
+					<?=$row['category1']? $row['category1']:'暂无'?>
+					<span><?=$row['category2']? $row['category2']:'暂无'?></span>
+					<span><?=$row['category3']? $row['category3']:'暂无'?></span>
+				</p>
+				<?php if ( json_decode($row['attribute'],true) ): ?>
+                    <?php foreach(json_decode($row['attribute'],true) as $v): ?>
+                    	<?php if( $v['value']['name'] != '0' ):?>
+	                        <p>
+	                            <?=$v['key']['name']?>:
+	                            <span><?=$v['value']['name']?></span>
+	                        </p>
+                    	<?php endif;?>
+                    <?php endforeach;?>
+                <?php endif; ?>
+                <p>库存:<span><?=$row['goodsStock']?></span></p>
+				<p><i>平台价格：<?php if( $row['ptimes']) echo (round($row['purchPrice'] * $row['ptimes']));else echo ( round($row['purchPrice'])) ?></i></p>
+				<p class="channel_<?=$row['id']?>">分销渠道:
+					<?php if($row['cname']): ?>
+                        <?php foreach($row['cname'] as $v): ?>
+                            <span><?=$v['name']?></span>
+                        <?php endforeach;?>
+                    <?php else: ?>
+                        <span>无</span>
+                    <?php endif;?>
+				</p>
+			</div>
+			<div class="fallbottom">
+				<span>
+					<?=$row['shopName']?>
+				</span>
+				<span class="fr">推荐值：<i>100</i></span>
+			</div>
+		</div>
+	<?php endforeach;?>
+	<?php endif;?>
+</form>
+
+</div>
+<!--查看大图-->
+	<div id="showGoods">
+		<div class="goodswrap">
+			<div class="goodswraptop">
+				<div class="goodswrapbottom">
+					<span id="likeBtn"><i></i>Unlike</span>
+					<span class="push">推送 </span>
+					
+					<em class="recommendnum">8</em>
+				</div>
+				<h3 id="showName"></h3>
+			</div>
+			<div class="showgoodsimg">
+				<!--图片位置-->
+			</div>
+		</div>
+		<div id="push">
+			<div class="col-lg-6 pushleft">
+				
+			</div>
+			<div class="col-lg-6 pushright">
+				<h3>推送渠道</h3>
+				<?php if( $this->dis ): ?>
+					<?php foreach( $this->dis as $k => $v ): ?>
+						<p class="goods_dis" disId='<?=$v['id']?>'>
+							<?=$v['name']?><span class="pushBtn">推送</span>
+						</p>
+					<?php endforeach?>
+				<?php endif;?>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+<!--查看大图结束-->
+<script type="text/javascript">
+	//单个推送按钮
+	function pushOne(obj){
+		var $div = $(obj).parent().parent().clone();
+		var gid = $(obj).parent().next().attr('data');
+		$('.goods_dis').attr('goodsId',gid);
+		$('#showGoods').show().children('#push').hide().siblings().show();
+        $('#push').show().siblings().hide();
+        $('#push').children('.pushleft').html($div);
+	}
+
+	//确定推送商品
+	$('.pushBtn').bind({
+		click:function(){
+			var goodsId = $(this).parent().attr('goodsId');
+			var disId = $(this).parent().attr('disId');
+			var $channel = $('.channel_'+goodsId);
+			var cname = $(this).parent()[0].firstChild.nodeValue;
+			$.post('/platf/pushGoods',{'gid':goodsId,'did':disId},function(result){
+				if( result.success == 1 ){
+					var str = '<span>'+cname+'</span>';
+					if( $channel.html().indexOf('<span>无</span>') >= 0 ){
+						$channel.html(str);
+					}else{
+						$channel.append(str);
+					}
+					alert(result.data);
+				}else if( result.success == 0 ){
+					alert(result.error);
+				}else if( result.success == 2 ){
+					alert(result.notice);
+				}
+			},'json');
+		}
+	});
+
+	//展示推送窗口
+    function showDetail(obj,type){
+		var scrollTop = $(document).scrollTop();
+        var $div,$data;
+        if( type == 'btn' ){
+        	$div = $(obj).parent().parent().parent().clone();
+        	$data = $(obj).parent().parent().siblings('.fallcontent');
+        }else{
+        	$div = $(obj).parent().clone();
+        	$data = $(obj).next();
+        }
+        //获取数据
+        var gid = $(obj).attr('data');
+        var name = $data.find('h3').text();
+        //展示数据
+        $('#showName').text(name);
+        $('.goods_dis').attr('goodsId',gid);
+        $.post('/platf/getgoodsimgbyid',{'gid':gid},function(result){
+        	if( result.success == 1 ){
+        		var str = '';
+        		for( var i=0,len=result.data.length;i<len;i++ ){
+        			str += "<img src='"+result.data[i].imgurl+"'>";
+        		}
+        		$('.recommendnum').text(len);
+        		$('.showgoodsimg').html(str);
+        	}else if( result.success == 2 ){
+        		alert(result.notice);
+        	}
+        },'json');
+        $('#showGoods').show().children('#push').hide().siblings().show();
+        $('#showGoods').bind('mousewheel',function(){
+			$(document).scrollTop(scrollTop);
+		})
+        $('#showGoods').find('.push').click(function(e){
+            e.stopPropagation();
+            $('#push').show().siblings().hide();
+            $('#push').children('.pushleft').html($div);
+        })
+
+    }
+    
+    $('#showGoods').click(function(){
+        $(this).hide();
+    })
+
+	//喜欢
+	$('.likebtn').click(function(e){
+		e.stopPropagation();
+		if($(this).hasClass('like')){
+			$(this).removeClass('like');
+			$(this).siblings('input').remove();
+		}else {
+			$(this).addClass('like');
+			var goodsId = $(this).attr('goodsId');
+			var input = "<input type='checkbox' name='goodsId[]' value='"+goodsId+"' checked='checked' style='display:none;'>";
+			$(this).after(input);
+		}
+	})
+
+	//点击喜欢按钮
+	var likeBtn = true;
+	$('#likeBtn').click(function(e){
+		e.stopPropagation();
+		if(likeBtn){
+			$('#likeBtn').addClass('likeRun');
+			setTimeout(function(){
+				$('#likeBtn').removeClass('likeRun').addClass('like').html('<i></i>Like');
+			},1000);
+			likeBtn = false;
+		}else {
+			$('#likeBtn').addClass('likeRun');
+			setTimeout(function(){
+				$('#likeBtn').removeClass('likeRun').removeClass('like').html('<i></i>Unlike');
+			},1000);
+			likeBtn = true;
+		}	
+	})
+
+	//瀑布流
+	var positionArray = new Array();
+	var Div = null;
+	var imgs = null;
+	var columNum = 0;
+	var spaceWidth = 0;
+	var topWidth = 0;
+	window.onload = function(){
+		waterfall();
+		$('#runWrap').hide();
+	}
+	window.onresize = function(){
+		positionArray = new Array();// 触发函数时会多次触发，所以要多次清空数组
+		waterfall();
+	}
+
+
+	//用来计算最小的top值的坐标的下标值是多少
+	function minTopIndex(){
+		var minTop = positionArray[0].top;
+		var index = 0;
+		for(var i=0; i<positionArray.length; i++){
+			if(positionArray[i].top < minTop) {
+				minTop = positionArray[i].top;
+				index = i;
+			}
+		}
+		return index;
+	}
+	function maxTopIndex(){
+		var maxTop = positionArray[0].top;
+		var index = 0;
+		for(var i=0; i<positionArray.length; i++){
+			if(positionArray[i].top > maxTop) {
+				maxTop = positionArray[i].top;
+				index = i;
+			}
+		}
+		return index;
+	}
+
+	function waterfall(){
+		//最外层的DIV
+		Div = document.getElementById("wrap");
+		
+		//所有的图片div
+		imgs = Div.getElementsByClassName("falldiv");
+		
+		//页面的列数   取整 (页面总宽度/单个图片的宽度)
+		columNum = Math.floor(Div.offsetWidth/imgs[0].offsetWidth);
+		
+		//左右间隙   （ 页面总宽度-（单个图片的宽度X列数））/（列数+1）
+		spaceWidth = Math.floor((Div.offsetWidth-imgs[0].offsetWidth*columNum)/(columNum+1));
+		//上下间隙
+		topWidth = 10;
+		
+		//创建N列坐标，保存到一个数组当中,便于设定图片的位置
+		for(var i=0; i<columNum; i++){
+			var obj = new Object();
+			//第N列 left = (N-1)*图片宽度 + N*左右间隙
+			obj.left = i*imgs[0].offsetWidth + (i+1)*spaceWidth;
+			obj.top = topWidth;
+			positionArray.push(obj);
+		}
+		
+		//拿到所有图片，开始定位
+		for(var k=0; k<imgs.length; k++){
+			//此刻，那一列的top值，最小，就放到哪一列
+			var index = minTopIndex();
+			imgs[k].style.left =  positionArray[index].left + "px";
+			imgs[k].style.top = positionArray[index].top + "px";
+			
+			positionArray[index].top += imgs[k].offsetHeight + topWidth;
+		}
+		var maxHeight = maxTopIndex();
+		Div.style.height = positionArray[maxHeight].top+'px';
+		
+	}
+
+</script>

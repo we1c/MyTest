@@ -1,0 +1,454 @@
+<link rel="stylesheet" href="/css/css.css">
+	<form id="form" action="/sellplan/add" method="post">
+		<div class="wrapper">
+			<div id="main" class="scrollbar container-fluid">
+				<div class="row mt10">
+					<div class="col-xs-12">
+						<div class="BreadcrumbNav white">
+							<a href="">首页</a>
+							>
+							<a href="">销售计划</a>
+							>
+							<a href="">新建销售计划</a>
+						</div>
+					</div>
+				</div>
+				<div class="row mt10">
+					<div class="col-lg-2">
+						<div class="leftinfo">
+							<ul>
+								<li class="active"><div><?php if($this->batch): ?>批量添加计划<?php else: ?>销售计划<?php endif ?></div></li>
+							</ul>
+						</div>
+					</div>
+					<!-- 如果是批量推送的商品,不显示商品详情 -->
+				<?php if(!$this->batch): ?>
+					<div class="col-lg-9 neworder-info">
+						<h4 class="tit">商品信息</h4>
+						<hr />
+						<div class="row childpad">
+						    <div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">商品名称</div>
+								<div class="inp-inp">
+									<div><input disabled="" class="form-control" type="text" value="<?=$this->goodsInfo['name']?>" name="name"/></div>
+								</div>
+						    </div>
+							<div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">SKU编号</div>
+								<div class="inp-inp">
+									<div><input disabled="" class="form-control" type="text" value="<?=$this->goodsInfo['code']?>" name="code" /></div>
+								</div>
+						    </div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">渠道价格</div>
+								<div class="inp-inp input-group">
+									<div>
+									<div class="input-group">
+								    	<input disabled="" type="text" class="form-control inpwidth100" value="<?=$this->goodsInfo['channelPrice']?>" name="channelPrice">
+								    	<div class="input-group-addon">.00</div>
+									</div>
+									</div>
+								</div>
+						    </div>
+							<div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">可销售库存量</div>
+								<div class="inp-inp">
+									<div>
+									<div class="input-group">
+								    	<input disabled="" type="text" class="form-control inpwidth100" value="<?=$this->goodsInfo['goodsStock']?>" name="goodsStock">
+								    	<div class="input-group-addon">件</div>
+									</div>
+									</div>
+								</div>
+						    </div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-sm-10 col-xs-12 mb10">
+						      	<div class="inp-tit">文案描述</div>
+								<div class="inp-inp">
+									<script id='descript' name='descript' class='descript' type='text/plain' style="height: 200px;"><?=htmlspecialchars_decode($this->goodsInfo['intro'])?></script>
+									<script src="/js/ueditor/ueditor.config.js" ></script>
+									<script src="/js/ueditor/ueditor.all.min.js"></script>
+									<script>
+										var ue_intro = UE.getEditor('descript',{
+														readonly:true,
+										            	toolbars: [
+										                       ['fullscreen', 'source', 'undo', 'redo'],
+										                       ['selectall', 'cleardoc', 'removeformat']
+										                    ]
+										                });
+									</script>
+								</div>
+						    </div>
+						</div>
+						<div class="row childpad">
+							<div class="col-sm-10 col-xs-12 mb10">
+						      	<div class="inp-tit">商品图片</div>
+								<div class="inp-inp">
+									<div>
+										<ul id="showBox" class="row detailsimg details-group">
+										<?php foreach($this->goodsInfo['imgurl'] as $v): ?>
+											<li>
+												<img class="img-thumbnail" src="<?=$v['imgurl']?>"/>
+												<input type="hidden" name="image" value="<?=$v['hash']?>">
+												<div class="imgdel">
+													<span class="fl btn btn-primary" onclick="delImg(this.parentNode)">删除</span>
+													<span class="fr btn btn-primary" onclick="showImg(JSsiblings(this.parentNode))">查看主图</span>
+												</div>
+											</li>
+										<?php endforeach ?>
+										</ul>
+									</div>
+								</div>
+						    </div>
+						</div>
+					</div>
+					<div class="row mt10"></div>
+				<?php endif ?>
+			<?php if($this->batch): ?>
+				<div class="row mt10">
+					<div class="col-lg-2"></div>
+					<div class="col-lg-9 neworder-info">	
+						<h4 class="tit">批次名称</h4>
+						<hr />
+						<div class="row childpad">
+						    <input type="text" class="form-control" name="description" placeholder="请填写一个批次描述" required="">
+						</div>
+					</div>
+				</div>
+			<?php endif ?>
+				<div class="row mt10">
+					<div class="col-lg-2"></div>
+					<div class="col-lg-9 neworder-info">	
+						<h4 class="tit">费用说明</h4>
+						<hr />
+						<div class="row childpad">
+						    <div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit"><span class="colorred">*</span>物流运费</div>
+								<div class="inp-inp">
+									<div><select class="form-control" name="express" <?php if($this->batch): ?> disabled="" <?php endif ?>>
+										<?php foreach($this->express as $v): ?>
+											<?php $express=json_decode($v);$costName=$express->costName;$price=$express->price;$id=$express->id;?>
+											<option <?php if($this->goodsInfo['freeExpress']==$id): ?> selected="" <?php endif ?>  value='<?=$v?>'><?=$costName?> （<?=$price?>元）<?php if($this->batch): ?>自动设置无需改动 <?php endif ?></option>
+										<?php endforeach ?>
+									</select></div>
+								</div>
+						    </div>
+							<div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">证书费用</div>
+								<div class="inp-inp">
+									<div><select class="form-control" name="certificate">
+										<?php foreach($this->certificate as $v): ?>
+											<?php $express=json_decode($v);$costName=$express->costName;$price=$express->price;?>
+											<option value='<?=$v?>'><?=$costName?> （<?=$price?>元）</option>
+										<?php endforeach ?>
+									</select></div>
+								</div>
+						    </div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit"><span class="colorred">*</span>包装费用</div>
+								<div class="inp-inp">
+									<div><select class="form-control" name="package">
+										<?php foreach($this->package as $v): ?>
+											<?php $express=json_decode($v);$costName=$express->costName;$price=$express->price;?>
+											<option <?php if($express->id==12): ?> selected="" <?php endif ?> value='<?=$v?>'><?=$costName?> （<?=$price?>元）</option>
+										<?php endforeach ?>
+									</select></div>
+								</div>
+						    </div>
+							<div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">附加费用</div>
+								<div class="inp-inp">
+									<div><input class="form-control" type="text" name="addPrice" /><span id="number" style="color:red;"></span></div>
+								</div>
+						    </div>
+						</div>
+						
+					</div>
+				</div>
+			<?php if(!$this->batch): ?>
+				<div class="row mt10">
+					<div class="col-lg-2"></div>
+					<div class="col-lg-9 neworder-info">	
+						<h4 class="tit">交易方式</h4>
+						<hr />
+						<div class="row childpad">
+							<div class="col-sm-10 col-xs-12 mb10">
+								<div class="inp-inp">
+									<div>
+										<ul class="deal-btn">
+											<li id="yikoujia" class="active">一口价</li>
+										<?php if(!$this->batch): ?>
+											<li id="jingmai" >竞买</li>
+										<?php endif ?>
+											<input type="hidden" name="tradeStyle" id="tradeStyle" value="1">
+										</ul>
+									</div>
+								</div>
+						    </div>
+						</div>
+						<div class="deal-style  row childpad">
+						    <div class="col-sm-5 col-xs-12 mb10">
+								<div class="inp-inp">
+									<div>
+										<div class="inp-tit"><span class="colorred">*</span>一口价</div>
+										<div class="inp-inp">
+											<div>
+												<div class="input-group">
+											    	<input readonly="" type="text" class="form-control inpwidth100" id="fixedPrice" name="fixedPrice">
+											    	<div class="input-group-addon">元</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						    </div>
+						    <div class="col-sm-5 col-xs-12 mb10">
+								<div class="inp-inp">
+									<div>
+										<div class="inp-tit"><span class="colorred">*</span>上架数量</div>
+										<div class="inp-inp">
+											<div>
+												<div class="input-group">
+											    	<input type="text" class="form-control inpwidth100" id="upAccount" name="upAccount" value="1" <?php if($this->batch): ?> disabled=""<?php endif ?> >
+											    	<div class="input-group-addon">件</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						    </div>
+						</div>
+					<?php if(!$this->batch): ?>
+						<div class="deal-style none row childpad">
+							<div class="col-sm-5 col-xs-12 mb10">
+								<div class="inp-inp">
+									<div>
+										<div class="inp-tit"><span class="colorred">*</span>起拍价</div>
+										<div class="inp-inp">
+											<div>
+												<div class="input-group">
+											    	<input type="text" class="form-control inpwidth100" id="startPrice" name="startPrice">
+											    	<div class="input-group-addon">元</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						    </div>
+						</div>
+					<?php endif ?>
+					</div>
+				</div>
+			<?php endif ?>
+				<div class="row mt10">
+					<div class="col-lg-2"></div>
+					<div class="col-lg-9 neworder-info">	
+						<h4 class="tit">预售计划&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:16px;color:gray;">如需添加销售计划，请同时添加开始和结束时间</span></h4>
+						<hr />
+						<div class="row childpad">
+						    <div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">开始时间</div>
+								<div class="inp-inp">
+									<div><input id="dateStart" class="form-control" type="text" name="startTime" /></div>
+								</div>
+						    </div>
+						</div>
+						<div class="row childpad">
+							<div class="col-sm-5 col-xs-12 mb10">
+						      	<div class="inp-tit">结束时间</div>
+								<div class="inp-inp">
+									<div><input id="dateEnd" class="form-control" type="text" name="endTime" /></div>
+								</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+				<div class="row mt10">
+					<div class="col-lg-2"></div>
+					<div class="col-lg-9 neworder-info">
+						<h4 class="tit">确认添加</h4>
+						<hr />
+						<!-- 临时写作隐藏域,立即上架 -->
+						<input type="hidden" name="startUpTime" value="1" />
+						<!-- <div class="row childpad">
+						    <div class="col-sm-3 col-xs-12 mb10">
+						      	<div class="inp-tit">开始上架时间</div>
+								<div class="inp-inp">
+									<div class="linheit">
+										<input type="radio" name="startUpTime" value="1" checked="checked" />立即
+									</div>
+								</div>
+						    </div>
+						</div>
+						<div class="row childpad">
+						    <div class="col-sm-4 col-xs-12">
+						    	<div class="inp-inp">
+						    		<div>
+						    			<div class="linheit fl"><input type="radio" name="startUpTime" value="2" /></div>
+								    <div class="col-xs-8"><input id="date" class="form-control" type="text" name="detailStartUpTime" readonly="" /></div>
+								    <span class="fl linheit">上架</span>
+						    		</div>
+						    	</div>
+						    </div>
+						</div> -->
+						<div class="row childpad">
+						    <div class="col-xs-12 mb10 text-right">
+						    	<button id="submitBtn" type="button" class="btn btn-primary">确定并提交</button>
+						      	<span class="btn btn-default" onclick="history.go(-1)">取消并返回</span>
+						    </div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="fromUrl" value="<?=$_SERVER['HTTP_REFERER']?>">
+		<input type="hidden" name="goodsId"  value='<?=$this->goodsInfo['goodsId']?>'>
+		<input type="hidden" name="pushId" value='<?=$this->pushId?>'>
+		<input type="hidden" name="channel" value="<?=$this->channel?>">
+		<input type="hidden" name="preSellId" value="<?=$this->preSellId?>">
+		<input type="hidden" name="batch" value="<?=$this->batch?>">
+	</form>
+	
+	<!-- <div id="showImg" class="showImg">
+		<div class="imgWrap">
+			<img src="img/1.jpg"/>
+			<div id="prev"></div><div id="next"></div>
+		</div>
+	</div> -->
+<!--JavaScript-->
+<script type="text/javascript" src="/js/test.js/jedate.min.js" ></script>
+<script type="text/javascript" src="/js/test.js/jquery.dragsort-0.5.2.js" ></script>
+<script>
+	//上架时间
+/*	jeDate({
+		dateCell:"#date",//isinitVal:true,
+		format:"YYYY-MM-DD hh:mm",
+		isTime:true,
+	})*/
+	jeDate({
+		dateCell:"#dateStart",//isinitVal:true,
+		format:"YYYY-MM-DD hh:mm",
+		isTime:true,
+	})
+	jeDate({
+		dateCell:"#dateEnd",//isinitVal:true,
+		format:"YYYY-MM-DD hh:mm",
+		isTime:true,
+	})
+	
+	//图片排序
+	$("#showBox").dragsort({
+		dragSelectorExclude:'span, input, textarea'
+	});
+	
+	//上架方式
+	var $dealStyle = $('.deal-style');
+	$('.deal-btn').children('li').click(function(){
+		$(this).addClass('active').siblings().removeClass('active');
+		$dealStyle.addClass('none');
+		$dealStyle.eq($(this).index()).removeClass('none');
+	})
+
+	// 竞买
+	$('#jingmai').click(function(){
+		$('#tradeStyle').val(0);
+	})
+	// 一口价
+	$('#yikoujia').click(function(){
+		$('#tradeStyle').val(1);
+	})
+
+	// 渠道价
+	channelPrice=parseInt($('[name="channelPrice"]').val());
+
+	// 提交
+	$('#submitBtn').click(function() {
+		// 如果是批量添加,判断描述是否填写
+		if($('[name="batch"]').val()!='' && $.trim($('[name="description"]').val())==''){
+			alert('请填写批次名称');
+			return;
+		}
+	     	// 判断一口价是否不低于渠道价,否则不能提交
+	     	if(getCost()<channelPrice){
+	     		alert('一口价不得低于'+(channelPrice*0.95).toFixed(2)+'元');
+	     		return false;
+	     	}
+	     	// 判断预售起止时间,如果结束时间早于开始时间,不能提交
+	     	var startTime=datetime_to_unix($('#dateStart').val()+':00');
+	     	var endTime=datetime_to_unix($('#dateEnd').val()+':00');
+	     	if(endTime<startTime){
+	     		alert('预售计划时间设置错误');
+	     		return false;
+	     	}
+	     	// 判断指定上架时间是否为空
+	     	var startUpStyle=$('[name="startUpTime"]:eq(1)').prop('checked');
+	     	var startUpTime=$.trim($('#date').val())
+	     	if(startUpStyle==true && startUpTime==''){
+	     		alert('请指定上架时间');
+	     		return;
+	     	}
+	     	$('#form').submit();
+    })
+    
+	// 页面加载完，先执行一次更改一口价
+	$('[name="fixedPrice"]').val(getCost());
+
+	// 给所有可以变动价格的元素绑定change事件，执行getCost()
+	$('[name="channelPrice"],[name="express"],[name="package"],[name="certificate"]').change(function(){
+	$('[name="fixedPrice"]').val(getCost());
+	})
+
+	// 渠道价
+	// 附加价格变动时判断总价是否低于渠道价的95折
+	$('[name="addPrice"]').keyup(function(event){
+		var totalPrice=getCost();
+		if(totalPrice<channelPrice*0.95){
+			// alert('该商品一口价不得低于'+channelPrice*0.95+'元');
+			$('#number').text('一口价不得低于'+(channelPrice*0.95).toFixed(2)+'元');
+			$('[name="fixedPrice"]').val(channelPrice*0.95);
+		}else{
+			$('[name="fixedPrice"]').val(totalPrice);
+			$('#number').text(' ');
+		}
+	})
+
+	// 可销售库存
+	goodsStock=parseInt($('[name="goodsStock"]').val());
+	// 上架数量限制，不得高于可销售库存
+	$('#upAccount').keyup(function(event){
+		if(parseInt($(this).val())>goodsStock){
+			alert('上架数量不能超过可销售库存');
+			// 修改数量为可销售库存
+			$(this).val(goodsStock);
+		}
+	})
+
+	// 获得一口价
+	function getCost(){
+		var addPrice=$('[name="addPrice"]').val()?parseInt($('[name="addPrice"]').val()):0;
+		var express=parseInt(JSON.parse($('[name="express"]').val()).price);
+		var packages=parseInt(JSON.parse($('[name="package"]').val()).price);
+		var certificate=parseInt(JSON.parse($('[name="certificate"]').val()).price);
+		return addPrice+channelPrice+express+packages+certificate;
+	}
+
+	// Y-m-d H:i:s 格式时间转时间戳
+	function datetime_to_unix(datetime){
+	    var tmp_datetime = datetime.replace(/:/g,'-');
+	    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+	    var arr = tmp_datetime.split("-");
+	    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	    return parseInt(now.getTime()/1000);
+	}
+
+	// 当上架时间被置焦点时,旁边的radio被选中
+	$('#date').focus(function() {
+		$(this).parent().siblings('div').children('input').prop('checked',true);
+	});
+</script>

@@ -1,0 +1,1110 @@
+<div class="modal copyWindow">
+	<input type="hidden" id="con_act_status" data="<?=$this->checkStatus ?>"  />
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">请复制网址</h4>
+			</div>
+			<div class="modal-body">
+				<p></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button id="copy" type="button" class="btn btn-primary" data-clipboard-text=''>复制</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<span id='hideHome' data="<?=$this->home?>" style='display:none;'></span>
+<div class="modal sellplan" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">销售计划</h4>
+			</div>
+			<form id="formSP" data="">
+			<input type="hidden" name="pushId" id="formPushId" />
+			<input type="hidden" name="goodsId" id="formGoodsId" />
+			<input type="hidden" name="channel" id="formChannel" />
+			<input type="hidden" name="sellplan" id="formSellPlan" />
+			<input type="hidden" name="channelPrice" id="formChannelPrice" >
+			<input type="hidden" name="startUpTime" value="1" />
+			<div class="modal-body">
+				<div class="row neworder-info none batch-name">
+					<p class="xs-p">批次名称</p>
+					<div class="col-xs-12 childpad mt10">	
+						<input type="text" class="form-control" name="description" placeholder="请填写一个批次描述" required="">
+					</div>
+					<p class="xs-p">上架数量</p>
+					<div class="col-xs-12 childpad mt10">	
+						<ul class="deal-btn">
+							<li id="dange" class="active">单个</li>
+							<li id="quanbu">全部</li>
+							<input type="hidden" name="upNumber" id="upNumber" value="1">
+						</ul>
+					</div>
+				</div>
+				<div class="row neworder-info trade-style">
+					<p class="xs-p">
+						<span class="mr20">交易方式</span>
+						<span class="ml10">当前库存 <i id="goodsStock"></i> 件</span>
+					</p>
+					<div class="row childpad mt10">
+						<div class="col-sm-10 col-xs-12 mb10">
+							<ul class="deal-btn">
+								<li id="yikoujia" class="active">一口价</li>
+								<li id="jingmai" >竞买</li>
+								<input type="hidden" name="tradeStyle" id="tradeStyle" value="1">
+							</ul>
+					    </div>
+					</div>
+					<div class="deal-style  row childpad">
+					    <div class="col-sm-6 col-xs-12 mb10">
+							<div class="inp-tit"><span class="colorred">*</span>一口价</div>
+							<div class="inp-inp">
+								<div>
+									<div class="input-group">
+								    	<input readonly="" type="text" class="form-control inpwidth100" id="fixedPrice" name="fixedPrice">
+								    	<div class="input-group-addon">元</div>
+									</div>
+								</div>
+							</div>
+					    </div>
+					    <div class="col-sm-6 col-xs-12 mb10">
+							<div class="inp-tit"><span class="colorred">*</span>上架数量</div>
+							<div class="inp-inp">
+								<div>
+								    <div class="input-group">
+					                    <input type="text" class="form-control inpwidth100" id="upAccount" name="upAccount" value="1"  >
+					                    <div class="input-group-addon">件</div>
+					                    <div class="input-group-addon btn-primary allStock">全部</div>
+					                </div>
+								</div>
+							</div>
+					    </div>
+					</div>
+					<div class="deal-style none row childpad">
+						<div class="col-sm-6 col-xs-12 mb10">
+							<div class="inp-tit"><span class="colorred">*</span>起拍价</div>
+							<div class="inp-inp">
+								<div>
+									<div class="input-group">
+								    	<input type="text" class="form-control inpwidth100" id="startPrice" name="startPrice">
+								    	<div class="input-group-addon">元</div>
+									</div>
+								</div>
+							</div>
+					    </div>
+					</div>
+				</div>
+				<div class="row neworder-info">
+					<p class="xs-p">费用说明</p>
+					<div class="row childpad mt10">
+					    <div class="col-sm-6 col-xs-12 mb10">
+					      	<div class="inp-tit"><span class="colorred">*</span>物流运费</div>
+							<div class="inp-inp">
+								<div>
+									<select class="form-control" name="express" id="formExpress" >
+										<?php foreach($this->express as $v): ?>
+											<?php $express=json_decode($v);$costName=$express->costName;$price=$express->price;$id=$express->id;?>
+											<option <?php if($this->goodsInfo['freeExpress']==$id): ?> selected="" <?php endif ?>  value='<?=$v?>'><?=$costName?> （<?=$price?>元）</option>
+										<?php endforeach ?>
+									</select>
+								</div>
+							</div>
+					    </div>
+						<div class="col-sm-6 col-xs-12 mb10">
+					      	<div class="inp-tit">证书费用</div>
+							<div class="inp-inp">
+								<div>
+									<select class="form-control" name="certificate" id="formCertificat">
+										<?php foreach($this->certificate as $v): ?>
+											<?php $express=json_decode($v);$costName=$express->costName;$price=$express->price;?>
+											<option value='<?=$v?>'><?=$costName?> （<?=$price?>元）</option>
+										<?php endforeach ?>
+									</select>
+								</div>
+							</div>
+					    </div>
+					</div>
+					<div class="row childpad">
+					    <div class="col-sm-6 col-xs-12 mb10">
+					      	<div class="inp-tit"><span class="colorred">*</span>包装费用</div>
+							<div class="inp-inp">
+								<div>
+									<select class="form-control" name="package" id="formPackage">
+										<?php foreach($this->package as $v): ?>
+											<?php $express=json_decode($v);$costName=$express->costName;$price=$express->price;?>
+											<option <?php if($express->id==12): ?> selected="" <?php endif ?> value='<?=$v?>'><?=$costName?> （<?=$price?>元）</option>
+										<?php endforeach ?>
+									</select>
+								</div>
+							</div>
+					    </div>
+						<div class="col-sm-6 col-xs-12 mb10">
+					      	<div class="inp-tit">附加费用</div>
+							<div class="inp-inp">
+								<div><input class="form-control" type="text" name="addPrice" /><span id="number" style="color:red;"></span></div>
+							</div>
+					    </div>
+					</div>
+				</div>
+				<div class="row neworder-info">	
+					<p class="xs-p">
+						<span class="mr20">预售计划</span>
+						<span class="ml10">如需添加销售计划，请同时添加开始和结束时间</span>
+					</p>
+					<div class="row childpad mt10">
+					    <div class="col-sm-6 col-xs-12 mb10">
+					      	<div class="inp-tit">开始时间</div>
+							<div class="inp-inp">
+								<div><input id="dateStart" class="form-control" type="text" name="startTime" /></div>
+							</div>
+					    </div>
+						<div class="col-sm-6 col-xs-12 mb10">
+					      	<div class="inp-tit">结束时间</div>
+							<div class="inp-inp">
+								<div><input id="dateEnd" class="form-control" type="text" name="endTime" /></div>
+							</div>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<span type="button" class="btn btn-default">关闭</span>
+				<button type="button" class="btn btn-primary" id="submitBtn">确定</button>
+			</div>
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="row mt10">
+<!-- search -->
+	<div class="tabhead col-xs-12">            
+		<form action="" method='get'>
+			<input type="hidden" name="perpage" value="<?=$this->perpage?>">
+			<input type="hidden" name="showType" value="<?=$this->showType?>">
+			<input type="hidden" name="channel" value="<?=$this->channel?>">
+			<input type="hidden" name="checkStatus" value="<?=$this->checkStatus?>">
+	        <input type="hidden" name="topLevel" value="<?=$this->topLevel?>">
+	        <input type="hidden" name="devId" value="<?=$this->devId?>">
+			<span class="block top-search btn btn-primary change">切换渠道</span>
+
+			<div class="btn-group top-search">
+	            <span type="button" class="btn btn-primary">批量处理</span>
+	            <span id="batch" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                <span class="caret"></span>
+	            </span>
+	            <ul class="batch-menu">
+	                <li class="" id="batchUpGoods">批量上架异常商品</li>
+	                <li class="" id="batchDel">批量移除推送商品</li>
+	                <li id="batchAdd">批量添加销售计划</li>
+	                <!-- <li id="batchReduce">批量移除销售计划</li> -->
+					<a href="/push/export/?checkStatus=<?=$this->checkStatus ?>&topLevel=<?=$this->topLevel ?>&channel=<?=$this->channel ?>"><li>导出所有商品</li></a>
+	            </ul>
+	        </div>
+
+			<span class="top-search linheit">排序：</span>
+			<select class="form-control top-search" name="time">
+				<option value="1" <?php if($this->time == 1){echo "selected='selected'";}?>>按审核时间排序</option>
+				<option value="0" <?php if($this->time == 0){echo "selected='selected'";}?>>按预售时间排序</option>
+			</select>
+				
+			<!-- <input name="keyword" value="<?=$this->keyword?>" class="form-control top-search" type="text" placeholder="名称，编码，货号" />
+			<button class="block top-search btn btn-primary">搜索</button> -->
+			<div class="btn-group btn-search">
+				<span class="btn btn-default dropdown-toggle">模糊查询<i class="caret"></i></span>
+				<ul class="batch-menu">
+					<li data="1">模糊查询</li>
+					<li data="2">按sku查询</li>
+					<li data="3">按货号查询</li>
+				</ul>
+			</div>
+			<input type="hidden" name="searchType" id="searchType" value="<?=$this->searchType;?>" />
+			<div class="btn-group">
+				<div class="input-group">
+					<input name="keyword" value="<?=$this->keyword?>" class="form-control" type="text" placeholder="请输入关键词" />
+					<div class="input-group-btn">
+						<button class="btn btn-default" id="lowSearch">搜索</button>
+					</div>
+				</div>
+			</div>
+	<!-- high-search -->
+
+			<div id="highSearch" class="btn-group">
+				<span type="button" class="btn btn-primary">高级搜索</span>
+				<span id="batch1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+				</span>
+				<div class="high-search batch-menu">
+					<div class="row mt10">
+						<div class="col-xs-12">
+							<span class="top-search linheit">平台价格：</span>
+							<input name="minPrice" value="<?=$this->minPrice?>" class="form-control top-search" type="text" />
+							<span class="top-search linheit">至</span>
+							<input name="maxPrice" value="<?=$this->maxPrice?>" class="form-control top-search" type="text"/>
+						</div>
+					</div>
+					<div class="row mt10">
+						<div class="col-xs-12">
+							<button class="btn btn-primary fr disguise">搜索</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	<!-- high-search -->
+
+	<!-- export -->
+		<div class="setwrap  top-search">
+			<button id="setWindow" class="btn btn-primary">列设置</button>
+			<div class="set-window"></div>
+		</div>
+
+	</div>
+</div>
+<!--  diff-display -->
+<div class="row mt10 finance-ul">
+	<div class="col-xs-12">
+		<ul>
+			<li class="finance-btn abnormal <?php if ($this->checkStatus == 'abnormal') echo ' active '; ?> "><a href="?checkStatus=abnormal&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>异常商品<span><?=$this->count['abnormal']?></span></p></a></li>
+			<li class="finance-btn <?php if ($this->checkStatus == 'stop') echo ' active '; ?> "><a href="?checkStatus=stop&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>停止销售<span><?=$this->count['stop']?></span></p></a></li>            
+			<li class  ="finance-btn <?php if ($this->checkStatus == 'waitCheck') echo ' active '; ?> "><a href="?checkStatus=waitCheck&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>审核中<span><?=$this->count['waitCheck']?></span></p></a></li>
+			<li class="finance-btn normal <?php if ($this->checkStatus == 'pass') echo ' active '; ?> "><a href="?checkStatus=pass&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>仓库中<span><?=$this->count['pass']?></span></p></a></li>
+<!--					<li class  ="finance-btn <?php if ($this->checkStatus == 'toSellplan') echo ' active '; ?> "><a href="?checkStatus=toSellplan&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>批量上架处理<span class="count" style="background:orange;"><?=$this->count['toSellplan']?></span></p></a>
+			</li>-->				
+			<li class  ="finance-btn <?php if ($this->checkStatus == 'sellplan') echo ' active '; ?> "><a href="?checkStatus=sellplan&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>上架商品<span><?=$this->count['sellplan']?></span></p></a>
+			</li>
+            <li class="finance-btn <?php if ($this->checkStatus == 'lock') echo ' active '; ?> "><a href="?checkStatus=lock&keyword=<?=$this->keyword;?>&channel=<?=$this->channel;?>&devId=<?=$this->devId;?>&time=<?=$this->time;?>&minPrice=<?=$this->minPrice;?>&maxPrice=<?=$this->maxPrice;?>&showType=list"><p>锁定商品<span><?=$this->count['lock']?></span></p></a>
+			</li>
+			<div class ="clearfix"></div>
+		</ul> 
+	</div>
+</div>
+<!-- diff-display -->
+
+<!-- content-list -->
+<div class="row tablescroll">
+	<form action="/sellplan/addBatchSellplan" method="post" id='batchForm' >
+		<input type="hidden" name="channel" value="<?=$this->channel?>">
+		<table id="table" class="scrollTable">
+			<thead>
+				<tr>
+					<td><input id="checkBox" type="checkbox" />全选</td>
+					<td class="none">ID</td>
+					<?php if($this->checkStatus=='sellplan'): ?>
+						<td>所属批次</td>
+					<?php endif ?>
+                	<td>店铺评分</td>
+					<td>缩略图</td>
+					<td>商品名称</td>
+                    <td>淘宝专用名</td>
+                    <td class="none">商品参数</td>
+					<td>SKU编号</td>
+                    <td class="none">货号</td>
+					<td>
+						<?php if($this->checkStatus=='sellplan' || $this->checkStatus=='stop') {
+							echo "库存";
+						}else{
+							echo "剩余库存";
+						}?>
+					</td>
+					<td>平台价</td>
+                    <?php if($this->checkStatus=='sellplan'): ?>
+                    	<td>销售价</td>
+					<?php endif; ?>						
+					<?php if($this->checkStatus!='sellplan'): ?>
+						<td width="5%">状态</td>
+					<?php endif; ?>
+					<td>操作</td>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- 遍历每一条商品信息 -->
+				<?php foreach($this->list as $row): ?>
+					<tr class="tr_<?=$row['id']?>" data-id='<?=$row['id']?>' goods-id='<?=$row['goodsId']?>' channel='<?=$this->channel?>' sellplan-id='<?=$row['sellplanId']?>'>
+						<td><input type="checkbox" name="puids[]" value="<?=$row['id']?>" /></td>
+                        <td class="none"><?=$row['id']?></td>
+						<?php if($this->checkStatus=='sellplan'): ?>
+							<?php if($row['batch']): ?>
+								<td><?=$row['batch'] ?></td>
+							<?php else: ?>
+								<td>单一商品</td>
+							<?php endif ?>
+						<?php endif ?>
+                        <td><?=$row['shopScore']?></td>
+						<td><img onclick='showImg(this)' src="<?=$row['thumb']?>" /></td>
+						<td class="goodsName"><?=$row['name']?></td>
+                        <td><?=$row['taobao_special']?></td>
+                        <td class="none">
+							<?php if ( json_decode($row['attribute'],true) ): ?>
+								<?php foreach(json_decode($row['attribute'],true) as $v): ?>
+									<p>
+										<?=$v['key']['name']?>:
+										<span><?=$v['value']['name']?></span>
+									</p>
+								<?php endforeach;?>
+							<?php endif; ?>
+						</td>
+						<td><?=$row['code']?></td>
+                        <td class="none"><?=$row['goodsNo']?></td>
+						<td>
+							<?php if($this->checkStatus=='sellplan') {
+								echo $row['tradeCount'];
+							}elseif( $this->checkStatus=='stop'){
+								echo $row['goodsStock'];
+							}else{												
+                                echo $row['goodsStock'] - $row['tradeCount'];
+							}?>
+						</td>
+						<td><?php if($row['channelPrice']) echo round($row['channelPrice'],2);else echo '';?></td>
+                        <?php if($this->checkStatus == 'sellplan'): ?>
+							<td><?=$row['tradePrice'] ?></td>
+                        <?php endif; ?>
+						<?php if($this->checkStatus!='sellplan'): ?>
+							<td id='status'>
+								<?php
+									switch ($row['status']) {
+										case 0 : 
+											if (empty($row['toShow'])) {
+												if(in_array($row['id'],$this->sellplanInRedis)){
+													echo "待上架";
+												}else{
+													echo "仓库中";
+												}
+											}else{
+												echo $row['toShow'];
+											}
+											break;
+										case 1 : echo "审核中";break;
+										case 2 : echo "<span style='color:red;'>锁定</span>";break;
+										case 3 : echo "<span style='color:red;'>价格异常</span>";break;
+										case 4 : echo "<span style='color:red;'>商家停售</span>";break;
+										case 5 : echo "<span style='color:red;'>商品售罄</span>";break;
+									}
+								?>
+							</td>
+						<?php endif ?>
+						<td>
+							<div class="order_menu">
+								<a href="/goods/downloadImgByGid?gid=<?=$row['goodsId']?>&code=<?=$row['code']?>"><span toggle='yes' data="<?=$row['id']?>" class="btn-orderDetails btn btn-default">
+						  			<img src="/img/xiazai.png"/><i>图片下载</i></span>
+						  		</a>
+							  	<div class="btn-group btn-search">
+									<span class="btn btn-default dropdown-toggle">请选择<i class="caret"></i></span>
+									<ul class="batch-menu">
+								  	<?php if($this->action): ?>
+                         			<?php	switch ($this->checkStatus) {
+										//仓库中 
+										case 'pass': ?>
+											<?php if(!$row['toShow']): ?>
+												<a class="addSellPlan"><li><img src="/img/jihua.png">宝贝上架</li></a>
+											<?php else :?>
+												<a class="editSellPlan"><li><img src="/img/bianji.png">编辑销售计划</li></a>
+											<?php endif ?>
+										<?php	break;
+										// 异常
+										case 'abnormal': ?>
+											<a href='javascript:;'   data="<?=$row['id']?>" channel="<?=$row['channel']?>" class='upGoods'><li><img src="/img/shangjia.png">上架</li></a>
+										<?php	break;
+										// 审核中
+										case 'waitCheck': ?>
+											
+										<?php	break;
+										// 停售	
+										case 'stop': ?>
+
+										<?php	break;
+										// 批量上架处理
+										case 'toSellplan': ?>
+											<a class="addSellPlan"><li><img src="/img/jihua.png">宝贝上架</li></a>
+										<?php	break;
+										// 锁定
+										case 'lock': ?>
+											
+										<?php	break;
+										// 销售商品
+										case 'sellplan': ?>
+											<a href="/push/addOrder/?id=<?=$row['id']?>&keyword=<?=$this->keyword?>&channel=<?=$this->channel?>"><li><img src="/img/xiadan.png">下单</li></a>
+											<a class="editSellPlan"><li><img src="/img/bianji.png">编辑销售计划</li></a>
+                        					<a href ="javascript:;" pushId="<?=$row['id']?>" sellplanId="<?=$row['sellplanId']?>" channel="<?=$row['channel']?>" status="<?=$row['status']?>" goodsId="<?=$row['goodsId']?>" class="delSingle"><li><img src="/img/shanchu.png">下架</li></a>
+										<?php	break;
+										}
+	                                    ?>
+										<?php if($this->checkStatus!='sellplan'): ?>
+											<a href="javascript:;" channel="<?=$row['channel']?>" status="<?=$row['status']?>" data="<?=$row['id']?>" class="delGoods"><li><img src="/img/shanchu.png">移除</li></a>
+										<?php endif ?>
+								  	<?php endif ?>
+
+									<a href="/push/edit/?id=<?=$row['id']?>&keyword=<?=$this->keyword?>&channel=<?=$this->channel?>"><li><img src="/img/xiangqing.png">详情</li></a>
+								 	<a href="javascript:;" class="copyUrl" data="/showcstm/index/?1ge=<?=base64_encode($row['goodsId'])?>"><li><img src="/img/fuzhi.png">复制地址</li></a>
+								  </ul>
+							  	</div>
+							</div>
+						</td>
+					</tr>
+				<?php endforeach?>
+			</tbody>
+		</table>
+	</form>
+</div>
+<!-- page -->
+	<div class="row center mb10">
+		<div class="pagenav">
+			<div id="Pagination" class="flickr">
+				<?=$this->pagebar;?>
+			</div>
+			<div class="page-count">
+				<div>
+					每页显示<span id="perpage"><?=$this->perpage?></span>条
+					<ul id="pageCountSelect">
+						<li>-- 请选择 --</li>
+						<li>50</li>
+						<li>100</li>
+						<li>200</li>
+					</ul>
+				</div>
+				<input type="tel" value="<?=$this->page?>"/>
+				<span class='go' total='<?=$this->total?>'>GO></span>
+			</div>
+		</div>
+	</div>
+<!-- page-end -->  
+	</div>
+</div>
+<script type="text/javascript" src="/js/test.js/jedate.min.js" ></script>
+<script src="/js/test.js/zeroClipboard/clipboard.min.js"></script>
+<script>
+	//上架时间
+	jeDate({
+		dateCell:"#dateStart",//isinitVal:true,
+		format:"YYYY-MM-DD hh:mm",
+		isTime:true,
+	})
+	jeDate({
+		dateCell:"#dateEnd",//isinitVal:true,
+		format:"YYYY-MM-DD hh:mm",
+		isTime:true,
+	})
+	//上架方式
+	$('.trade-style .deal-btn').children('li').click(function(){
+		var $dealStyle = $('.deal-style');
+		$(this).addClass('active').siblings().removeClass('active');
+		$dealStyle.addClass('none');
+		$dealStyle.eq($(this).index()).removeClass('none');
+	})
+	// 竞买
+	$('#jingmai').click(function(){
+		$('#tradeStyle').val(0);
+	})
+	// 一口价
+	$('#yikoujia').click(function(){
+		$('#tradeStyle').val(1);
+	})
+
+
+	// 给所有可以变动价格的元素绑定change事件，执行getCost()
+	$('[name="channelPrice"],[name="express"],[name="package"],[name="certificate"]').change(function(){
+		$('[name="fixedPrice"]').val(getCost());
+	})
+
+	// 渠道价
+	// 附加价格变动时判断总价是否低于渠道价的95折
+	$('[name="addPrice"]').bind('input',function(){
+		// 渠道价
+		var channelPrice=parseInt($('[name="channelPrice"]').val());
+		var totalPrice=getCost();
+		if(totalPrice<channelPrice*0.95){
+			// alert('该商品一口价不得低于'+channelPrice*0.95+'元');
+			$('#number').text('一口价不得低于'+(channelPrice*0.95).toFixed(2)+'元');
+			$('[name="fixedPrice"]').val(channelPrice*0.95);
+		}else{
+			$('[name="fixedPrice"]').val(totalPrice);
+			$('#number').text(' ');
+		}
+	})
+
+	// 上架数量限制，不得高于可销售库存
+	$('#upAccount').bind('input',function(event){
+		// 可销售库存
+		var goodsStock=parseInt($('[name="goodsStock"]').val());
+		if(parseInt($(this).val())>goodsStock){
+			alert('上架数量不能超过可销售库存');
+			// 修改数量为可销售库存
+			$(this).val(goodsStock);
+		}
+	})
+
+	// 获得一口价
+	function getCost(){
+		var addPrice=$('[name="addPrice"]').val()?parseInt($('[name="addPrice"]').val()):0;
+		var express=parseInt(JSON.parse($('[name="express"]').val()).price);
+		var packages=parseInt(JSON.parse($('[name="package"]').val()).price);
+		var certificate=parseInt(JSON.parse($('[name="certificate"]').val()).price);
+		var channelPrice = parseInt($('[name="channelPrice"]').val());
+		return addPrice+channelPrice+express+packages+certificate;
+	}
+
+	// Y-m-d H:i:s 格式时间转时间戳
+	function datetime_to_unix(datetime){
+	    var tmp_datetime = datetime.replace(/:/g,'-');
+	    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+	    var arr = tmp_datetime.split("-");
+	    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	    return parseInt(now.getTime()/1000);
+	}
+	//模糊搜索
+	// $('#searchType').val(1);
+	$('.tabhead .btn-search').children('.btn').click(function(e){
+		e.stopPropagation();
+		$(this).next().toggle();
+	})
+	$('.tabhead .btn-search').children('.btn').next('.batch-menu').children('li').click(function(){
+		$('#searchType').val($(this).attr('data'));
+		$('.tabhead .btn-search').children('.btn').html($(this).text() + '<i class="caret"></i>')
+	})
+	//高级搜索展开按钮点击
+	$('#batch').click(function(e){
+		e.stopPropagation();
+		$(this).next().toggle();
+	})
+	$('#batch1').click(function(e){
+		e.stopPropagation();
+		$(this).next().toggle();
+	})
+	$('#batch1').next('.high-search').click(function(e){
+		e.stopPropagation();
+	})
+
+	//普通搜索按钮
+	$('#lowSearch').bind({
+		click:function(){
+			$('#highSearch').children().remove();
+			$('#search').submit();
+		}
+	})
+
+	$(document).ready(function(){
+		//切换渠道
+		$('.change').bind({
+			click:function(){
+				var $form = $(this).parent();
+				$form.children().remove();
+				$form.append("<input type='hidden' name='showType' value='choice' />");
+                                $form.append("<input type='hidden' name='devId' value='<?=$this->devId?>' />");
+				$form.submit();
+			}
+		})
+		//跳页
+		$('.go').bind({
+			click:function(){
+				var go = parseInt($(this).prev().val());
+				var total = parseInt($(this).attr('total'));
+				var $current = $(this).parent().prev().find('span');
+				var href = $current.attr('href');
+				var reg = /pages=(\d+)/;
+				var pages = href.match(reg);
+				reg = /perpage=(\d+)/;
+				var perpage = href.match(reg);
+				if( go > parseInt(pages[1]) ){
+					alert('当前一共有'+total+'条记录\n每页显示'+perpage[1]+'条\n总共有'+pages[1]+'页\n请选择合适的页码');
+				}else{
+					href = href.replace(/\bpage=\d+\b/,'page='+go);
+					window.location.href = href;
+				}
+			}
+		});
+		$('#batchDel').click(function(){
+			var $input = $('#batchForm').find("tr input[name='puids[]']");
+			var flag = false;
+			for(var i=0,len=$input.length;i<len;i++){
+				if( $input[i].checked ){
+					flag = true;
+					break;
+				}
+			}
+			if( !flag ){
+				alert('请选择至少一个商品！');
+				return false;
+			}
+			$.post('/push/batchDel',$('form').serialize(),function(result){
+				// console.log(result)
+				if( result.success == 1 ){
+					$('#batchForm').find("tr input:checked").each(function(i){
+						$(this).parent().parent().remove();
+					})
+					alert(result.data);
+				}else if( result.success == 0 ){
+					//console.log(result.error.error);
+					var success = result.error.success;
+					var error = result.error.error;
+					if( success ){
+						for(var i=0,len=success.length;i<len;i++ ){
+							var obj = $('#batchForm').find("tr input[value='"+success[i]+"']");
+							obj.parent().parent().remove();
+						}
+					}
+
+					var msg = "批量删除商品失败\n";
+					if( success ){
+						msg += "ID为("+success.join(' , ')+")的商品删除成功\n";
+					}
+					if( error.unlock ){
+						msg += "ID为("+error.unlock.join(' , ')+")的商品目前有预售计划\n";
+					}
+					if( error.lock ){
+						msg += "ID为("+error.lock.join(' , ')+")的商品目前已被锁定\n";
+					}
+					if( error.fail ){
+						msg += "ID为("+error.fail.join(' , ')+")的商品操作失败，可直接重试\n";
+					}
+					msg += "请将商品的预售计划删除或解锁商品后，再次重试！";
+					alert(msg);
+				}else if( result.success == 2 ){
+					alert(result.notice);
+				}
+			},'json');
+
+		})  
+		//上架中移除按钮
+		$('.delGoods').click(function(){
+			var id = $(this).attr('data');
+			var channel = $(this).attr('channel');
+			var status = $(this).attr('status');
+				if( status== 2 ){
+					alert('商品已锁定，不能移除！');
+					return false;
+				}else{
+					if(confirm('你确定要删除吗')){
+						$.post('/push/del',{'id':id,'channel':channel},function(result){
+							if( result.success == 1 ){
+								alert( result.data );
+								$('.tr_'+id).remove();
+							}else if( result.success == 0 ){
+								alert( result.error );
+							}else if( result.success == 2 ){
+								alert(result.notice);
+							}
+						},'json');
+					}
+				}
+		});
+	})
+	//全选
+	var checkAll = false;
+	$("#checkBox").click(function(){
+		if(!checkAll){
+			$("#table").find("tr input").prop({"checked":true});
+			checkAll = true;
+		}else if(checkAll) {
+			checkAll = false;
+			$("#table").find("tr input").prop({"checked":false});
+		}
+	})
+
+	//复制地址
+	var btns;
+	var clipboard;
+	var zclipFlag = true;   
+	$('.copyUrl').click(function(){
+		var $copyWindow = $('.copyWindow');
+		$copyWindow.show();
+		var copyAdress = $('#hideHome').attr('data') + $(this).attr('data');
+		$copyWindow.find('.modal-body').children('p').html(copyAdress);
+		$('#copy').attr('data-clipboard-text',copyAdress);
+		if(zclipFlag){
+			btns = document.getElementById("copy");
+			clipboard = new Clipboard(btns);
+			clipboard.on('success', function(e) {
+				alert('复制成功');
+			});
+			clipboard.on('error', function(e) {
+				alert('复制失败，请手动复制');
+			});
+			zclipFlag = false;
+		}
+	})
+	$('.modal').find('.close').click(function(){
+		$('.modal').hide();
+	})
+	$('.modal').find('.btn-default').click(function(){
+		$('.modal').hide();
+	})
+
+	// 上架商品
+	$('.upGoods').click(function(){
+		var _this=$(this);
+		var id=_this.attr('data');
+		var channel=_this.attr('channel');
+		if (confirm('确认上架商品？')) {
+			$.ajax({
+				url:'/push/upGoods',
+				type:'post',
+				dataType:'json',
+				data:{'id':id,'channel':channel},
+				success:function(result){
+					if (result.success==1) {
+						_this.parents('tr').remove();
+						alert('上架成功');
+					}else if (result.success==2) {
+						alert(result.notice);
+					}
+				}
+			})
+		}
+	});
+
+// 批量上架
+	$('#batchUpGoods').click(function(){
+		var $input = $('#batchForm').find("tr input[name='puids[]']");
+		var flag = false;
+		for(var i=0,len=$input.length;i<len;i++){
+			if( $input[i].checked ){
+				flag+=1;
+				if(flag>1) break;
+			}
+		}
+		if( flag<=1 ){
+			alert('最少选择2个商品！');
+			return false;
+		}
+
+		$.post('/push/batchUpGoods',$input.serialize(),function(result){
+			if ( result.success==1 ) {
+				alert( result.data );
+				window.location.reload();
+			}else if ( result.success==2 ) {
+				alert( result.notice );
+			}else{
+				alert( result.error );
+			}
+		},'json');
+	});
+
+	// 点击"批量上架处理"
+	/*$(document).on('click', '.pre2Sellplan', function(event) {
+		var _this=$(this);
+		var pushId=$(this).attr('pushId');
+		$.ajax({
+		  	url:'/sellplan/sellplanToRedis',
+		  	dataType:'json',
+		  	type:'post',
+		  	data:{'account':<?=$this->account ?>,'pushId':pushId,'channelId':<?php if($this->list) {echo $this->list[0]['channel'];} else{ echo 0;}?>},
+		  	success:function(result){
+				if(result.success){
+			  		_this.children('li').html('取消批量');
+			  		_this.removeClass('pre2Sellplan').addClass('cancelPre2Sellplan');
+			  		_this.parents('td').prev('td').html('待上架')
+			  		$('.count').html(result.data);
+				}else{
+			 		alert(result.error);
+				}
+		  	}
+		})
+	});*/
+
+	// 点击"取消批量上架处理"
+	/*$(document).on('click', '.cancelPre2Sellplan', function(event) {
+		var _this=$(this);
+		var pushId=$(this).attr('pushId');
+		$.ajax({
+		  	url:'/sellplan/sellplanOutRedis',
+		  	dataType:'json',
+		  	type:'post',
+		  	data:{'account':<?=$this->account ?>,'pushId':pushId,'channelId':<?php if($this->list) {echo $this->list[0]['channel'];} else{ echo 0;}?>},
+		  	success:function(result){
+				_this.children('li').html('批量上架');
+				_this.parents('td').prev('td').html('仓库中')
+				_this.removeClass('cancelPre2Sellplan').addClass('pre2Sellplan');
+				if(result.success){
+			  		$('.count').html(result.data);
+				}else{
+			  		alert(result.error);
+				}
+		  	}
+		})
+	});*/
+
+	// 批量下架 移除【待】销售计划
+	/*$('#batchReduce').click(function(){
+		var $input = $('#batchForm').find("tr input[name='puids[]']");
+		var flag = false;
+		var pushId='';
+		var array=new Array();
+		for(var i=0,len=$input.length;i<len;i++){
+		  	if( $input[i].checked ){
+			  	array[i]=$($input[i]).parents('tr');
+			  	pushId+=$input[i].value+',';
+			  	flag+=1;
+		  	}
+		}
+		if( flag<2 ){
+		  	alert('最少选择2个商品！');
+		  	return false;
+		}
+		if (confirm('确认删除勾选的销售计划？')) {      
+			pushId=pushId.slice(0,-1);
+			$.ajax({
+		  		url:'/sellplan/sellplanOutRedis',
+		  		type:'post',
+		  		data:{'account':<?=$this->account ?>,'pushId':pushId,'channelId':<?php if($this->list) {echo $this->list[0]['channel'];} else{ echo 0;}?>},
+		  		dataType:'json',
+		  		success:function(result){
+					if(result.success){
+				  		var len=array.length;
+				  		for (var i = 0; i < len; i++) {
+							array[i].remove();
+				  		}
+				  		$('.count').html(result.data);
+					}
+			  	}
+			})
+		}
+	})*/
+	
+
+    // 下架
+    $('.delSingle').click(function(){
+        var sellplanId=$(this).attr('sellplanId');
+        var goodsId=$(this).attr('goodsId');
+        var channel=$(this).attr('channel');
+        var pushId=$(this).attr('pushId');
+        var _this=this;
+            if(confirm('你确定要移除吗')){
+                $.post('/sellplan/delSellPlan',{'pushId':pushId,'sellplanId':sellplanId,'channel':channel,'goodsId':goodsId},function(result){
+                    if( result.data){
+                        $(_this).parents('tr').remove();
+                    }else{
+                        alert( result.error );
+                        return;
+                    }
+                },'json');
+            }
+    });
+    // 批量上架
+	$('#batchAdd').click(function(){
+		$('#formSP')[0].reset();
+		$('#formExpress').prop('disabled',true);
+		$('#formSP').attr('data','addBatch');
+	  	var $input = $('#batchForm').find("tr input[name='puids[]']");
+	  	var flag = false;
+	  	for(var i=0,len=$input.length;i<len;i++){
+		  	if( $input[i].checked ){
+			  	flag+=1;
+			  	if(flag>1) break;
+		  	}
+	  	}
+	  	if( flag<=1 ){
+		  	alert('最少选择2个商品！');
+		  	return false;
+	  	}
+	  	var $sellplan = $('.sellplan');
+	  	$sellplan.show();
+    	$sellplan.find('H4').html('批量上架');
+	  	$sellplan.find('.batch-name').removeClass('none');
+	  	$sellplan.find('.trade-style').addClass('none');
+	  	var info=$('#batchForm').serialize();
+	  	$.post(
+	  		'/sellplan/batchDetail',
+	  		info,
+	  		function(result){
+	  			if ( !result.data.batch ) {
+	  				alert("改批商品已上架，不能重复上架");
+	  				$sellplan.hide();
+	  				return false;
+	  			}
+	  			$sellplan.find('.batch-name').after('<input type="hidden" name="batch" value="'+result.data.batch+'" />').after('<input type="hidden" name="pushId" value='+result.data.pushId+' />');
+	  			$('#formChannel').val($('#batchForm').find('input[name="channel"]').val());
+	  			if( result.data.pushId ){
+	  				msg = "ID为("+result.data.pushId.join(' , ')+")的商品可以上架\n";
+	  			}
+	  			if ( result.data.diffPushId ) {
+	  				msg += "ID为("+result.data.diffPushId.join(' , ')+")的商品不能重复上架\n";
+	  			}
+	  			alert(msg);
+	  		},
+	  		'json'
+	  	)
+
+	});
+	
+	// 提交
+	$('#submitBtn').click(function() {
+		var upAccount = parseInt($('#upAccount').val());
+		var goodsStock = parseInt($('#goodsStock').html());
+		if ( upAccount > goodsStock ) {
+			alert('库存不足'+upAccount+'件');
+			return false;
+		}
+		// 渠道价
+		var channelPrice=parseInt($('[name="channelPrice"]').val());
+     	// 判断一口价是否不低于渠道价,否则不能提交
+     	if(getCost()<channelPrice){
+     		alert('一口价不得低于'+(channelPrice*0.95).toFixed(2)+'元');
+     		return false;
+     	}
+     	// 判断预售起止时间,如果结束时间早于开始时间,不能提交
+     	var startTime=datetime_to_unix($('#dateStart').val()+':00');
+     	var endTime=datetime_to_unix($('#dateEnd').val()+':00');
+     	if(endTime<startTime){
+     		alert('预售计划时间设置错误');
+     		return false;
+     	}
+     	// 判断指定上架时间是否为空
+     	var startUpStyle=$('[name="startUpTime"]:eq(1)').prop('checked');
+     	var startUpTime=$.trim($('#date').val())
+     	if(startUpStyle==true && startUpTime==''){
+     		alert('请指定上架时间');
+     		return;
+     	}
+     	var action = $('#formSP').attr('data');
+     	$.post('/sellplan/'+action, $("#formSP").serialize(), function(result) {
+     		if ( result.success == 1 ) {
+    			$('.sellplan').hide();
+     			alert( result.data );
+     		}else if( result.success == 0 ){
+     			alert( result.error );
+     		}else if( result.success == 2 ){
+     			alert( result.notice);
+     		}
+     	},'json');
+    })
+
+    //宝贝上架
+    $('.addSellPlan').click(function(){
+    	$('#formSP')[0].reset();
+		$('#formExpress').prop('disabled',false);
+    	var $sellplan = $('.sellplan');
+	  	$sellplan.show();
+	  	$sellplan.find('.batch-name').addClass('none');
+	  	$sellplan.find('.trade-style').removeClass('none');
+    	var $thisTr = $(this).parents('tr');
+    	var $pushId = $thisTr.attr('data-id');
+    	var $goodsId = $thisTr.attr('goods-id');
+    	var $channel = $thisTr.attr('channel');
+    	var $goodsName = $thisTr.find('.goodsName').html();
+
+    	$('#formSP').attr('data','add');
+    	$('.sellplan').find('H4').html($goodsName);
+    	$('#formPushId').val($pushId);
+    	$('#formGoodsId').val($goodsId);
+    	$('#formChannel').val($channel);
+    	$.post('/sellplan/detail', 
+    			{'pushId': $pushId,'goodsId': $goodsId,'channel': $channel,'act':'add'}, 
+	    		function(result) {
+	    			var goodsInfo = result.data;
+	    			var ExpressLen = $('#formExpress').children().ExpressLen;
+	    			for (var i=0;i<ExpressLen;i++){
+	    				var expressDef=JSON.parse($('#formExpress').children().eq(i).val()).id;
+	    				if ( goodsInfo.freeExpress == expressDef ) {
+	    					$('#formExpress').children().eq(i).attr('selected','selected');
+	    				}
+	    			}
+	    			$('#goodsStock').html(goodsInfo.goodsStock);
+	    			// $('#formExpress').children("option[value="+goodsInfo.freeExpress+"]").attr('selected','selected');
+	    			$('#formChannelPrice').val(goodsInfo.channelPrice);
+					// 页面加载完，先执行一次更改一口价
+					$('[name="fixedPrice"]').val(getCost());
+	    		},
+	    		'json');
+    })
+
+    //编辑销售计划
+    $('.editSellPlan').click(function(){
+    	$('#formSP')[0].reset();
+		$('#formExpress').prop('disabled',false);
+    	var $sellplanDiv = $('.sellplan');
+	  	$sellplanDiv.show();
+	  	$sellplanDiv.find('.batch-name').addClass('none');
+	  	$sellplanDiv.find('.trade-style').removeClass('none');
+    	var $thisTr = $(this).parents('tr');
+    	var $pushId = $thisTr.attr('data-id');
+    	var $goodsId = $thisTr.attr('goods-id');
+    	var $channel = $thisTr.attr('channel');
+    	var $sellplan = $thisTr.attr('sellplan-id');
+    	var $goodsName = $thisTr.find('.goodsName').html();
+    	$sellplanDiv.find('H4').html($goodsName);
+    	$('#formSP').attr('data','edit');
+    	$('#formPushId').val($pushId);
+    	$('#formGoodsId').val($goodsId);
+    	$('#formChannel').val($channel);
+    	$('#formSellPlan').val($sellplan);
+    	$.post('/sellplan/detail', 
+    			{'pushId': $pushId,
+    			'goodsId': $goodsId,
+    			'channel': $channel,
+    			'sellplan':$sellplan,
+    			'act':'edit'}, 
+    			function(result) {
+	    			var goodsInfo = result.data;
+	    			$('#goodsStock').html(goodsInfo.goodsStock);
+	    			//快递费用默认项
+	    			var ExpressLen = $('#formExpress').children().length;
+	    			for (var i=0;i<ExpressLen;i++){
+	    				var expressDef=JSON.parse($('#formExpress').children().eq(i).val()).id;
+	    				if ( goodsInfo.express == expressDef ) {
+	    					$('#formExpress').children().eq(i).prop('selected','selected');
+	    				}else{
+	    					$('#formExpress').children().eq(i).prop('selected',false);
+	    				}
+	    			}
+	    			//证书费用默认项
+	    			var certificateLen = $('#formCertificat').children().length;
+	    			for (var i=0;i<certificateLen;i++){
+	    				var expressDef=JSON.parse($('#formCertificat').children().eq(i).val()).id;
+	    				if ( goodsInfo.certificate == expressDef ) {
+	    					$('#formCertificat').children().eq(i).prop('selected','selected');
+	    				}else{
+	    					$('#formCertificat').children().eq(i).prop('selected',false);
+	    				}
+	    			}
+	    			//包装费用默认项
+	    			var packageLen = $('#formPackage').children().length;
+	    			for (var i=0;i<packageLen;i++){
+	    				var expressDef=JSON.parse($('#formPackage').children().eq(i).val()).id;
+	    				if ( goodsInfo.package == expressDef ) {
+	    					$('#formPackage').children().eq(i).prop('selected','selected');
+	    				}else{
+	    					$('#formPackage').children().eq(i).prop('selected',false);
+	    				}
+	    			}
+	    			//附加费用
+	    			$('[name="addPrice"]').val(goodsInfo.addPrice);
+	    			//上架数量
+	    			$('[name="upAccount"]').val(goodsInfo.tradeCount);
+	    			//起拍价格
+	    			if ( goodsInfo.tradeStyle == 0 ) {
+		    			$('[name="startPrice"]').val(goodsInfo.tradePrice);
+		    		}
+	    			//开始时间
+	    			$('[name="startTime"]').val(goodsInfo.startTime);
+	    			//结束时间
+	    			$('[name="endTime"]').val(goodsInfo.endTime);
+
+	    			$('#formChannelPrice').val(goodsInfo.channelPrice);
+					// 页面加载完，先执行一次更改一口价
+					$('[name="fixedPrice"]').val(getCost());
+	    		},
+	    		'json');
+    })
+
+    $('.allStock').click(function(){
+    	$('#upAccount').val($('#goodsStock').html());
+    })
+
+    //批量添加数量
+    $('.batch-name .deal-btn').children('li').click(function(){
+    	$(this).addClass('active').siblings().removeClass('active');
+    })
+	// 单个
+	$('#dange').click(function(){
+		$('#upNumber').val(1);
+	})
+	// 全部
+	$('#quanbu').click(function(){
+		$('#upNumber').val(2);
+	})
+</script>

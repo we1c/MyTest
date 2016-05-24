@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD operator VARCHAR(50) DEFAULT '' comment '下单人';
